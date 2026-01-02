@@ -32,6 +32,11 @@ class Warehouse extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Warehouse has been {$eventName}");
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function stocks()
     {
         return $this->hasMany(Stock::class);

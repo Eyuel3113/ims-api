@@ -44,17 +44,39 @@ Route::prefix('v1')->group(function () {
         Route::patch('/{id}/status', [CategoryController::class, 'toggleStatus']);
         Route::delete('/{id}', [CategoryController::class, 'destroy']);
 
-        // Route::patch('/jobs/{id}/status', [JobController::class, 'toggleStatus']);
-
       });
-    // Suppliers
-    Route::apiResource('suppliers', SupplierController::class);
 
-    // Warehouses
-    Route::apiResource('warehouses', WarehouseController::class);
+      Route::prefix('suppliers')->group(function () {
+        Route::get('/active', [SupplierController::class, 'activeSuppliers']);
+        Route::get('/', [SupplierController::class, 'index']);
+        Route::post('/', [SupplierController::class, 'store']);
+        Route::get('/{id}', [SupplierController::class, 'show']);
+        Route::patch('/{id}', [SupplierController::class, 'update']);
+        Route::patch('/{id}/status', [SupplierController::class, 'toggleStatus']);
+        Route::delete('/{id}', [SupplierController::class, 'destroy']);
+      });
 
-    // Products
-    Route::apiResource('products', ProductController::class);
+      // Warehouses
+      Route::prefix('warehouses')->group(function () {
+        Route::get('/active', [WarehouseController::class, 'activeWarehouses']);
+        Route::get('/', [WarehouseController::class, 'index']);
+        Route::post('/', [WarehouseController::class, 'store']);
+        Route::get('/{id}', [WarehouseController::class, 'show']);
+        Route::patch('/{id}', [WarehouseController::class, 'update']);
+        Route::patch('/{id}/status', [WarehouseController::class, 'toggleStatus']);
+        Route::delete('/{id}', [WarehouseController::class, 'destroy']);
+      });
+
+      // Products
+      Route::prefix('products')->group(function () {
+        Route::get('/active', [ProductController::class, 'activeProducts']);
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::get('/{id}', [ProductController::class, 'show']);
+        Route::patch('/{id}', [ProductController::class, 'update']);
+        Route::patch('/{id}/status', [ProductController::class, 'toggleStatus']);
+        Route::delete('/{id}', [ProductController::class, 'destroy']);
+      });
 
     // Purchases
     Route::apiResource('purchases', PurchaseController::class)->only(['index', 'store', 'show']);

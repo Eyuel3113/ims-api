@@ -24,6 +24,7 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $status = $request->query('status');
         $limit = $request->query('limit', 10);
 
         $query = Supplier::query();
@@ -35,6 +36,12 @@ class SupplierController extends Controller
                   ->orWhere('phone', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+
+        if ($status === 'active') {
+            $query->active();
+        } elseif ($status === 'inactive') {
+            $query->where('is_active', false);
         }
 
         $suppliers = $query->orderBy('name')->paginate($limit);
@@ -138,5 +145,47 @@ class SupplierController extends Controller
         $supplier->delete();
 
         return response()->json(['message' => 'Supplier deleted successfully']);
+    }
+
+    /**
+     * Toggle Supplier Status
+     */
+    public function toggleStatus($id)
+    {
+        $supplier = Supplier::findOrFail($id);
+        $supplier->is_active = !$supplier->is_active;
+        $supplier->save();
+
+        return response()->json([
+            'message' => 'Supplier visibility updated successfully',
+            'is_active' => $supplier->is_active,
+            'data' => $supplier
+        ]);
+    }
+
+    /**
+     * List Active Suppliers
+     */
+    public function activeSuppliers(Request $request)
+    {
+        $search = $request->query('search');
+
+        $query = Supplier::active();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $suppliers = $query->orderBy('name')->get();
+
+        return response()->json([
+            'message' => 'Active suppliers fetched successfully',
+            'data' => $suppliers
+        ]);
     }
 }

@@ -46,6 +46,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function stocks()
     {
         return $this->hasMany(Stock::class);

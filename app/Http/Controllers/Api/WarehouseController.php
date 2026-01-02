@@ -24,6 +24,7 @@ class WarehouseController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $status = $request->query('status');
         $limit = $request->query('limit', 10);
 
         $query = Warehouse::query();
@@ -34,6 +35,12 @@ class WarehouseController extends Controller
                   ->orWhere('code', 'like', "%{$search}%")
                   ->orWhere('address', 'like', "%{$search}%");
             });
+        }
+
+        if ($status === 'active') {
+            $query->active();
+        } elseif ($status === 'inactive') {
+            $query->where('is_active', false);
         }
 
         $warehouses = $query->orderBy('name')->paginate($limit);

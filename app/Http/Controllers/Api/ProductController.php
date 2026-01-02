@@ -31,6 +31,7 @@ class ProductController extends Controller
         $categoryId = $request->query('category_id');
         $hasExpiry = $request->query('has_expiry');
         $lowStock = $request->query('low_stock');
+        $status = $request->query('status');
         $limit = $request->query('limit', 10);
 
         $query = Product::with(['category']);
@@ -49,6 +50,12 @@ class ProductController extends Controller
 
         if ($hasExpiry !== null) {
             $query->where('has_expiry', $hasExpiry);
+        }
+
+        if ($status === 'active') {
+            $query->active();
+        } elseif ($status === 'inactive') {
+            $query->where('is_active', false);
         }
 
         if ($lowStock == 1) {
@@ -181,5 +188,46 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['message' => 'Product deleted successfully']);
+    }
+
+    /**
+     * Toggle Product Status
+     */
+    public function toggleStatus($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->is_active = !$product->is_active;
+        $product->save();
+
+        return response()->json([
+            'message' => 'Product visibility updated successfully',
+            'is_active' => $product->is_active,
+            'data' => $product
+        ]);
+    }
+
+    /**
+     * List Active Products
+     */
+    public function activeProducts(Request $request)
+    {
+        $search = $request->query('search');
+
+        $query = Product::active()->with('category');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhere('barcode', 'like', "%{$search}%");
+            });
+        }
+
+        $products = $query->orderBy('name')->get();
+
+        return response()->json([
+            'message' => 'Active products fetched successfully',
+            'data' => $products
+        ]);
     }
 }

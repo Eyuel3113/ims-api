@@ -32,6 +32,11 @@ class Supplier extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Supplier has been {$eventName}");
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function purchases()
     {
         return $this->hasMany(Purchase::class);

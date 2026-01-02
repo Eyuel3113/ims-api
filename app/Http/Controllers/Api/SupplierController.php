@@ -19,6 +19,7 @@ class SupplierController extends Controller
      * Get paginated list of suppliers.
      * 
      * @queryParam search string optional Search by name, code, phone, email.
+     * @queryParam status string optional filter by active/inactive.
      * @queryParam limit integer optional Default 10.
      */
     public function index(Request $request)
@@ -74,7 +75,7 @@ class SupplierController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:suppliers,code|max:50',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|unique:suppliers,phone|max:20',
             'email' => 'nullable|email|unique:suppliers,email',
             'address' => 'nullable|string',
         ]);
@@ -118,7 +119,7 @@ class SupplierController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'code' => ['sometimes', 'string', 'max:50', Rule::unique('suppliers', 'code')->ignore($id)],
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', Rule::unique('suppliers', 'phone')->ignore($id)],
             'email' => ['nullable', 'email', Rule::unique('suppliers', 'email')->ignore($id)],
             'address' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
@@ -165,6 +166,7 @@ class SupplierController extends Controller
 
     /**
      * List Active Suppliers
+     * @queryParam search string optional Search by name, code, phone, email.
      */
     public function activeSuppliers(Request $request)
     {

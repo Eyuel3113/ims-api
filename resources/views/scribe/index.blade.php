@@ -147,7 +147,10 @@
                     <a href="#products">Products</a>
                 </li>
                                     <ul id="tocify-subheader-products" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products">
+                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-active">
+                                <a href="#products-GETapi-v1-products-active">List Active Products</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-GETapi-v1-products">
                                 <a href="#products-GETapi-v1-products">List Products</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products">
@@ -156,8 +159,11 @@
                                                                                 <li class="tocify-item level-2" data-unique="products-GETapi-v1-products--id-">
                                 <a href="#products-GETapi-v1-products--id-">Get Product</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="products-PUTapi-v1-products--id-">
-                                <a href="#products-PUTapi-v1-products--id-">Update Product</a>
+                                                                                <li class="tocify-item level-2" data-unique="products-PATCHapi-v1-products--id-">
+                                <a href="#products-PATCHapi-v1-products--id-">Update Product</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-PATCHapi-v1-products--id--status">
+                                <a href="#products-PATCHapi-v1-products--id--status">Toggle Product Status</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-DELETEapi-v1-products--id-">
                                 <a href="#products-DELETEapi-v1-products--id-">Delete Product</a>
@@ -221,7 +227,10 @@
                     <a href="#suppliers">Suppliers</a>
                 </li>
                                     <ul id="tocify-subheader-suppliers" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="suppliers-GETapi-v1-suppliers">
+                                                    <li class="tocify-item level-2" data-unique="suppliers-GETapi-v1-suppliers-active">
+                                <a href="#suppliers-GETapi-v1-suppliers-active">List Active Suppliers</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="suppliers-GETapi-v1-suppliers">
                                 <a href="#suppliers-GETapi-v1-suppliers">List Suppliers</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="suppliers-POSTapi-v1-suppliers">
@@ -230,8 +239,11 @@
                                                                                 <li class="tocify-item level-2" data-unique="suppliers-GETapi-v1-suppliers--id-">
                                 <a href="#suppliers-GETapi-v1-suppliers--id-">Get Supplier</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="suppliers-PUTapi-v1-suppliers--id-">
-                                <a href="#suppliers-PUTapi-v1-suppliers--id-">Update Supplier</a>
+                                                                                <li class="tocify-item level-2" data-unique="suppliers-PATCHapi-v1-suppliers--id-">
+                                <a href="#suppliers-PATCHapi-v1-suppliers--id-">Update Supplier</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="suppliers-PATCHapi-v1-suppliers--id--status">
+                                <a href="#suppliers-PATCHapi-v1-suppliers--id--status">Toggle Supplier Status</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="suppliers-DELETEapi-v1-suppliers--id-">
                                 <a href="#suppliers-DELETEapi-v1-suppliers--id-">Delete Supplier</a>
@@ -252,8 +264,8 @@
                                                                                 <li class="tocify-item level-2" data-unique="warehouses-GETapi-v1-warehouses--id-">
                                 <a href="#warehouses-GETapi-v1-warehouses--id-">Get Warehouse</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="warehouses-PUTapi-v1-warehouses--id-">
-                                <a href="#warehouses-PUTapi-v1-warehouses--id-">Update Warehouse</a>
+                                                                                <li class="tocify-item level-2" data-unique="warehouses-PATCHapi-v1-warehouses--id-">
+                                <a href="#warehouses-PATCHapi-v1-warehouses--id-">Update Warehouse</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="warehouses-DELETEapi-v1-warehouses--id-">
                                 <a href="#warehouses-DELETEapi-v1-warehouses--id-">Delete Warehouse</a>
@@ -2581,7 +2593,133 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>APIs for managing products with barcode, expiry, photo, min stock</p>
 
-                                <h2 id="products-GETapi-v1-products">List Products</h2>
+                                <h2 id="products-GETapi-v1-products-active">List Active Products</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-products-active">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/products/active" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/active"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products-active">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products-active" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products-active"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products-active"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products-active" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products-active">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products-active" data-method="GET"
+      data-path="api/v1/products/active"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products-active', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products-active"
+                    onclick="tryItOut('GETapi-v1-products-active');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products-active"
+                    onclick="cancelTryOut('GETapi-v1-products-active');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products-active"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/active</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="products-GETapi-v1-products">List Products</h2>
 
 <p>
 </p>
@@ -2821,7 +2959,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "barcode=architecto"\
     --form "min_stock=16"\
     --form "has_expiry="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php3101.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php49A6.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2996,7 +3134,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php3101.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php49A6.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -3173,19 +3311,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="products-PUTapi-v1-products--id-">Update Product</h2>
+                    <h2 id="products-PATCHapi-v1-products--id-">Update Product</h2>
 
 <p>
 </p>
 
 <p>Update product details and photo.</p>
 
-<span id="example-requests-PUTapi-v1-products--id-">
+<span id="example-requests-PATCHapi-v1-products--id-">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
+    <pre><code class="language-bash">curl --request PATCH \
     "http://localhost/api/v1/products/architecto" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
@@ -3194,9 +3332,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "unit=gzmiyvdljnikhway"\
     --form "barcode=k"\
     --form "min_stock=54"\
-    --form "has_expiry=1"\
+    --form "has_expiry="\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php3112.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php49B7.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3215,66 +3353,62 @@ body.append('code', 'n');
 body.append('unit', 'gzmiyvdljnikhway');
 body.append('barcode', 'k');
 body.append('min_stock', '54');
-body.append('has_expiry', '1');
+body.append('has_expiry', '');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
 fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers,
     body,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
 
-<span id="example-responses-PUTapi-v1-products--id-">
+<span id="example-responses-PATCHapi-v1-products--id-">
 </span>
-<span id="execution-results-PUTapi-v1-products--id-" hidden>
+<span id="execution-results-PATCHapi-v1-products--id-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-PUTapi-v1-products--id-"></span>:
+                id="execution-response-status-PATCHapi-v1-products--id-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-v1-products--id-"
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-products--id-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-PUTapi-v1-products--id-" hidden>
+<span id="execution-error-PATCHapi-v1-products--id-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-v1-products--id-">
+    <pre><code id="execution-error-message-PATCHapi-v1-products--id-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-PUTapi-v1-products--id-" data-method="PUT"
+<form id="form-PATCHapi-v1-products--id-" data-method="PATCH"
       data-path="api/v1/products/{id}"
       data-authed="0"
       data-hasfiles="1"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-products--id-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-products--id-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTapi-v1-products--id-"
-                    onclick="tryItOut('PUTapi-v1-products--id-');">Try it out ⚡
+                    id="btn-tryout-PATCHapi-v1-products--id-"
+                    onclick="tryItOut('PATCHapi-v1-products--id-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTapi-v1-products--id-"
-                    onclick="cancelTryOut('PUTapi-v1-products--id-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-PATCHapi-v1-products--id-"
+                    onclick="cancelTryOut('PATCHapi-v1-products--id-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTapi-v1-products--id-"
+                    id="btn-executetryout-PATCHapi-v1-products--id-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
             </button>
             </h3>
-            <p>
-            <small class="badge badge-darkblue">PUT</small>
-            <b><code>api/v1/products/{id}</code></b>
-        </p>
             <p>
             <small class="badge badge-purple">PATCH</small>
             <b><code>api/v1/products/{id}</code></b>
@@ -3286,7 +3420,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTapi-v1-products--id-"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-products--id-"
                value="multipart/form-data"
                data-component="header">
     <br>
@@ -3298,7 +3432,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTapi-v1-products--id-"
+                              name="Accept"                data-endpoint="PATCHapi-v1-products--id-"
                value="application/json"
                data-component="header">
     <br>
@@ -3311,7 +3445,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="id"                data-endpoint="PUTapi-v1-products--id-"
+                              name="id"                data-endpoint="PATCHapi-v1-products--id-"
                value="architecto"
                data-component="url">
     <br>
@@ -3324,7 +3458,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="name"                data-endpoint="PUTapi-v1-products--id-"
+                              name="name"                data-endpoint="PATCHapi-v1-products--id-"
                value="b"
                data-component="body">
     <br>
@@ -3336,7 +3470,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="code"                data-endpoint="PUTapi-v1-products--id-"
+                              name="code"                data-endpoint="PATCHapi-v1-products--id-"
                value="n"
                data-component="body">
     <br>
@@ -3348,7 +3482,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="category_id"                data-endpoint="PUTapi-v1-products--id-"
+                              name="category_id"                data-endpoint="PATCHapi-v1-products--id-"
                value=""
                data-component="body">
     <br>
@@ -3360,7 +3494,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="unit"                data-endpoint="PUTapi-v1-products--id-"
+                              name="unit"                data-endpoint="PATCHapi-v1-products--id-"
                value="gzmiyvdljnikhway"
                data-component="body">
     <br>
@@ -3372,7 +3506,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="barcode"                data-endpoint="PUTapi-v1-products--id-"
+                              name="barcode"                data-endpoint="PATCHapi-v1-products--id-"
                value="k"
                data-component="body">
     <br>
@@ -3384,11 +3518,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="file" style="display: none"
-                              name="photo"                data-endpoint="PUTapi-v1-products--id-"
+                              name="photo"                data-endpoint="PATCHapi-v1-products--id-"
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3112.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php49B7.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -3396,7 +3530,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="min_stock"                data-endpoint="PUTapi-v1-products--id-"
+               step="any"               name="min_stock"                data-endpoint="PATCHapi-v1-products--id-"
                value="54"
                data-component="body">
     <br>
@@ -3407,39 +3541,39 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small>boolean</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
-                <label data-endpoint="PUTapi-v1-products--id-" style="display: none">
+                <label data-endpoint="PATCHapi-v1-products--id-" style="display: none">
             <input type="radio" name="has_expiry"
                    value="true"
-                   data-endpoint="PUTapi-v1-products--id-"
+                   data-endpoint="PATCHapi-v1-products--id-"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="PUTapi-v1-products--id-" style="display: none">
+        <label data-endpoint="PATCHapi-v1-products--id-" style="display: none">
             <input type="radio" name="has_expiry"
                    value="false"
-                   data-endpoint="PUTapi-v1-products--id-"
+                   data-endpoint="PATCHapi-v1-products--id-"
                    data-component="body"             >
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
 <small>boolean</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
-                <label data-endpoint="PUTapi-v1-products--id-" style="display: none">
+                <label data-endpoint="PATCHapi-v1-products--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="true"
-                   data-endpoint="PUTapi-v1-products--id-"
+                   data-endpoint="PATCHapi-v1-products--id-"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="PUTapi-v1-products--id-" style="display: none">
+        <label data-endpoint="PATCHapi-v1-products--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="false"
-                   data-endpoint="PUTapi-v1-products--id-"
+                   data-endpoint="PATCHapi-v1-products--id-"
                    data-component="body"             >
             <code>false</code>
         </label>
@@ -3447,6 +3581,129 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>false</code></p>
         </div>
         </form>
+
+                    <h2 id="products-PATCHapi-v1-products--id--status">Toggle Product Status</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-PATCHapi-v1-products--id--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "http://localhost/api/v1/products/architecto/status" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/architecto/status"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-products--id--status">
+</span>
+<span id="execution-results-PATCHapi-v1-products--id--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-products--id--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-products--id--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-products--id--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-products--id--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-products--id--status" data-method="PATCH"
+      data-path="api/v1/products/{id}/status"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-products--id--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-products--id--status"
+                    onclick="tryItOut('PATCHapi-v1-products--id--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-products--id--status"
+                    onclick="cancelTryOut('PATCHapi-v1-products--id--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-products--id--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/products/{id}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-products--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-products--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PATCHapi-v1-products--id--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the product. Example: <code>architecto</code></p>
+            </div>
+                    </form>
 
                     <h2 id="products-DELETEapi-v1-products--id-">Delete Product</h2>
 
@@ -3932,10 +4189,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-02T08:09:59"
+               value="2026-01-02T11:57:49"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-02T08:09:59</code></p>
+<p>Must be a valid date. Example: <code>2026-01-02T11:57:49</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -5099,7 +5356,152 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>APIs for managing suppliers</p>
 
-                                <h2 id="suppliers-GETapi-v1-suppliers">List Suppliers</h2>
+                                <h2 id="suppliers-GETapi-v1-suppliers-active">List Active Suppliers</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-suppliers-active">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/suppliers/active?search=architecto" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/suppliers/active"
+);
+
+const params = {
+    "search": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-suppliers-active">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-suppliers-active" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-suppliers-active"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-suppliers-active"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-suppliers-active" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-suppliers-active">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-suppliers-active" data-method="GET"
+      data-path="api/v1/suppliers/active"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-suppliers-active', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-suppliers-active"
+                    onclick="tryItOut('GETapi-v1-suppliers-active');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-suppliers-active"
+                    onclick="cancelTryOut('GETapi-v1-suppliers-active');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-suppliers-active"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/suppliers/active</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-suppliers-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-suppliers-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-suppliers-active"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Search by name, code, phone, email. Example: <code>architecto</code></p>
+            </div>
+                </form>
+
+                    <h2 id="suppliers-GETapi-v1-suppliers">List Suppliers</h2>
 
 <p>
 </p>
@@ -5112,7 +5514,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/suppliers?search=architecto&amp;limit=16" \
+    --get "http://localhost/api/v1/suppliers?search=architecto&amp;status=architecto&amp;limit=16" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5124,6 +5526,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "search": "architecto",
+    "status": "architecto",
     "limit": "16",
 };
 Object.keys(params)
@@ -5242,6 +5645,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>optional Search by name, code, phone, email. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-suppliers"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional filter by active/inactive. Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -5584,27 +5999,27 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="suppliers-PUTapi-v1-suppliers--id-">Update Supplier</h2>
+                    <h2 id="suppliers-PATCHapi-v1-suppliers--id-">Update Supplier</h2>
 
 <p>
 </p>
 
 <p>Update supplier details.</p>
 
-<span id="example-requests-PUTapi-v1-suppliers--id-">
+<span id="example-requests-PATCHapi-v1-suppliers--id-">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
+    <pre><code class="language-bash">curl --request PATCH \
     "http://localhost/api/v1/suppliers/architecto" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
     \"name\": \"b\",
     \"code\": \"n\",
-    \"phone\": \"gzmiyvdljnikhway\",
-    \"email\": \"gilbert32@example.com\",
+    \"phone\": \"architecto\",
+    \"email\": \"zbailey@example.net\",
     \"address\": \"architecto\",
     \"is_active\": true
 }"
@@ -5624,68 +6039,64 @@ const headers = {
 let body = {
     "name": "b",
     "code": "n",
-    "phone": "gzmiyvdljnikhway",
-    "email": "gilbert32@example.com",
+    "phone": "architecto",
+    "email": "zbailey@example.net",
     "address": "architecto",
     "is_active": true
 };
 
 fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
 
-<span id="example-responses-PUTapi-v1-suppliers--id-">
+<span id="example-responses-PATCHapi-v1-suppliers--id-">
 </span>
-<span id="execution-results-PUTapi-v1-suppliers--id-" hidden>
+<span id="execution-results-PATCHapi-v1-suppliers--id-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-PUTapi-v1-suppliers--id-"></span>:
+                id="execution-response-status-PATCHapi-v1-suppliers--id-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-v1-suppliers--id-"
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-suppliers--id-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-PUTapi-v1-suppliers--id-" hidden>
+<span id="execution-error-PATCHapi-v1-suppliers--id-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-v1-suppliers--id-">
+    <pre><code id="execution-error-message-PATCHapi-v1-suppliers--id-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-PUTapi-v1-suppliers--id-" data-method="PUT"
+<form id="form-PATCHapi-v1-suppliers--id-" data-method="PATCH"
       data-path="api/v1/suppliers/{id}"
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-suppliers--id-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-suppliers--id-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTapi-v1-suppliers--id-"
-                    onclick="tryItOut('PUTapi-v1-suppliers--id-');">Try it out ⚡
+                    id="btn-tryout-PATCHapi-v1-suppliers--id-"
+                    onclick="tryItOut('PATCHapi-v1-suppliers--id-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTapi-v1-suppliers--id-"
-                    onclick="cancelTryOut('PUTapi-v1-suppliers--id-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-PATCHapi-v1-suppliers--id-"
+                    onclick="cancelTryOut('PATCHapi-v1-suppliers--id-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTapi-v1-suppliers--id-"
+                    id="btn-executetryout-PATCHapi-v1-suppliers--id-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
             </button>
             </h3>
-            <p>
-            <small class="badge badge-darkblue">PUT</small>
-            <b><code>api/v1/suppliers/{id}</code></b>
-        </p>
             <p>
             <small class="badge badge-purple">PATCH</small>
             <b><code>api/v1/suppliers/{id}</code></b>
@@ -5697,7 +6108,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="application/json"
                data-component="header">
     <br>
@@ -5709,7 +6120,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="Accept"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="application/json"
                data-component="header">
     <br>
@@ -5722,7 +6133,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="id"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="id"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="architecto"
                data-component="url">
     <br>
@@ -5735,7 +6146,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="name"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="name"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="b"
                data-component="body">
     <br>
@@ -5747,7 +6158,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="code"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="code"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="n"
                data-component="body">
     <br>
@@ -5759,11 +6170,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="phone"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="gzmiyvdljnikhway"
+                              name="phone"                data-endpoint="PATCHapi-v1-suppliers--id-"
+               value="architecto"
                data-component="body">
     <br>
-<p>Must not be greater than 20 characters. Example: <code>gzmiyvdljnikhway</code></p>
+<p>Example: <code>architecto</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -5771,11 +6182,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="email"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="gilbert32@example.com"
+                              name="email"                data-endpoint="PATCHapi-v1-suppliers--id-"
+               value="zbailey@example.net"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>gilbert32@example.com</code></p>
+<p>Must be a valid email address. Example: <code>zbailey@example.net</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
@@ -5783,7 +6194,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="address"                data-endpoint="PUTapi-v1-suppliers--id-"
+                              name="address"                data-endpoint="PATCHapi-v1-suppliers--id-"
                value="architecto"
                data-component="body">
     <br>
@@ -5794,17 +6205,17 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small>boolean</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
-                <label data-endpoint="PUTapi-v1-suppliers--id-" style="display: none">
+                <label data-endpoint="PATCHapi-v1-suppliers--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="true"
-                   data-endpoint="PUTapi-v1-suppliers--id-"
+                   data-endpoint="PATCHapi-v1-suppliers--id-"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="PUTapi-v1-suppliers--id-" style="display: none">
+        <label data-endpoint="PATCHapi-v1-suppliers--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="false"
-                   data-endpoint="PUTapi-v1-suppliers--id-"
+                   data-endpoint="PATCHapi-v1-suppliers--id-"
                    data-component="body"             >
             <code>false</code>
         </label>
@@ -5812,6 +6223,129 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>true</code></p>
         </div>
         </form>
+
+                    <h2 id="suppliers-PATCHapi-v1-suppliers--id--status">Toggle Supplier Status</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-PATCHapi-v1-suppliers--id--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "http://localhost/api/v1/suppliers/architecto/status" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/suppliers/architecto/status"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-suppliers--id--status">
+</span>
+<span id="execution-results-PATCHapi-v1-suppliers--id--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-suppliers--id--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-suppliers--id--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-suppliers--id--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-suppliers--id--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-suppliers--id--status" data-method="PATCH"
+      data-path="api/v1/suppliers/{id}/status"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-suppliers--id--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-suppliers--id--status"
+                    onclick="tryItOut('PATCHapi-v1-suppliers--id--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-suppliers--id--status"
+                    onclick="cancelTryOut('PATCHapi-v1-suppliers--id--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-suppliers--id--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/suppliers/{id}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-suppliers--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-suppliers--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PATCHapi-v1-suppliers--id--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>architecto</code></p>
+            </div>
+                    </form>
 
                     <h2 id="suppliers-DELETEapi-v1-suppliers--id-">Delete Supplier</h2>
 
@@ -6411,19 +6945,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="warehouses-PUTapi-v1-warehouses--id-">Update Warehouse</h2>
+                    <h2 id="warehouses-PATCHapi-v1-warehouses--id-">Update Warehouse</h2>
 
 <p>
 </p>
 
 
 
-<span id="example-requests-PUTapi-v1-warehouses--id-">
+<span id="example-requests-PATCHapi-v1-warehouses--id-">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
+    <pre><code class="language-bash">curl --request PATCH \
     "http://localhost/api/v1/warehouses/architecto" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6456,61 +6990,57 @@ let body = {
 };
 
 fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
 
-<span id="example-responses-PUTapi-v1-warehouses--id-">
+<span id="example-responses-PATCHapi-v1-warehouses--id-">
 </span>
-<span id="execution-results-PUTapi-v1-warehouses--id-" hidden>
+<span id="execution-results-PATCHapi-v1-warehouses--id-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-PUTapi-v1-warehouses--id-"></span>:
+                id="execution-response-status-PATCHapi-v1-warehouses--id-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-v1-warehouses--id-"
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-warehouses--id-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-PUTapi-v1-warehouses--id-" hidden>
+<span id="execution-error-PATCHapi-v1-warehouses--id-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-v1-warehouses--id-">
+    <pre><code id="execution-error-message-PATCHapi-v1-warehouses--id-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-PUTapi-v1-warehouses--id-" data-method="PUT"
+<form id="form-PATCHapi-v1-warehouses--id-" data-method="PATCH"
       data-path="api/v1/warehouses/{id}"
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-warehouses--id-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-warehouses--id-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTapi-v1-warehouses--id-"
-                    onclick="tryItOut('PUTapi-v1-warehouses--id-');">Try it out ⚡
+                    id="btn-tryout-PATCHapi-v1-warehouses--id-"
+                    onclick="tryItOut('PATCHapi-v1-warehouses--id-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTapi-v1-warehouses--id-"
-                    onclick="cancelTryOut('PUTapi-v1-warehouses--id-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-PATCHapi-v1-warehouses--id-"
+                    onclick="cancelTryOut('PATCHapi-v1-warehouses--id-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTapi-v1-warehouses--id-"
+                    id="btn-executetryout-PATCHapi-v1-warehouses--id-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
             </button>
             </h3>
-            <p>
-            <small class="badge badge-darkblue">PUT</small>
-            <b><code>api/v1/warehouses/{id}</code></b>
-        </p>
             <p>
             <small class="badge badge-purple">PATCH</small>
             <b><code>api/v1/warehouses/{id}</code></b>
@@ -6522,7 +7052,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="application/json"
                data-component="header">
     <br>
@@ -6534,7 +7064,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="Accept"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="application/json"
                data-component="header">
     <br>
@@ -6547,7 +7077,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="id"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="id"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="architecto"
                data-component="url">
     <br>
@@ -6560,7 +7090,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="name"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="name"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="b"
                data-component="body">
     <br>
@@ -6572,7 +7102,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="code"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="code"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="n"
                data-component="body">
     <br>
@@ -6584,7 +7114,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="address"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="address"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="architecto"
                data-component="body">
     <br>
@@ -6596,7 +7126,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="phone"                data-endpoint="PUTapi-v1-warehouses--id-"
+                              name="phone"                data-endpoint="PATCHapi-v1-warehouses--id-"
                value="ngzmiyvdljnikhwa"
                data-component="body">
     <br>
@@ -6607,17 +7137,17 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small>boolean</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
-                <label data-endpoint="PUTapi-v1-warehouses--id-" style="display: none">
+                <label data-endpoint="PATCHapi-v1-warehouses--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="true"
-                   data-endpoint="PUTapi-v1-warehouses--id-"
+                   data-endpoint="PATCHapi-v1-warehouses--id-"
                    data-component="body"             >
             <code>true</code>
         </label>
-        <label data-endpoint="PUTapi-v1-warehouses--id-" style="display: none">
+        <label data-endpoint="PATCHapi-v1-warehouses--id-" style="display: none">
             <input type="radio" name="is_active"
                    value="false"
-                   data-endpoint="PUTapi-v1-warehouses--id-"
+                   data-endpoint="PATCHapi-v1-warehouses--id-"
                    data-component="body"             >
             <code>false</code>
         </label>

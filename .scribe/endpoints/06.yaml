@@ -169,7 +169,7 @@ endpoints:
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-01-02T08:09:59'
+        example: '2026-01-02T11:57:49'
         type: string
         enumValues: []
         exampleWasSpecified: false

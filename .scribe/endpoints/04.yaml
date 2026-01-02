@@ -199,7 +199,6 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - PUT
       - PATCH
     uri: 'api/v1/warehouses/{id}'
     metadata:

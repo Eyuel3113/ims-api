@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('min_stock')->default(0);
             $table->boolean('has_expiry')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

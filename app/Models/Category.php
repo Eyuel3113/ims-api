@@ -32,6 +32,11 @@ class Category extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Category has been {$eventName}");
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);

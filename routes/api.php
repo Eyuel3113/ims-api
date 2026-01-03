@@ -72,10 +72,15 @@ Route::prefix('v1')->group(function () {
         Route::get('/active', [ProductController::class, 'activeProducts']);
         Route::get('/', [ProductController::class, 'index']);
         Route::post('/', [ProductController::class, 'store']);
+        Route::get('/barcode-search', [ProductController::class, 'searchByBarcode']);
         Route::get('/{id}', [ProductController::class, 'show']);
         Route::patch('/{id}', [ProductController::class, 'update']);
         Route::patch('/{id}/status', [ProductController::class, 'toggleStatus']);
+        Route::post('/{id}/photo', [ProductController::class, 'uploadPhoto']);
+        Route::delete('/{id}/photo', [ProductController::class, 'deletePhoto']);
         Route::delete('/{id}', [ProductController::class, 'destroy']);
+        Route::get('/{id}/barcode', [ProductController::class, 'barcodeImage']);
+
       });
 
     // Purchases

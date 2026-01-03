@@ -19,6 +19,7 @@ class WarehouseController extends Controller
      * Get paginated list.
      * 
      * @queryParam search string optional Search by name or code.
+     * @queryParam status string optional filter by active/inactive.
      * @queryParam limit integer optional Default 10.
      */
     public function index(Request $request)
@@ -68,7 +69,7 @@ class WarehouseController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:warehouses,code|max:50',
             'address' => 'nullable|string',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|unique:warehouses,phone|max:20',
         ]);
 
         $warehouse = Warehouse::create($validated + ['is_active' => true]);
@@ -103,7 +104,7 @@ class WarehouseController extends Controller
             'name' => 'sometimes|string|max:255',
             'code' => ['sometimes', 'string', 'max:50', Rule::unique('warehouses', 'code')->ignore($id)],
             'address' => 'nullable|string',
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', 'max:20', Rule::unique('warehouses', 'phone')->ignore($id)],
             'is_active' => 'sometimes|boolean',
         ]);
 
@@ -112,6 +113,63 @@ class WarehouseController extends Controller
         return response()->json([
             'message' => 'Warehouse updated successfully',
             'data' => $warehouse
+        ]);
+    }
+
+
+    
+    /**
+     * Toggle Warehouse Active/Inactive
+     *
+     * Toggle the active status of a Warehouse.
+     *
+     * @urlParam id string required The UUID of the Warehouse.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function toggleStatus($id)
+    {
+        $Warehouse = Warehouse::findOrFail($id);
+        $Warehouse->is_active = !$Warehouse->is_active;
+        $Warehouse->save();
+
+        return response()->json([
+            'message'   => 'Category visibility updated successfully',
+            'is_active' => $Warehouse->is_active,
+            'data'      => $Warehouse
+        ]);
+    }
+
+
+
+    /**
+     * List Active Warehouse
+     *
+     * Display a listing of active Warehouse (for public view) without pagination.
+     * @queryParam search string optional Filter active categories by name or description.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function activeWarehouses(Request $request)
+    {
+        $search = $request->query('search');
+
+        $query = Warehouse::active();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orwhere('code', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $Warehouse = $query->orderBy('name', 'asc')->get();
+
+        return response()->json([
+            'message' => 'Active categories fetched successfully',
+            'data'    => $Warehouse
         ]);
     }
 

@@ -156,6 +156,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products">
                                 <a href="#products-POSTapi-v1-products">Create Product</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-barcode-search">
+                                <a href="#products-GETapi-v1-products-barcode-search">Search Product by Barcode</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-GETapi-v1-products--id-">
                                 <a href="#products-GETapi-v1-products--id-">Get Product</a>
                             </li>
@@ -165,8 +168,17 @@
                                                                                 <li class="tocify-item level-2" data-unique="products-PATCHapi-v1-products--id--status">
                                 <a href="#products-PATCHapi-v1-products--id--status">Toggle Product Status</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products--id--photo">
+                                <a href="#products-POSTapi-v1-products--id--photo">Upload Product Photo</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-DELETEapi-v1-products--id--photo">
+                                <a href="#products-DELETEapi-v1-products--id--photo">Delete Product Photo</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-DELETEapi-v1-products--id-">
                                 <a href="#products-DELETEapi-v1-products--id-">Delete Product</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-GETapi-v1-products--id--barcode">
+                                <a href="#products-GETapi-v1-products--id--barcode">Get Barcode Image</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -255,7 +267,10 @@
                     <a href="#warehouses">Warehouses</a>
                 </li>
                                     <ul id="tocify-subheader-warehouses" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="warehouses-GETapi-v1-warehouses">
+                                                    <li class="tocify-item level-2" data-unique="warehouses-GETapi-v1-warehouses-active">
+                                <a href="#warehouses-GETapi-v1-warehouses-active">List Active Warehouse</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="warehouses-GETapi-v1-warehouses">
                                 <a href="#warehouses-GETapi-v1-warehouses">List Warehouses</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="warehouses-POSTapi-v1-warehouses">
@@ -266,6 +281,9 @@
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="warehouses-PATCHapi-v1-warehouses--id-">
                                 <a href="#warehouses-PATCHapi-v1-warehouses--id-">Update Warehouse</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="warehouses-PATCHapi-v1-warehouses--id--status">
+                                <a href="#warehouses-PATCHapi-v1-warehouses--id--status">Toggle Warehouse Active/Inactive</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="warehouses-DELETEapi-v1-warehouses--id-">
                                 <a href="#warehouses-DELETEapi-v1-warehouses--id-">Delete Warehouse</a>
@@ -281,7 +299,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 2, 2026</li>
+        <li>Last updated: January 3, 2026</li>
     </ul>
 </div>
 
@@ -2606,7 +2624,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/products/active" \
+    --get "http://localhost/api/v1/products/active?search=architecto" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -2615,6 +2633,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/products/active"
 );
+
+const params = {
+    "search": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Content-Type": "application/json",
@@ -2717,7 +2741,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-products-active"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Search by name, code, barcode.
+queryParam barcode string optional filter by barcode. Example: <code>architecto</code></p>
+            </div>
+                </form>
 
                     <h2 id="products-GETapi-v1-products">List Products</h2>
 
@@ -2732,7 +2770,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/products?search=architecto&amp;category_id=architecto&amp;has_expiry=&amp;low_stock=&amp;limit=16" \
+    --get "http://localhost/api/v1/products?search=architecto&amp;status=architecto&amp;category_id=architecto&amp;has_expiry=&amp;low_stock=&amp;limit=16" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -2744,6 +2782,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "search": "architecto",
+    "status": "architecto",
     "category_id": "architecto",
     "has_expiry": "0",
     "low_stock": "0",
@@ -2867,6 +2906,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>optional Search by name, code, barcode. Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-products"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional filter by active/inactive. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>category_id</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
@@ -2876,7 +2927,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="query">
     <br>
-<p>optional Filter by category. Example: <code>architecto</code></p>
+<p>optional Filter by category.
+queryParam barcode string optional filter by barcode. Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>has_expiry</code></b>&nbsp;&nbsp;
@@ -2959,7 +3011,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "barcode=architecto"\
     --form "min_stock=16"\
     --form "has_expiry="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php49A6.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php7B29.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3134,7 +3186,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php49A6.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php7B29.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -3169,6 +3221,173 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </label>
     <br>
 <p>optional Default false Example: <code>false</code></p>
+        </div>
+        </form>
+
+                    <h2 id="products-GETapi-v1-products-barcode-search">Search Product by Barcode</h2>
+
+<p>
+</p>
+
+<p>Scan barcode to get product details — for POS/sales.</p>
+
+<span id="example-requests-GETapi-v1-products-barcode-search">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/products/barcode-search?barcode=architecto" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"barcode\": \"b\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/barcode-search"
+);
+
+const params = {
+    "barcode": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "barcode": "b"
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products-barcode-search">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products-barcode-search" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products-barcode-search"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products-barcode-search"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products-barcode-search" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products-barcode-search">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products-barcode-search" data-method="GET"
+      data-path="api/v1/products/barcode-search"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products-barcode-search', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products-barcode-search"
+                    onclick="tryItOut('GETapi-v1-products-barcode-search');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products-barcode-search"
+                    onclick="cancelTryOut('GETapi-v1-products-barcode-search');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products-barcode-search"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/barcode-search</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products-barcode-search"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products-barcode-search"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>barcode</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="barcode"                data-endpoint="GETapi-v1-products-barcode-search"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>The scanned barcode. Example: <code>architecto</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>barcode</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="barcode"                data-endpoint="GETapi-v1-products-barcode-search"
+               value="b"
+               data-component="body">
+    <br>
+<p>Must not be greater than 100 characters. Example: <code>b</code></p>
         </div>
         </form>
 
@@ -3333,8 +3552,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "barcode=k"\
     --form "min_stock=54"\
     --form "has_expiry="\
-    --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php49B7.tmp" </code></pre></div>
+    --form "is_active=1"\
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php7B3A.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3354,7 +3573,7 @@ body.append('unit', 'gzmiyvdljnikhway');
 body.append('barcode', 'k');
 body.append('min_stock', '54');
 body.append('has_expiry', '');
-body.append('is_active', '');
+body.append('is_active', '1');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
 fetch(url, {
@@ -3522,7 +3741,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php49B7.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php7B3A.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -3578,7 +3797,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 
@@ -3698,6 +3917,270 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="PATCHapi-v1-products--id--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the product. Example: <code>architecto</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="products-POSTapi-v1-products--id--photo">Upload Product Photo</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-v1-products--id--photo">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/products/architecto/photo" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php7B4A.tmp" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/architecto/photo"
+);
+
+const headers = {
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('photo', document.querySelector('input[name="photo"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-products--id--photo">
+</span>
+<span id="execution-results-POSTapi-v1-products--id--photo" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-products--id--photo"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-products--id--photo"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-products--id--photo" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-products--id--photo">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-products--id--photo" data-method="POST"
+      data-path="api/v1/products/{id}/photo"
+      data-authed="0"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-products--id--photo', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-products--id--photo"
+                    onclick="tryItOut('POSTapi-v1-products--id--photo');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-products--id--photo"
+                    onclick="cancelTryOut('POSTapi-v1-products--id--photo');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-products--id--photo"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/products/{id}/photo</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-products--id--photo"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-products--id--photo"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="POSTapi-v1-products--id--photo"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The ID of the product. Example: <code>architecto</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>photo</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="photo"                data-endpoint="POSTapi-v1-products--id--photo"
+               value=""
+               data-component="body">
+    <br>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php7B4A.tmp</code></p>
+        </div>
+        </form>
+
+                    <h2 id="products-DELETEapi-v1-products--id--photo">Delete Product Photo</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-DELETEapi-v1-products--id--photo">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "http://localhost/api/v1/products/architecto/photo" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/architecto/photo"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-products--id--photo">
+</span>
+<span id="execution-results-DELETEapi-v1-products--id--photo" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-products--id--photo"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-products--id--photo"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-products--id--photo" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-products--id--photo">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-products--id--photo" data-method="DELETE"
+      data-path="api/v1/products/{id}/photo"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-products--id--photo', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-products--id--photo"
+                    onclick="tryItOut('DELETEapi-v1-products--id--photo');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-products--id--photo"
+                    onclick="cancelTryOut('DELETEapi-v1-products--id--photo');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-products--id--photo"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/products/{id}/photo</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-products--id--photo"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-products--id--photo"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="DELETEapi-v1-products--id--photo"
                value="architecto"
                data-component="url">
     <br>
@@ -3827,6 +4310,187 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Product UUID. Example: <code>architecto</code></p>
             </div>
                     </form>
+
+                    <h2 id="products-GETapi-v1-products--id--barcode">Get Barcode Image</h2>
+
+<p>
+</p>
+
+<p>Generate and display barcode SVG image for printing.</p>
+
+<span id="example-requests-GETapi-v1-products--id--barcode">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/products/architecto/barcode?size=architecto&amp;download=" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/architecto/barcode"
+);
+
+const params = {
+    "size": "architecto",
+    "download": "0",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products--id--barcode">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products--id--barcode" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products--id--barcode"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products--id--barcode"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products--id--barcode" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products--id--barcode">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products--id--barcode" data-method="GET"
+      data-path="api/v1/products/{id}/barcode"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products--id--barcode', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products--id--barcode"
+                    onclick="tryItOut('GETapi-v1-products--id--barcode');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products--id--barcode"
+                    onclick="cancelTryOut('GETapi-v1-products--id--barcode');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products--id--barcode"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/{id}/barcode</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products--id--barcode"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products--id--barcode"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-products--id--barcode"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>Product UUID Example: <code>architecto</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>size</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="size"                data-endpoint="GETapi-v1-products--id--barcode"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional small, medium, large (default medium) Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>download</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETapi-v1-products--id--barcode" style="display: none">
+            <input type="radio" name="download"
+                   value="1"
+                   data-endpoint="GETapi-v1-products--id--barcode"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-products--id--barcode" style="display: none">
+            <input type="radio" name="download"
+                   value="0"
+                   data-endpoint="GETapi-v1-products--id--barcode"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>optional 1 = force download Example: <code>false</code></p>
+            </div>
+                </form>
 
                 <h1 id="purchases">Purchases</h1>
 
@@ -4189,10 +4853,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-02T11:57:49"
+               value="2026-01-03T08:56:00"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-02T11:57:49</code></p>
+<p>Must be a valid date. Example: <code>2026-01-03T08:56:00</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -6021,7 +6685,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"phone\": \"architecto\",
     \"email\": \"zbailey@example.net\",
     \"address\": \"architecto\",
-    \"is_active\": true
+    \"is_active\": false
 }"
 </code></pre></div>
 
@@ -6042,7 +6706,7 @@ let body = {
     "phone": "architecto",
     "email": "zbailey@example.net",
     "address": "architecto",
-    "is_active": true
+    "is_active": false
 };
 
 fetch(url, {
@@ -6220,7 +6884,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 
@@ -6474,7 +7138,152 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>APIs for managing warehouses</p>
 
-                                <h2 id="warehouses-GETapi-v1-warehouses">List Warehouses</h2>
+                                <h2 id="warehouses-GETapi-v1-warehouses-active">List Active Warehouse</h2>
+
+<p>
+</p>
+
+<p>Display a listing of active Warehouse (for public view) without pagination.</p>
+
+<span id="example-requests-GETapi-v1-warehouses-active">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/warehouses/active?search=architecto" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/warehouses/active"
+);
+
+const params = {
+    "search": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-warehouses-active">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-warehouses-active" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-warehouses-active"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-warehouses-active"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-warehouses-active" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-warehouses-active">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-warehouses-active" data-method="GET"
+      data-path="api/v1/warehouses/active"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-warehouses-active', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-warehouses-active"
+                    onclick="tryItOut('GETapi-v1-warehouses-active');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-warehouses-active"
+                    onclick="cancelTryOut('GETapi-v1-warehouses-active');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-warehouses-active"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/warehouses/active</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-warehouses-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-warehouses-active"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-warehouses-active"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Filter active categories by name or description. Example: <code>architecto</code></p>
+            </div>
+                </form>
+
+                    <h2 id="warehouses-GETapi-v1-warehouses">List Warehouses</h2>
 
 <p>
 </p>
@@ -6487,7 +7296,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/warehouses?search=architecto&amp;limit=16" \
+    --get "http://localhost/api/v1/warehouses?search=architecto&amp;status=architecto&amp;limit=16" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6499,6 +7308,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "search": "architecto",
+    "status": "architecto",
     "limit": "16",
 };
 Object.keys(params)
@@ -6617,6 +7427,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>optional Search by name or code. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-warehouses"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional filter by active/inactive. Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -7155,6 +7977,129 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>false</code></p>
         </div>
         </form>
+
+                    <h2 id="warehouses-PATCHapi-v1-warehouses--id--status">Toggle Warehouse Active/Inactive</h2>
+
+<p>
+</p>
+
+<p>Toggle the active status of a Warehouse.</p>
+
+<span id="example-requests-PATCHapi-v1-warehouses--id--status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "http://localhost/api/v1/warehouses/architecto/status" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/warehouses/architecto/status"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-warehouses--id--status">
+</span>
+<span id="execution-results-PATCHapi-v1-warehouses--id--status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-warehouses--id--status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-warehouses--id--status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-warehouses--id--status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-warehouses--id--status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-warehouses--id--status" data-method="PATCH"
+      data-path="api/v1/warehouses/{id}/status"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-warehouses--id--status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-warehouses--id--status"
+                    onclick="tryItOut('PATCHapi-v1-warehouses--id--status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-warehouses--id--status"
+                    onclick="cancelTryOut('PATCHapi-v1-warehouses--id--status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-warehouses--id--status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/warehouses/{id}/status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-warehouses--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-warehouses--id--status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="PATCHapi-v1-warehouses--id--status"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The UUID of the Warehouse. Example: <code>architecto</code></p>
+            </div>
+                    </form>
 
                     <h2 id="warehouses-DELETEapi-v1-warehouses--id-">Delete Warehouse</h2>
 

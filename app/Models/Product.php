@@ -20,6 +20,8 @@ class Product extends Model
         'photo', 'min_stock', 'has_expiry', 'is_active'
     ];
 
+    protected $appends = ['photo_url'];
+
     protected $casts = [
         'has_expiry' => 'boolean',
         'is_active' => 'boolean',
@@ -54,5 +56,16 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        if ($this->photo) {
+            return asset('storage/' . $this->photo);
+        }
+
+        // Default placeholder using UI Avatars or a local path
+        $name = urlencode($this->name);
+        return "https://ui-avatars.com/api/?name={$name}&color=7F9CF5&background=EBF4FF";
     }
 }

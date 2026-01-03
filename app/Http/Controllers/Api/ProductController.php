@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * @group Products
@@ -20,7 +21,9 @@ class ProductController extends Controller
      * Get paginated list of products with filters.
      * 
      * @queryParam search string optional Search by name, code, barcode.
+     * @queryParam status string optional filter by active/inactive.
      * @queryParam category_id string optional Filter by category.
+     * queryParam barcode string optional filter by barcode.
      * @queryParam has_expiry boolean optional 1 or 0
      * @queryParam low_stock boolean optional 1 = below min_stock
      * @queryParam limit integer optional Default 10.
@@ -29,6 +32,7 @@ class ProductController extends Controller
     {
         $search = $request->query('search');
         $categoryId = $request->query('category_id');
+        $barcode = $request->query('barcode');
         $hasExpiry = $request->query('has_expiry');
         $lowStock = $request->query('low_stock');
         $status = $request->query('status');
@@ -46,6 +50,10 @@ class ProductController extends Controller
 
         if ($categoryId) {
             $query->where('category_id', $categoryId);
+        }
+
+        if($barcode){
+            $query->where('barcode',$barcode);
         }
 
         if ($hasExpiry !== null) {
@@ -76,6 +84,177 @@ class ProductController extends Controller
         ]);
     }
 
+
+    /**
+ * Search Product by Barcode
+ * 
+ * Scan barcode to get product details — for POS/sales.
+ * 
+ * @queryParam barcode string required The scanned barcode.
+ */
+public function searchByBarcode(Request $request)
+{
+    $request->validate([
+        'barcode' => 'required|string|max:100',
+    ]);
+
+    $product = Product::with('category')
+        ->where('barcode', $request->barcode)
+        ->active()
+        ->first();
+
+    if (!$product) {
+        return response()->json([
+            'message' => 'Product not found with this barcode',
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Product found',
+        'data' => $product
+    ]);
+}
+
+
+    /**
+ * Generate EAN-13 style barcode
+ * Format: 13 digits — first 12 random, last is check digit
+ */
+private function generateBarcode(): string
+{
+    // Generate 12 random digits
+    $number = mt_rand(100000000000, 999999999999);
+
+    // Calculate check digit
+    $sum = 0;
+    $digits = str_split($number);
+    for ($i = 0; $i < 12; $i++) {
+        $sum += ($i % 2 === 0) ? $digits[$i] : $digits[$i] * 3;
+    }
+    $checkDigit = (10 - ($sum % 10)) % 10;
+
+    return $number . $checkDigit;
+}
+
+
+/**
+ * Get Barcode Image
+ * 
+ * Generate and display barcode SVG image for printing.
+ * 
+ * @urlParam id string required Product UUID
+ * @queryParam size string optional small, medium, large (default medium)
+ * @queryParam download boolean optional 1 = force download
+ */
+public function barcodeImage($id, Request $request)
+{
+    $product = Product::findOrFail($id);
+
+    if (!$product->barcode) {
+        return response()->json(['message' => 'Product has no barcode'], 404);
+    }
+
+    $size = $request->query('size', 'medium');
+    $download = $request->query('download') == '1';
+
+    $sizes = [
+        'small' => 1,
+        'medium' => 2,
+        'large' => 3,
+    ];
+
+    $scale = $sizes[$size] ?? 2;
+
+    $svg = $this->generateBarcodeSvg($product->barcode, $scale);
+
+    if ($download) {
+        return response($svg)
+            ->header('Content-Type', 'image/svg+xml')
+            ->header('Content-Disposition', 'attachment; filename="barcode_' . $product->code . '.svg"');
+    }
+
+    return response($svg)->header('Content-Type', 'image/svg+xml');
+}
+
+
+private function generateBarcodeSvg(string $barcode, int $scale = 2): string
+{
+    // EAN-13 encoding pattern
+    $leftPattern = [
+        '0' => '0001101', '1' => '0011001', '2' => '0010011', '3' => '0111101',
+        '4' => '0100011', '5' => '0110001', '6' => '0101111', '7' => '0111011',
+        '8' => '0110111', '9' => '0001011'
+    ];
+
+    $rightPattern = [
+        '0' => '1110010', '1' => '1100110', '2' => '1101100', '3' => '1000010',
+        '4' => '1011100', '5' => '1001110', '6' => '1010000', '7' => '1000100',
+        '8' => '1001000', '9' => '1110100'
+    ];
+
+    $start = '101';
+    $middle = '01010';
+    $end = '101';
+
+    $digits = str_split($barcode);
+    $first = $digits[0];
+
+    // Left side encoding based on first digit
+    $leftParity = [
+        '0' => ['A','A','A','A','A','A'],
+        '1' => ['A','A','B','A','B','B'],
+        '2' => ['A','A','B','B','A','B'],
+        '3' => ['A','A','B','B','B','A'],
+        '4' => ['A','B','A','A','B','B'],
+        '5' => ['A','B','B','A','A','B'],
+        '6' => ['A','B','B','B','A','A'],
+        '7' => ['A','B','A','B','A','B'],
+        '8' => ['A','B','A','B','B','A'],
+        '9' => ['A','B','B','A','B','A']
+    ];
+
+    $parity = $leftParity[$first];
+
+    $encoded = $start;
+
+    // Left 6 digits
+    for ($i = 1; $i <= 6; $i++) {
+        $pattern = $parity[$i-1] === 'A' ? $leftPattern : $rightPattern;
+        $encoded .= $pattern[$digits[$i]];
+    }
+
+    $encoded .= $middle;
+
+    // Right 6 digits
+    for ($i = 7; $i <= 12; $i++) {
+        $encoded .= $rightPattern[$digits[$i]];
+    }
+
+    $encoded .= $end;
+
+    $width = strlen($encoded) * $scale;
+    $height = 100 * $scale;
+
+    $svg = '<svg width="' . $width . '" height="' . ($height + 50) . '" xmlns="http://www.w3.org/2000/svg">';
+    $svg .= '<rect width="100%" height="100%" fill="white"/>';
+
+    // Bars
+    $x = 0;
+    foreach (str_split($encoded) as $bar) {
+        if ($bar == '1') {
+            $svg .= '<rect x="' . $x . '" y="0" width="' . $scale . '" height="' . $height . '" fill="black"/>';
+        }
+        $x += $scale;
+    }
+
+    // Text
+    $svg .= '<text x="50%" y="' . ($height + 30) . '" font-family="Arial" font-size="' . (20 * $scale) . '" text-anchor="middle">' . $barcode . '</text>';
+
+    $svg .= '</svg>';
+
+    return $svg;
+}
+
     /**
      * Create Product
      * 
@@ -103,8 +282,14 @@ class ProductController extends Controller
             'has_expiry' => 'nullable|boolean',
         ]);
 
+        if (empty($validated['barcode'])) {
+        do {
+            $validated['barcode'] = $this->generateBarcode();
+        } while (Product::where('barcode', $validated['barcode'])->exists());
+    }
+
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('products', 'public');
+            $validated['photo'] = $this->storePhoto($request);
         }
 
         $product = Product::create($validated + ['is_active' => true]);
@@ -125,10 +310,6 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::with('category')->findOrFail($id);
-
-        if ($product->photo) {
-            $product->photo_url = asset('storage/' . $product->photo);
-        }
 
         return response()->json([
             'message' => 'Product retrieved successfully',
@@ -160,11 +341,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            // Delete old photo
-            if ($product->photo) {
-                Storage::disk('public')->delete($product->photo);
-            }
-            $validated['photo'] = $request->file('photo')->store('products', 'public');
+            $validated['photo'] = $this->storePhoto($request, $product);
         }
 
         $product->update($validated);
@@ -208,12 +385,16 @@ class ProductController extends Controller
 
     /**
      * List Active Products
+     * @queryParam search string optional Search by name, code, barcode.
+     * queryParam barcode string optional filter by barcode.
      */
     public function activeProducts(Request $request)
     {
         $search = $request->query('search');
 
         $query = Product::active()->with('category');
+        $barcode = $request->query('barcode');
+
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -222,12 +403,87 @@ class ProductController extends Controller
                   ->orWhere('barcode', 'like', "%{$search}%");
             });
         }
-
+        if($barcode){
+            $query->where('barcode',$barcode);
+        }
         $products = $query->orderBy('name')->get();
 
         return response()->json([
             'message' => 'Active products fetched successfully',
             'data' => $products
         ]);
+    }
+
+    /**
+     * Upload Product Photo
+     */
+    public function uploadPhoto(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $path = $this->storePhoto($request, $product);
+
+        $product->update(['photo' => $path]);
+
+        return response()->json([
+            'message' => 'Photo uploaded successfully',
+            'photo_url' => $product->photo_url,
+            'data' => $product
+        ]);
+    }
+
+    /**
+     * Delete Product Photo
+     */
+    public function deletePhoto($id)
+    {
+        $product = Product::findOrFail($id);
+
+        if ($product->photo) {
+            Storage::disk('public')->delete($product->photo);
+            $product->update(['photo' => null]);
+        }
+
+        return response()->json([
+            'message' => 'Photo deleted successfully',
+            'photo_url' => $product->photo_url,
+            'data' => $product
+        ]);
+    }
+
+    /**
+     * Store and process photo (WebP conversion)
+     */
+    private function storePhoto(Request $request, Product $product = null)
+    {
+        if (!$request->hasFile('photo')) {
+            return null;
+        }
+
+        // Delete old photo if modifying
+        if ($product && $product->photo) {
+            Storage::disk('public')->delete($product->photo);
+        }
+
+        $file = $request->file('photo');
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.webp';
+        $path = 'products/' . $filename;
+
+        // Ensure directory exists
+        if (!Storage::disk('public')->exists('products')) {
+            Storage::disk('public')->makeDirectory('products');
+        }
+
+        // Convert to WebP using Intervention Image v3
+        $image = Image::read($file);
+        $encoded = $image->toWebp(80);
+        
+        Storage::disk('public')->put($path, (string) $encoded);
+
+        return $path;
     }
 }

@@ -84,16 +84,25 @@ Route::prefix('v1')->group(function () {
       });
 
       Route::prefix('purchases')->group(function () {
+        Route::get('/active', [PurchaseController::class, 'activePurchases']);
         Route::get('/', [PurchaseController::class, 'index']);
         Route::post('/', [PurchaseController::class, 'store']);
         Route::get('/{id}', [PurchaseController::class, 'show']);
         Route::patch('/{id}', [PurchaseController::class, 'update']);
+        Route::patch('/{id}/status', [PurchaseController::class, 'toggleStatus']);
         Route::delete('/{id}', [PurchaseController::class, 'destroy']);
         Route::get('/{id}/invoice', [PurchaseController::class, 'invoice']);
       });
-    // Sales
-    Route::apiResource('sales', SaleController::class)->only(['index', 'store', 'show']);
-    Route::get('/sales/{id}/invoice', [SaleController::class, 'invoice']);
+
+      // Sales
+      Route::prefix('sales')->group(function () {
+        Route::get('/', [SaleController::class, 'index']);
+        Route::post('/', [SaleController::class, 'store']);
+        Route::get('/{id}', [SaleController::class, 'show']);
+        Route::patch('/{id}', [SaleController::class, 'update']);
+        Route::delete('/{id}', [SaleController::class, 'destroy']);
+        Route::get('/{id}/invoice', [SaleController::class, 'invoice']);
+      });
 
     // Stock History
     Route::get('/stock-movements', [StockMovementController::class, 'index']);

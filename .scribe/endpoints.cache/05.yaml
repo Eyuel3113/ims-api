@@ -531,7 +531,7 @@ endpoints:
         name: has_expiry
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -542,7 +542,7 @@ endpoints:
         name: is_active
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -554,8 +554,8 @@ endpoints:
       unit: gzmiyvdljnikhway
       barcode: k
       min_stock: 54
-      has_expiry: true
-      is_active: false
+      has_expiry: false
+      is_active: true
     fileParameters:
       photo: null
     responses: []

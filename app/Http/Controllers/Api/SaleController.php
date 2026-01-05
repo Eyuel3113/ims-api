@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Stock;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -132,6 +133,17 @@ class SaleController extends Controller
                 $stock->quantity -= $item['quantity'];
                 $stock->save();
 
+                // Record Movement (Sale reduces stock, so quantity is negative)
+                StockMovement::create([
+                    'product_id' => $item['product_id'],
+                    'warehouse_id' => $item['warehouse_id'],
+                    'quantity' => -$item['quantity'],
+                    'type' => 'sale',
+                    'reference_type' => 'Sale',
+                    'reference_id' => $sale->id,
+                    'notes' => 'Stock sold via invoice: ' . $sale->invoice_number,
+                ]);
+
                 SaleItem::create([
                     'sale_id' => $sale->id,
                     'product_id' => $item['product_id'],
@@ -199,6 +211,17 @@ class SaleController extends Controller
                     if ($stock) {
                         $stock->quantity += $oldItem->quantity;
                         $stock->save();
+
+                        // Record Reversion Movement
+                        StockMovement::create([
+                            'product_id' => $oldItem->product_id,
+                            'warehouse_id' => $oldItem->warehouse_id,
+                            'quantity' => $oldItem->quantity,
+                            'type' => 'adjustment',
+                            'reference_type' => 'Sale',
+                            'reference_id' => $sale->id,
+                            'notes' => 'Stock reverted due to sale update: ' . $sale->invoice_number,
+                        ]);
                     }
                 }
 
@@ -228,6 +251,17 @@ class SaleController extends Controller
 
                     $stock->quantity -= $item['quantity'];
                     $stock->save();
+
+                    // Record New Movement
+                    StockMovement::create([
+                        'product_id' => $item['product_id'],
+                        'warehouse_id' => $item['warehouse_id'],
+                        'quantity' => -$item['quantity'],
+                        'type' => 'sale',
+                        'reference_type' => 'Sale',
+                        'reference_id' => $sale->id,
+                        'notes' => 'Stock updated via sale invoice: ' . $sale->invoice_number,
+                    ]);
 
                     SaleItem::create([
                         'sale_id' => $sale->id,
@@ -267,6 +301,17 @@ class SaleController extends Controller
                 if ($stock) {
                     $stock->quantity += $item->quantity;
                     $stock->save();
+
+                    // Record Deletion Movement
+                    StockMovement::create([
+                        'product_id' => $item->product_id,
+                        'warehouse_id' => $item->warehouse_id,
+                        'quantity' => $item->quantity,
+                        'type' => 'adjustment',
+                        'reference_type' => 'Sale',
+                        'reference_id' => $sale->id,
+                        'notes' => 'Stock reverted due to sale deletion: ' . $sale->invoice_number,
+                    ]);
                 }
             }
 

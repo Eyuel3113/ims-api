@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Stock;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -199,6 +200,18 @@ class PurchaseController extends Controller
 
                 $stock->quantity = ($stock->quantity ?? 0) + $item['quantity'];
                 $stock->save();
+
+                // Record Movement
+                StockMovement::create([
+                    'product_id' => $item['product_id'],
+                    'warehouse_id' => $item['warehouse_id'],
+                    'quantity' => $item['quantity'],
+                    'type' => 'purchase',
+                    'reference_type' => 'Purchase',
+                    'reference_id' => $purchase->id,
+                    'expiry_date' => $item['expiry_date'] ?? null,
+                    'notes' => 'Stock purchased via invoice: ' . $purchase->invoice_number,
+                ]);
             }
 
             return response()->json([
@@ -272,6 +285,18 @@ class PurchaseController extends Controller
                     if ($stock) {
                         $stock->quantity -= $oldItem->quantity;
                         $stock->save();
+
+                        // Record Reversion Movement
+                        StockMovement::create([
+                            'product_id' => $oldItem->product_id,
+                            'warehouse_id' => $oldItem->warehouse_id,
+                            'quantity' => -$oldItem->quantity,
+                            'type' => 'adjustment',
+                            'reference_type' => 'Purchase',
+                            'reference_id' => $purchase->id,
+                            'expiry_date' => $oldItem->expiry_date,
+                            'notes' => 'Stock adjustment due to purchase update: ' . $purchase->invoice_number,
+                        ]);
                     }
                 }
 
@@ -311,6 +336,18 @@ class PurchaseController extends Controller
 
                     $stock->quantity = ($stock->quantity ?? 0) + $item['quantity'];
                     $stock->save();
+
+                    // Record New Movement
+                    StockMovement::create([
+                        'product_id' => $item['product_id'],
+                        'warehouse_id' => $item['warehouse_id'],
+                        'quantity' => $item['quantity'],
+                        'type' => 'purchase',
+                        'reference_type' => 'Purchase',
+                        'reference_id' => $purchase->id,
+                        'expiry_date' => $item['expiry_date'] ?? null,
+                        'notes' => 'Stock updated via purchase invoice: ' . $purchase->invoice_number,
+                    ]);
                 }
             } else {
                 // Just update top-level information
@@ -346,6 +383,18 @@ class PurchaseController extends Controller
                 if ($stock) {
                     $stock->quantity -= $item->quantity;
                     $stock->save();
+
+                    // Record Deletion Movement
+                    StockMovement::create([
+                        'product_id' => $item->product_id,
+                        'warehouse_id' => $item->warehouse_id,
+                        'quantity' => -$item->quantity,
+                        'type' => 'adjustment',
+                        'reference_type' => 'Purchase',
+                        'reference_id' => $purchase->id,
+                        'expiry_date' => $item->expiry_date,
+                        'notes' => 'Stock adjustment due to purchase deletion: ' . $purchase->invoice_number,
+                    ]);
                 }
             }
 

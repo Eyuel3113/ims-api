@@ -268,6 +268,9 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
      * @bodyParam photo file optional Image file
      * @bodyParam min_stock integer optional Default 0
      * @bodyParam has_expiry boolean optional Default false
+     * @bodyParam purchase_price number optional Default 0
+     * @bodyParam selling_price number optional Default 0
+     * @bodyParam is_active boolean optional Default true
      */
     public function store(Request $request)
     {
@@ -280,6 +283,8 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'min_stock' => 'nullable|integer|min:0',
             'has_expiry' => 'nullable|boolean',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'selling_price' => 'nullable|numeric|min:0',
         ]);
 
         if (empty($validated['barcode'])) {
@@ -337,6 +342,8 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'min_stock' => 'nullable|integer|min:0',
             'has_expiry' => 'nullable|boolean',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'selling_price' => 'nullable|numeric|min:0',
             'is_active' => 'sometimes|boolean',
         ]);
 

@@ -83,10 +83,14 @@ Route::prefix('v1')->group(function () {
 
       });
 
-    // Purchases
-    Route::apiResource('purchases', PurchaseController::class)->only(['index', 'store', 'show']);
-    Route::get('/purchases/{id}/invoice', [PurchaseController::class, 'invoice']);
-
+      Route::prefix('purchases')->group(function () {
+        Route::get('/', [PurchaseController::class, 'index']);
+        Route::post('/', [PurchaseController::class, 'store']);
+        Route::get('/{id}', [PurchaseController::class, 'show']);
+        Route::patch('/{id}', [PurchaseController::class, 'update']);
+        Route::delete('/{id}', [PurchaseController::class, 'destroy']);
+        Route::get('/{id}/invoice', [PurchaseController::class, 'invoice']);
+      });
     // Sales
     Route::apiResource('sales', SaleController::class)->only(['index', 'store', 'show']);
     Route::get('/sales/{id}/invoice', [SaleController::class, 'invoice']);

@@ -193,23 +193,12 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      'items[].unit_price':
-        custom: []
-        name: 'items[].unit_price'
-        description: 'Must be at least 0.'
-        required: true
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
       'items[].expiry_date':
         custom: []
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-01-05T12:57:05'
+        example: '2026-01-06T08:42:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -240,17 +229,6 @@ endpoints:
       'items.*.quantity':
         custom: []
         name: 'items.*.quantity'
-        description: ''
-        required: true
-        example: 4326.41688
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.unit_price':
-        custom: []
-        name: 'items.*.unit_price'
         description: ''
         required: true
         example: 4326.41688
@@ -460,23 +438,12 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      'items[].unit_price':
-        custom: []
-        name: 'items[].unit_price'
-        description: 'Must be at least 0.'
-        required: true
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
       'items[].expiry_date':
         custom: []
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-01-05T12:57:05'
+        example: '2026-01-06T08:42:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -507,17 +474,6 @@ endpoints:
       'items.*.quantity':
         custom: []
         name: 'items.*.quantity'
-        description: ''
-        required: true
-        example: 4326.41688
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.unit_price':
-        custom: []
-        name: 'items.*.unit_price'
         description: ''
         required: true
         example: 4326.41688
@@ -606,7 +562,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Delete Purchase'
-      description: 'Delete purchase and revert stock changes.'
+      description: 'Delete purchase and revert stock changes if it was received.'
       authenticated: false
       deprecated: false
     headers:
@@ -684,6 +640,49 @@ endpoints:
           content-type: application/json
           access-control-allow-origin: '*'
         description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/purchases/{id}/receive'
+    metadata:
+      custom: []
+      groupName: Purchases
+      groupDescription: 'APIs for purchasing stock from suppliers'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Mark Purchase as Received'
+      description: 'Approves the purchase and updates stock levels.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Purchase UUID'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
     responseFields: []
     auth: []
     controller: null

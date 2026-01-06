@@ -146,7 +146,6 @@ class PurchaseController extends Controller
      * @bodyParam items.*.product_id string required
      * @bodyParam items.*.warehouse_id string required
      * @bodyParam items.*.quantity number required
-     * @bodyParam items.*.unit_price number required
      * @bodyParam items.*.expiry_date date optional
      */
     public function store(Request $request)
@@ -159,65 +158,104 @@ class PurchaseController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.expiry_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
 
         return DB::transaction(function () use ($request) {
+            // First pass: collect products and calculate total
+            $itemsWithPrices = [];
             $total = 0;
-            foreach ($request->items as $item) {
-                $total += $item['quantity'] * $item['unit_price'];
+
+            foreach ($request->items as $itemData) {
+                $product = \App\Models\Product::findOrFail($itemData['product_id']);
+                $unitPrice = $product->purchase_price;
+                $itemTotal = $itemData['quantity'] * $unitPrice;
+                
+                $itemsWithPrices[] = array_merge($itemData, [
+                    'unit_price' => $unitPrice,
+                    'total_price' => $itemTotal
+                ]);
+
+                $total += $itemTotal;
             }
 
             $purchase = Purchase::create([
                 'invoice_number' => $request->invoice_number,
                 'supplier_id' => $request->supplier_id,
                 'purchase_date' => $request->purchase_date,
+                'status' => 'pending', // Explicit default
                 'total_amount' => $total,
                 'notes' => $request->notes,
             ]);
 
-            foreach ($request->items as $item) {
-                $itemTotal = $item['quantity'] * $item['unit_price'];
-
+            foreach ($itemsWithPrices as $item) {
                 PurchaseItem::create([
                     'purchase_id' => $purchase->id,
                     'product_id' => $item['product_id'],
                     'warehouse_id' => $item['warehouse_id'],
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['unit_price'],
-                    'total_price' => $itemTotal,
+                    'total_price' => $item['total_price'],
                     'expiry_date' => $item['expiry_date'] ?? null,
-                ]);
-
-                // Add to stock
-                $stock = Stock::firstOrNew([
-                    'product_id' => $item['product_id'],
-                    'warehouse_id' => $item['warehouse_id'],
-                    'expiry_date' => $item['expiry_date'] ?? null,
-                ]);
-
-                $stock->quantity = ($stock->quantity ?? 0) + $item['quantity'];
-                $stock->save();
-
-                // Record Movement
-                StockMovement::create([
-                    'product_id' => $item['product_id'],
-                    'warehouse_id' => $item['warehouse_id'],
-                    'quantity' => $item['quantity'],
-                    'type' => 'purchase',
-                    'reference_type' => 'Purchase',
-                    'reference_id' => $purchase->id,
-                    'expiry_date' => $item['expiry_date'] ?? null,
-                    'notes' => 'Stock purchased via invoice: ' . $purchase->invoice_number,
                 ]);
             }
 
             return response()->json([
-                'message' => 'Purchase recorded successfully',
+                'message' => 'Purchase recorded as pending',
                 'data' => $purchase->load('items.product', 'supplier')
             ], 201);
+        });
+    }
+
+    /**
+     * Mark Purchase as Received
+     * 
+     * Approves the purchase and updates stock levels.
+     * 
+     * @urlParam id string required Purchase UUID
+     */
+    public function receiveStatus($id)
+    {
+        $purchase = Purchase::with('items')->findOrFail($id);
+
+        if ($purchase->status !== 'pending') {
+            return response()->json([
+                'message' => 'Purchase is already ' . $purchase->status
+            ], 422);
+        }
+
+        return DB::transaction(function () use ($purchase) {
+            $purchase->update(['status' => 'received']);
+
+            foreach ($purchase->items as $item) {
+                // Add to stock
+                $stock = Stock::firstOrNew([
+                    'product_id' => $item->product_id,
+                    'warehouse_id' => $item->warehouse_id,
+                    'expiry_date' => $item->expiry_date,
+                ]);
+
+                $stock->quantity = ($stock->quantity ?? 0) + $item->quantity;
+                $stock->save();
+
+                // Record Movement
+                StockMovement::create([
+                    'product_id' => $item->product_id,
+                    'warehouse_id' => $item->warehouse_id,
+                    'quantity' => $item->quantity,
+                    'type' => 'purchase',
+                    'reference_type' => 'Purchase',
+                    'reference_id' => $purchase->id,
+                    'expiry_date' => $item->expiry_date,
+                    'notes' => 'Stock received via invoice: ' . $purchase->invoice_number,
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Purchase marked as received and stock updated',
+                'data' => $purchase->load('items.product', 'supplier')
+            ]);
         });
     }
 
@@ -251,12 +289,17 @@ class PurchaseController extends Controller
      * @bodyParam items.*.product_id string required
      * @bodyParam items.*.warehouse_id string required
      * @bodyParam items.*.quantity number required
-     * @bodyParam items.*.unit_price number required
      * @bodyParam items.*.expiry_date date optional
      */
     public function update(Request $request, $id)
     {
         $purchase = Purchase::with('items')->findOrFail($id);
+
+        if ($purchase->status !== 'pending') {
+            return response()->json([
+                'message' => 'Cannot update a purchase that is already ' . $purchase->status
+            ], 422);
+        }
 
         $request->validate([
             'invoice_number' => 'sometimes|required|string|unique:purchases,invoice_number,' . $id,
@@ -266,7 +309,6 @@ class PurchaseController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.expiry_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
@@ -275,82 +317,45 @@ class PurchaseController extends Controller
             $updateData = $request->only(['invoice_number', 'supplier_id', 'purchase_date', 'notes']);
 
             if ($request->has('items')) {
-                // 1. Revert old stock changes
-                foreach ($purchase->items as $oldItem) {
-                    $stock = Stock::where('product_id', $oldItem->product_id)
-                        ->where('warehouse_id', $oldItem->warehouse_id)
-                        ->where('expiry_date', $oldItem->expiry_date)
-                        ->first();
-
-                    if ($stock) {
-                        $stock->quantity -= $oldItem->quantity;
-                        $stock->save();
-
-                        // Record Reversion Movement
-                        StockMovement::create([
-                            'product_id' => $oldItem->product_id,
-                            'warehouse_id' => $oldItem->warehouse_id,
-                            'quantity' => -$oldItem->quantity,
-                            'type' => 'adjustment',
-                            'reference_type' => 'Purchase',
-                            'reference_id' => $purchase->id,
-                            'expiry_date' => $oldItem->expiry_date,
-                            'notes' => 'Stock adjustment due to purchase update: ' . $purchase->invoice_number,
-                        ]);
-                    }
-                }
-
-                // 2. Delete existing items
+                // Since it's pending, no stock was ever added. No need to revert.
+                
+                // 1. Delete existing items
                 $purchase->items()->delete();
 
-                // 3. Calculate new total
+                // 2. Fetch prices and calculate new total
+                $itemsWithPrices = [];
                 $total = 0;
-                foreach ($request->items as $item) {
-                    $total += $item['quantity'] * $item['unit_price'];
+                foreach ($request->items as $itemData) {
+                    $product = \App\Models\Product::findOrFail($itemData['product_id']);
+                    $unitPrice = $product->purchase_price;
+                    $itemTotal = $itemData['quantity'] * $unitPrice;
+
+                    $itemsWithPrices[] = array_merge($itemData, [
+                        'unit_price' => $unitPrice,
+                        'total_price' => $itemTotal
+                    ]);
+
+                    $total += $itemTotal;
                 }
                 $updateData['total_amount'] = $total;
 
-                // 4. Update purchase top-level data
+                // 3. Update purchase top-level data
                 $purchase->update($updateData);
 
-                // 5. Create new items and apply new stock changes
-                foreach ($request->items as $item) {
-                    $itemTotal = $item['quantity'] * $item['unit_price'];
-
+                // 4. Create new items
+                foreach ($itemsWithPrices as $item) {
                     PurchaseItem::create([
                         'purchase_id' => $purchase->id,
                         'product_id' => $item['product_id'],
                         'warehouse_id' => $item['warehouse_id'],
                         'quantity' => $item['quantity'],
                         'unit_price' => $item['unit_price'],
-                        'total_price' => $itemTotal,
+                        'total_price' => $item['total_price'],
                         'expiry_date' => $item['expiry_date'] ?? null,
                     ]);
-
-                    // Add to stock
-                    $stock = Stock::firstOrNew([
-                        'product_id' => $item['product_id'],
-                        'warehouse_id' => $item['warehouse_id'],
-                        'expiry_date' => $item['expiry_date'] ?? null,
-                    ]);
-
-                    $stock->quantity = ($stock->quantity ?? 0) + $item['quantity'];
-                    $stock->save();
-
-                    // Record New Movement
-                    StockMovement::create([
-                        'product_id' => $item['product_id'],
-                        'warehouse_id' => $item['warehouse_id'],
-                        'quantity' => $item['quantity'],
-                        'type' => 'purchase',
-                        'reference_type' => 'Purchase',
-                        'reference_id' => $purchase->id,
-                        'expiry_date' => $item['expiry_date'] ?? null,
-                        'notes' => 'Stock updated via purchase invoice: ' . $purchase->invoice_number,
-                    ]);
+                    // NO STOCK UPDATE FOR PENDING
                 }
             } else {
-                // Just update top-level information
                 $purchase->update($updateData);
             }
 
@@ -364,7 +369,7 @@ class PurchaseController extends Controller
     /**
      * Delete Purchase
      * 
-     * Delete purchase and revert stock changes.
+     * Delete purchase and revert stock changes if it was received.
      * 
      * @urlParam id string required Purchase UUID
      */
@@ -373,28 +378,30 @@ class PurchaseController extends Controller
         $purchase = Purchase::with('items')->findOrFail($id);
 
         return DB::transaction(function () use ($purchase) {
-            // Revert stock changes
-            foreach ($purchase->items as $item) {
-                $stock = Stock::where('product_id', $item->product_id)
-                    ->where('warehouse_id', $item->warehouse_id)
-                    ->where('expiry_date', $item->expiry_date)
-                    ->first();
+            if ($purchase->status === 'received') {
+                // Revert stock changes
+                foreach ($purchase->items as $item) {
+                    $stock = Stock::where('product_id', $item->product_id)
+                        ->where('warehouse_id', $item->warehouse_id)
+                        ->where('expiry_date', $item->expiry_date)
+                        ->first();
 
-                if ($stock) {
-                    $stock->quantity -= $item->quantity;
-                    $stock->save();
+                    if ($stock) {
+                        $stock->quantity -= $item->quantity;
+                        $stock->save();
 
-                    // Record Deletion Movement
-                    StockMovement::create([
-                        'product_id' => $item->product_id,
-                        'warehouse_id' => $item->warehouse_id,
-                        'quantity' => -$item->quantity,
-                        'type' => 'adjustment',
-                        'reference_type' => 'Purchase',
-                        'reference_id' => $purchase->id,
-                        'expiry_date' => $item->expiry_date,
-                        'notes' => 'Stock adjustment due to purchase deletion: ' . $purchase->invoice_number,
-                    ]);
+                        // Record Deletion Movement
+                        StockMovement::create([
+                            'product_id' => $item->product_id,
+                            'warehouse_id' => $item->warehouse_id,
+                            'quantity' => -$item->quantity,
+                            'type' => 'adjustment',
+                            'reference_type' => 'Purchase',
+                            'reference_id' => $purchase->id,
+                            'expiry_date' => $item->expiry_date,
+                            'notes' => 'Stock adjustment due to purchase deletion: ' . $purchase->invoice_number,
+                        ]);
+                    }
                 }
             }
 
@@ -407,11 +414,11 @@ class PurchaseController extends Controller
     }
 
     public function invoice($id)
-{
-    $purchase = Purchase::with(['supplier', 'items.product', 'items.warehouse'])->findOrFail($id);
+    {
+        $purchase = Purchase::with(['supplier', 'items.product', 'items.warehouse'])->findOrFail($id);
 
-    $pdf = PDF::loadView('pdf.purchase_invoice', compact('purchase'));
+        $pdf = PDF::loadView('pdf.purchase_invoice', compact('purchase'));
 
-    return $pdf->download('Purchase_' . $purchase->invoice_number . '.pdf');
-}
+        return $pdf->download('Purchase_' . $purchase->invoice_number . '.pdf');
+    }
 }

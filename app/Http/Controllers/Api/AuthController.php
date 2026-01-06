@@ -22,8 +22,8 @@ class AuthController extends Controller
      * Authenticate a user and return access tokens.
      * 
      * @group Authentication
-     * @bodyParam email string required The user's email. Example: user@example.com
-     * @bodyParam password string required The user's password. Example: password
+     * @bodyParam email string required The user's email. Example: admin@ims.com
+     * @bodyParam password string required The user's password. Example: password123
      * @response 200 {
      *  "success": true,
      *  "message": "Login successful",

@@ -15,7 +15,7 @@ class Sale extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['invoice_number', 'sale_date', 'total_amount', 'notes', 'is_active'];
+    protected $fillable = ['invoice_number', 'sale_date', 'total_amount', 'notes', 'is_active', 'payment_method'];
 
     protected static function boot()
     {

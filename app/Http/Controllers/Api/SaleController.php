@@ -27,11 +27,13 @@ class SaleController extends Controller
      * @queryParam from_date date optional Filter by sale date (from).
      * @queryParam to_date date optional Filter by sale date (to).
      * @queryParam invoice_number string optional Search by invoice number.
+     * @queryParam payment_method string optional cash / card / mobile.
      * @queryParam search string optional Search by invoice or product name.
      */
     public function index(Request $request)
     {
         $status = $request->query('status');
+        $paymentMethod = $request->query('payment_method');
         $limit = $request->query('limit', 10);
 
         $query = Sale::with(['items.product']);
@@ -40,6 +42,10 @@ class SaleController extends Controller
             $query->where('is_active', true);
         } elseif ($status === 'inactive') {
             $query->where('is_active', false);
+        }
+
+        if ($paymentMethod) {
+            $query->where('payment_method', $paymentMethod);
         }
 
         if ($request->filled('from_date')) {
@@ -89,7 +95,8 @@ class SaleController extends Controller
      * @bodyParam items.*.product_id string required
      * @bodyParam items.*.warehouse_id string required
      * @bodyParam items.*.quantity number required
-     * @bodyParam items.*.unit_price number required
+     * @bodyParam notes string optional
+     * @bodyParam payment_method string required cash / card / mobile
      */
     public function store(Request $request)
     {
@@ -100,65 +107,82 @@ class SaleController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit_price' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
+            'payment_method' => 'required|string|in:cash,card,mobile',
         ]);
 
-        return DB::transaction(function () use ($request) {
-            $total = 0;
-            foreach ($request->items as $item) {
-                $total += $item['quantity'] * $item['unit_price'];
-            }
+        try {
+            return DB::transaction(function () use ($request) {
+                // First pass: collect products and calculate total
+                $itemsWithPrices = [];
+                $total = 0;
 
-            $sale = Sale::create([
-                'invoice_number' => $request->invoice_number,
-                'sale_date' => $request->sale_date,
-                'total_amount' => $total,
-                'notes' => $request->notes,
-            ]);
+                foreach ($request->items as $itemData) {
+                    $product = \App\Models\Product::findOrFail($itemData['product_id']);
+                    $unitPrice = $product->selling_price;
+                    $itemTotal = $itemData['quantity'] * $unitPrice;
 
-            foreach ($request->items as $item) {
-                $itemTotal = $item['quantity'] * $item['unit_price'];
+                    $itemsWithPrices[] = array_merge($itemData, [
+                        'unit_price' => $unitPrice,
+                        'total_price' => $itemTotal
+                    ]);
 
-                // Reduce stock
-                $stock = Stock::where('product_id', $item['product_id'])
-                    ->where('warehouse_id', $item['warehouse_id'])
-                    ->lockForUpdate()
-                    ->first();
-
-                if (!$stock || $stock->quantity < $item['quantity']) {
-                    throw new \Exception("Insufficient stock for product: " . ($stock->product->name ?? $item['product_id']));
+                    $total += $itemTotal;
                 }
 
-                $stock->quantity -= $item['quantity'];
-                $stock->save();
-
-                // Record Movement (Sale reduces stock, so quantity is negative)
-                StockMovement::create([
-                    'product_id' => $item['product_id'],
-                    'warehouse_id' => $item['warehouse_id'],
-                    'quantity' => -$item['quantity'],
-                    'type' => 'sale',
-                    'reference_type' => 'Sale',
-                    'reference_id' => $sale->id,
-                    'notes' => 'Stock sold via invoice: ' . $sale->invoice_number,
+                $sale = Sale::create([
+                    'invoice_number' => $request->invoice_number,
+                    'sale_date' => $request->sale_date,
+                    'total_amount' => $total,
+                    'notes' => $request->notes,
+                    'payment_method' => $request->payment_method,
                 ]);
 
-                SaleItem::create([
-                    'sale_id' => $sale->id,
-                    'product_id' => $item['product_id'],
-                    'warehouse_id' => $item['warehouse_id'],
-                    'quantity' => $item['quantity'],
-                    'unit_price' => $item['unit_price'],
-                    'total_price' => $itemTotal,
-                ]);
-            }
+                foreach ($itemsWithPrices as $item) {
+                    // Reduce stock
+                    $stock = Stock::where('product_id', $item['product_id'])
+                        ->where('warehouse_id', $item['warehouse_id'])
+                        ->lockForUpdate()
+                        ->first();
 
+                    if (!$stock || $stock->quantity < $item['quantity']) {
+                        throw new \Exception("Insufficient stock for product: " . ($stock->product->name ?? $item['product_id']));
+                    }
+
+                    $stock->quantity -= $item['quantity'];
+                    $stock->save();
+
+                    // Record Movement
+                    StockMovement::create([
+                        'product_id' => $item['product_id'],
+                        'warehouse_id' => $item['warehouse_id'],
+                        'quantity' => -$item['quantity'],
+                        'type' => 'sale',
+                        'reference_type' => 'Sale',
+                        'reference_id' => $sale->id,
+                        'notes' => 'Stock sold via invoice: ' . $sale->invoice_number,
+                    ]);
+
+                    SaleItem::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $item['product_id'],
+                        'warehouse_id' => $item['warehouse_id'],
+                        'quantity' => $item['quantity'],
+                        'unit_price' => $item['unit_price'],
+                        'total_price' => $item['total_price'],
+                    ]);
+                }
+
+                return response()->json([
+                    'message' => 'Sale recorded successfully',
+                    'data' => $sale->load('items.product')
+                ], 201);
+            });
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Sale recorded successfully',
-                'data' => $sale->load('items.product')
-            ], 201);
-        });
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
     /**
@@ -181,7 +205,15 @@ class SaleController extends Controller
     /**
      * Update Sale
      * 
-     * Partially update sale or replace items and adjust stock.
+     * @urlParam id string required Sale UUID
+     * @bodyParam invoice_number string optional
+     * @bodyParam sale_date date optional
+     * @bodyParam items array optional
+     * @bodyParam items.*.product_id string required
+     * @bodyParam items.*.warehouse_id string required
+     * @bodyParam items.*.quantity number required
+     * @bodyParam notes string optional
+     * @bodyParam payment_method string optional cash / card / mobile
      */
     public function update(Request $request, $id)
     {
@@ -194,93 +226,107 @@ class SaleController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit_price' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
+            'payment_method' => 'sometimes|required|string|in:cash,card,mobile',
         ]);
 
-        return DB::transaction(function () use ($request, $sale) {
-            $updateData = $request->only(['invoice_number', 'sale_date', 'notes']);
+        try {
+            return DB::transaction(function () use ($request, $sale) {
+                $updateData = $request->only(['invoice_number', 'sale_date', 'notes', 'payment_method']);
 
-            if ($request->has('items')) {
-                // 1. Revert old stock changes
-                foreach ($sale->items as $oldItem) {
-                    $stock = Stock::where('product_id', $oldItem->product_id)
-                        ->where('warehouse_id', $oldItem->warehouse_id)
-                        ->first();
+                if ($request->has('items')) {
+                    // 1. Revert old stock changes
+                    foreach ($sale->items as $oldItem) {
+                        $stock = Stock::where('product_id', $oldItem->product_id)
+                            ->where('warehouse_id', $oldItem->warehouse_id)
+                            ->first();
 
-                    if ($stock) {
-                        $stock->quantity += $oldItem->quantity;
+                        if ($stock) {
+                            $stock->quantity += $oldItem->quantity;
+                            $stock->save();
+
+                            // Record Reversion Movement
+                            StockMovement::create([
+                                'product_id' => $oldItem->product_id,
+                                'warehouse_id' => $oldItem->warehouse_id,
+                                'quantity' => $oldItem->quantity,
+                                'type' => 'adjustment',
+                                'reference_type' => 'Sale',
+                                'reference_id' => $sale->id,
+                                'notes' => 'Stock reverted due to sale update: ' . $sale->invoice_number,
+                            ]);
+                        }
+                    }
+
+                    // 2. Delete existing items
+                    $sale->items()->delete();
+
+                    // 3. Fetch prices and calculate new total
+                    $itemsWithPrices = [];
+                    $total = 0;
+                    foreach ($request->items as $itemData) {
+                        $product = \App\Models\Product::findOrFail($itemData['product_id']);
+                        $unitPrice = $product->selling_price;
+                        $itemTotal = $itemData['quantity'] * $unitPrice;
+
+                        $itemsWithPrices[] = array_merge($itemData, [
+                            'unit_price' => $unitPrice,
+                            'total_price' => $itemTotal
+                        ]);
+
+                        $total += $itemTotal;
+                    }
+                    $updateData['total_amount'] = $total;
+                    $sale->update($updateData);
+
+                    // 4. Create new items and reduce stock
+                    foreach ($itemsWithPrices as $item) {
+                        $stock = Stock::where('product_id', $item['product_id'])
+                            ->where('warehouse_id', $item['warehouse_id'])
+                            ->lockForUpdate()
+                            ->first();
+
+                        if (!$stock || $stock->quantity < $item['quantity']) {
+                            throw new \Exception("Insufficient stock for product in update: " . ($stock->product->name ?? $item['product_id']));
+                        }
+
+                        $stock->quantity -= $item['quantity'];
                         $stock->save();
 
-                        // Record Reversion Movement
+                        // Record New Movement
                         StockMovement::create([
-                            'product_id' => $oldItem->product_id,
-                            'warehouse_id' => $oldItem->warehouse_id,
-                            'quantity' => $oldItem->quantity,
-                            'type' => 'adjustment',
+                            'product_id' => $item['product_id'],
+                            'warehouse_id' => $item['warehouse_id'],
+                            'quantity' => -$item['quantity'],
+                            'type' => 'sale',
                             'reference_type' => 'Sale',
                             'reference_id' => $sale->id,
-                            'notes' => 'Stock reverted due to sale update: ' . $sale->invoice_number,
+                            'notes' => 'Stock updated via sale invoice: ' . $sale->invoice_number,
+                        ]);
+
+                        SaleItem::create([
+                            'sale_id' => $sale->id,
+                            'product_id' => $item['product_id'],
+                            'warehouse_id' => $item['warehouse_id'],
+                            'quantity' => $item['quantity'],
+                            'unit_price' => $item['unit_price'],
+                            'total_price' => $item['total_price'],
                         ]);
                     }
+                } else {
+                    $sale->update($updateData);
                 }
 
-                // 2. Delete existing items
-                $sale->items()->delete();
-
-                // 3. Calculate new total and apply changes
-                $total = 0;
-                foreach ($request->items as $item) {
-                    $total += $item['quantity'] * $item['unit_price'];
-                }
-                $updateData['total_amount'] = $total;
-                $sale->update($updateData);
-
-                // 4. Create new items and reduce stock
-                foreach ($request->items as $item) {
-                    $itemTotal = $item['quantity'] * $item['unit_price'];
-
-                    $stock = Stock::where('product_id', $item['product_id'])
-                        ->where('warehouse_id', $item['warehouse_id'])
-                        ->lockForUpdate()
-                        ->first();
-
-                    if (!$stock || $stock->quantity < $item['quantity']) {
-                        throw new \Exception("Insufficient stock for product in update: " . ($stock->product->name ?? $item['product_id']));
-                    }
-
-                    $stock->quantity -= $item['quantity'];
-                    $stock->save();
-
-                    // Record New Movement
-                    StockMovement::create([
-                        'product_id' => $item['product_id'],
-                        'warehouse_id' => $item['warehouse_id'],
-                        'quantity' => -$item['quantity'],
-                        'type' => 'sale',
-                        'reference_type' => 'Sale',
-                        'reference_id' => $sale->id,
-                        'notes' => 'Stock updated via sale invoice: ' . $sale->invoice_number,
-                    ]);
-
-                    SaleItem::create([
-                        'sale_id' => $sale->id,
-                        'product_id' => $item['product_id'],
-                        'warehouse_id' => $item['warehouse_id'],
-                        'quantity' => $item['quantity'],
-                        'unit_price' => $item['unit_price'],
-                        'total_price' => $itemTotal,
-                    ]);
-                }
-            } else {
-                $sale->update($updateData);
-            }
-
+                return response()->json([
+                    'message' => 'Sale updated successfully',
+                    'data' => $sale->load('items.product')
+                ]);
+            });
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Sale updated successfully',
-                'data' => $sale->load('items.product')
-            ]);
-        });
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
     /**

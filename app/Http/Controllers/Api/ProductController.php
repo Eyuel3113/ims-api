@@ -38,7 +38,7 @@ class ProductController extends Controller
         $status = $request->query('status');
         $limit = $request->query('limit', 10);
 
-        $query = Product::with(['category']);
+        $query = Product::with(['category'])->withSum('stocks', 'quantity');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -268,8 +268,8 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
      * @bodyParam photo file optional Image file
      * @bodyParam min_stock integer optional Default 0
      * @bodyParam has_expiry boolean optional Default false
-     * @bodyParam purchase_price number optional Default 0
-     * @bodyParam selling_price number optional Default 0
+     * @bodyParam purchase_price number required
+     * @bodyParam selling_price number required
      * @bodyParam is_active boolean optional Default true
      */
     public function store(Request $request)
@@ -283,8 +283,8 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'min_stock' => 'nullable|integer|min:0',
             'has_expiry' => 'nullable|boolean',
-            'purchase_price' => 'nullable|numeric|min:0',
-            'selling_price' => 'nullable|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:0',
         ]);
 
         if (empty($validated['barcode'])) {
@@ -328,6 +328,18 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
      * Update product details and photo.
      * 
      * @urlParam id string required Product UUID.
+     *
+     * @bodyParam name string optional
+     * @bodyParam code string optional
+     * @bodyParam category_id string optional
+     * @bodyParam unit string optional
+     * @bodyParam barcode string optional
+     * @bodyParam photo file optional
+     * @bodyParam min_stock integer optional
+     * @bodyParam has_expiry boolean optional
+     * @bodyParam purchase_price number optional
+     * @bodyParam selling_price number optional
+     * @bodyParam is_active boolean optional
      */
     public function update(Request $request, $id)
     {
@@ -342,8 +354,6 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'min_stock' => 'nullable|integer|min:0',
             'has_expiry' => 'nullable|boolean',
-            'purchase_price' => 'nullable|numeric|min:0',
-            'selling_price' => 'nullable|numeric|min:0',
             'is_active' => 'sometimes|boolean',
         ]);
 

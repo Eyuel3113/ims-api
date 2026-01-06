@@ -216,17 +216,6 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      'items[].unit_price':
-        custom: []
-        name: 'items[].unit_price'
-        description: 'Must be at least 0.'
-        required: true
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
       'items.*.product_id':
         custom: []
         name: 'items.*.product_id'
@@ -252,17 +241,6 @@ endpoints:
       'items.*.quantity':
         custom: []
         name: 'items.*.quantity'
-        description: ''
-        required: true
-        example: 4326.41688
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.unit_price':
-        custom: []
-        name: 'items.*.unit_price'
         description: ''
         required: true
         example: 4326.41688
@@ -348,7 +326,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update Sale'
-      description: 'Partially update sale or replace items and adjust stock.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -358,7 +336,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the sale.'
+        description: 'Sale UUID'
         required: true
         example: architecto
         type: string
@@ -374,9 +352,9 @@ endpoints:
       invoice_number:
         custom: []
         name: invoice_number
-        description: ''
+        description: optional
         required: false
-        example: null
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -385,10 +363,10 @@ endpoints:
       sale_date:
         custom: []
         name: sale_date
-        description: 'Must be a valid date.'
+        description: optional
         required: false
-        example: '2026-01-05T12:57:05'
-        type: string
+        example: architecto
+        type: date
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -396,10 +374,11 @@ endpoints:
       items:
         custom: []
         name: items
-        description: 'Must have at least 1 items.'
+        description: optional
         required: false
-        example: null
-        type: 'object[]'
+        example:
+          - architecto
+        type: 'string[]'
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -407,7 +386,7 @@ endpoints:
       notes:
         custom: []
         name: notes
-        description: ''
+        description: optional
         required: false
         example: architecto
         type: string
@@ -448,26 +427,45 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      'items[].unit_price':
+      'items.*.product_id':
         custom: []
-        name: 'items[].unit_price'
-        description: 'Must be at least 0.'
+        name: 'items.*.product_id'
+        description: ''
         required: true
-        example: 84
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'items.*.warehouse_id':
+        custom: []
+        name: 'items.*.warehouse_id'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'items.*.quantity':
+        custom: []
+        name: 'items.*.quantity'
+        description: ''
+        required: true
+        example: 4326.41688
         type: number
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      sale_date: '2026-01-05T12:57:05'
-      notes: architecto
+      invoice_number: architecto
+      sale_date: architecto
       items:
-        -
-          product_id: architecto
-          warehouse_id: architecto
-          quantity: 39
-          unit_price: 84
+        - architecto
+      notes: architecto
     fileParameters: []
     responses: []
     responseFields: []

@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\AnalyticsController;
+use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\ReportsController;
 
 
 Route::prefix('v1')->group(function () {
@@ -92,7 +94,8 @@ Route::prefix('v1')->group(function () {
         Route::patch('/{id}/status', [PurchaseController::class, 'toggleStatus']);
         Route::delete('/{id}', [PurchaseController::class, 'destroy']);
         Route::get('/{id}/invoice', [PurchaseController::class, 'invoice']);
-      });
+        Route::post('/{id}/receive', [PurchaseController::class, 'receiveStatus']);
+    });
 
       // Sales
       Route::prefix('sales')->group(function () {
@@ -107,11 +110,26 @@ Route::prefix('v1')->group(function () {
     // Stock History
     Route::get('/stock-movements', [StockMovementController::class, 'index']);
 
+    // Activity Logs
+    Route::prefix('activity-logs')->group(function () {
+        Route::get('/', [ActivityLogController::class, 'index']);
+    });
+
     // Analytics Dashboard
     Route::prefix('analytics')->group(function () {
         Route::get('/dashboard', [AnalyticsController::class, 'dashboard']);
         Route::get('/stock-by-warehouse', [AnalyticsController::class, 'stockByWarehouse']);
         Route::get('/monthly-trend', [AnalyticsController::class, 'monthlyTrend']);
+        Route::get('/inventory-by-category', [AnalyticsController::class, 'inventoryByCategory']);
+        Route::get('/purchase-kpis', [AnalyticsController::class, 'purchaseKpis']);
+    });
+
+    // Reports
+    Route::prefix('reports')->group(function () {
+        Route::get('/overview', [ReportsController::class, 'overview']);
+        Route::get('/sales', [ReportsController::class, 'sales']);
+        Route::get('/inventory', [ReportsController::class, 'inventory']);
+        Route::get('/profit-loss', [ReportsController::class, 'profitLoss']);
     });
 });
 

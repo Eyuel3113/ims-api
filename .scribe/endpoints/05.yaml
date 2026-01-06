@@ -280,6 +280,39 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
+      purchase_price:
+        custom: []
+        name: purchase_price
+        description: ''
+        required: true
+        example: 4326.41688
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      selling_price:
+        custom: []
+        name: selling_price
+        description: ''
+        required: true
+        example: 4326.41688
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: 'optional Default true'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
       name: architecto
       code: architecto
@@ -288,6 +321,9 @@ endpoints:
       barcode: architecto
       min_stock: 16
       has_expiry: false
+      purchase_price: 4326.41688
+      selling_price: 4326.41688
+      is_active: false
     fileParameters:
       photo: null
     responses: []
@@ -450,9 +486,9 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: optional
         required: false
-        example: b
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -461,9 +497,9 @@ endpoints:
       code:
         custom: []
         name: code
-        description: 'Must not be greater than 50 characters.'
+        description: optional
         required: false
-        example: 'n'
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -472,9 +508,9 @@ endpoints:
       category_id:
         custom: []
         name: category_id
-        description: 'The <code>id</code> of an existing record in the categories table.'
+        description: optional
         required: false
-        example: null
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -483,9 +519,9 @@ endpoints:
       unit:
         custom: []
         name: unit
-        description: 'Must not be greater than 20 characters.'
+        description: optional
         required: false
-        example: gzmiyvdljnikhway
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -494,9 +530,9 @@ endpoints:
       barcode:
         custom: []
         name: barcode
-        description: 'Must not be greater than 100 characters.'
+        description: optional
         required: false
-        example: k
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -505,7 +541,7 @@ endpoints:
       photo:
         custom: []
         name: photo
-        description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+        description: optional
         required: false
         example: null
         type: file
@@ -516,9 +552,9 @@ endpoints:
       min_stock:
         custom: []
         name: min_stock
-        description: 'Must be at least 0.'
+        description: optional
         required: false
-        example: 54
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -527,7 +563,7 @@ endpoints:
       has_expiry:
         custom: []
         name: has_expiry
-        description: ''
+        description: optional
         required: false
         example: false
         type: boolean
@@ -538,22 +574,47 @@ endpoints:
       is_active:
         custom: []
         name: is_active
-        description: ''
+        description: optional
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      purchase_price:
+        custom: []
+        name: purchase_price
+        description: optional
+        required: false
+        example: 4326.41688
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      selling_price:
+        custom: []
+        name: selling_price
+        description: optional
+        required: false
+        example: 4326.41688
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
-      name: b
-      code: 'n'
-      unit: gzmiyvdljnikhway
-      barcode: k
-      min_stock: 54
+      name: architecto
+      code: architecto
+      category_id: architecto
+      unit: architecto
+      barcode: architecto
+      min_stock: 16
       has_expiry: false
-      is_active: true
+      is_active: false
+      purchase_price: 4326.41688
+      selling_price: 4326.41688
     fileParameters:
       photo: null
     responses: []

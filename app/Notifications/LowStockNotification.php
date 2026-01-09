@@ -24,6 +24,11 @@ class LowStockNotification extends Notification
         return ['database']; // add 'mail' later
     }
 
+    public function databaseType(object $notifiable): string
+    {
+        return 'LowStockNotification';
+    }
+
     public function toArray($notifiable)
     {
         return [

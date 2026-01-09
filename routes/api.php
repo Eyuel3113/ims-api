@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\AnalyticsController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ReportsController;
+use App\Http\Controllers\Api\NotificationController;
+
 
 
 Route::prefix('v1')->group(function () {
@@ -130,6 +132,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/sales', [ReportsController::class, 'sales']);
         Route::get('/inventory', [ReportsController::class, 'inventory']);
         Route::get('/profit-loss', [ReportsController::class, 'profitLoss']);
+    });
+
+    // Notifications
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::patch('/{id}/read', [NotificationController::class, 'markAsRead']);
+        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead']);
     });
 });
 

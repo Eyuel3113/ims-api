@@ -10,6 +10,10 @@ use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Notifications\LowStockNotification;
+use Illuminate\Support\Facades\Notification;
+
 
 /**
  * @group Sales
@@ -171,6 +175,15 @@ class SaleController extends Controller
                         'unit_price' => $item['unit_price'],
                         'total_price' => $item['total_price'],
                     ]);
+
+                    // Check for Low Stock after reduction
+                    $totalStock = Stock::where('product_id', $item['product_id'])->sum('quantity');
+                    $product = \App\Models\Product::find($item['product_id']);
+                    
+                    if ($product && $product->min_stock > 0 && $totalStock <= $product->min_stock) {
+                        $users = User::all();
+                        Notification::send($users, new LowStockNotification($product, $totalStock));
+                    }
                 }
 
                 return response()->json([

@@ -45,6 +45,11 @@ class SystemNotification extends Notification
         return ['database', 'mail'];
     }
 
+    public function databaseType(object $notifiable): string
+    {
+        return 'SystemNotification';
+    }
+
     /**
      * Get the mail representation of the notification.
      *

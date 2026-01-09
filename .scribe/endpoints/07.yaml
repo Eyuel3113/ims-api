@@ -77,6 +77,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      payment_method:
+        custom: []
+        name: payment_method
+        description: 'optional cash / card / mobile.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       search:
         custom: []
         name: search
@@ -94,6 +105,7 @@ endpoints:
       from_date: architecto
       to_date: architecto
       invoice_number: architecto
+      payment_method: architecto
       search: architecto
     bodyParameters: []
     cleanBodyParameters: []
@@ -173,13 +185,24 @@ endpoints:
       notes:
         custom: []
         name: notes
-        description: ''
+        description: optional
         required: false
         example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
+        deprecated: false
+      payment_method:
+        custom: []
+        name: payment_method
+        description: 'cash / card / mobile'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
         deprecated: false
       'items[].product_id':
         custom: []
@@ -253,6 +276,7 @@ endpoints:
       items:
         - architecto
       notes: architecto
+      payment_method: architecto
     fileParameters: []
     responses: []
     responseFields: []
@@ -392,6 +416,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
+      payment_method:
+        custom: []
+        name: payment_method
+        description: 'optional cash / card / mobile'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       'items[].product_id':
         custom: []
         name: 'items[].product_id'
@@ -464,6 +499,7 @@ endpoints:
       items:
         - architecto
       notes: architecto
+      payment_method: architecto
     fileParameters: []
     responses: []
     responseFields: []

@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\AnalyticsController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ExpenseController;
+
 
 
 
@@ -133,6 +135,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/inventory', [ReportsController::class, 'inventory']);
         Route::get('/profit-loss', [ReportsController::class, 'profitLoss']);
     });
+
+    // Expenses
+    Route::get('expenses/all', [ExpenseController::class, 'listByCategory']);
+    Route::apiResource('expenses', ExpenseController::class);
 
     // Notifications
     Route::prefix('notifications')->group(function () {

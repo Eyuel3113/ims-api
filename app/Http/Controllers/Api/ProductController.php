@@ -158,14 +158,14 @@ public function barcodeImage($id, Request $request)
     $download = $request->query('download') == '1';
 
     $sizes = [
-        'small' => 1,
-        'medium' => 2,
-        'large' => 3,
+        'small' => 0.8,
+        'medium' => 1.0,
+        'large' => 1.5,
     ];
 
-    $scale = $sizes[$size] ?? 2;
+    $magnification = $sizes[$size] ?? 1.0;
 
-    $svg = $this->generateBarcodeSvg($product->barcode, $scale);
+    $svg = $this->generateBarcodeSvg($product->barcode, $magnification);
 
     if ($download) {
         return response($svg)
@@ -177,16 +177,20 @@ public function barcodeImage($id, Request $request)
 }
 
 
-private function generateBarcodeSvg(string $barcode, int $scale = 2): string
+private function generateBarcodeSvg(string $barcode, float $magnification = 1.0): string
 {
-    // EAN-13 encoding pattern
-    $leftPattern = [
+    // EAN-13 encoding patterns
+    $patternA = [
         '0' => '0001101', '1' => '0011001', '2' => '0010011', '3' => '0111101',
         '4' => '0100011', '5' => '0110001', '6' => '0101111', '7' => '0111011',
         '8' => '0110111', '9' => '0001011'
     ];
-
-    $rightPattern = [
+    $patternB = [
+        '0' => '0100111', '1' => '0110011', '2' => '0011011', '3' => '0100001',
+        '4' => '0011101', '5' => '0111001', '6' => '0000101', '7' => '0010001',
+        '8' => '0001001', '9' => '0010111'
+    ];
+    $patternC = [
         '0' => '1110010', '1' => '1100110', '2' => '1101100', '3' => '1000010',
         '4' => '1011100', '5' => '1001110', '6' => '1010000', '7' => '1000100',
         '8' => '1001000', '9' => '1110100'
@@ -198,57 +202,57 @@ private function generateBarcodeSvg(string $barcode, int $scale = 2): string
 
     $digits = str_split($barcode);
     $first = $digits[0];
-
-    // Left side encoding based on first digit
     $leftParity = [
-        '0' => ['A','A','A','A','A','A'],
-        '1' => ['A','A','B','A','B','B'],
-        '2' => ['A','A','B','B','A','B'],
-        '3' => ['A','A','B','B','B','A'],
-        '4' => ['A','B','A','A','B','B'],
-        '5' => ['A','B','B','A','A','B'],
-        '6' => ['A','B','B','B','A','A'],
-        '7' => ['A','B','A','B','A','B'],
-        '8' => ['A','B','A','B','B','A'],
-        '9' => ['A','B','B','A','B','A']
+        '0' => ['A','A','A','A','A','A'], '1' => ['A','A','B','A','B','B'],
+        '2' => ['A','A','B','B','A','B'], '3' => ['A','A','B','B','B','A'],
+        '4' => ['A','B','A','A','B','B'], '5' => ['A','B','B','A','A','B'],
+        '6' => ['A','B','B','B','A','A'], '7' => ['A','B','A','B','A','B'],
+        '8' => ['A','B','A','B','B','A'], '9' => ['A','B','B','A','B','A']
     ];
-
     $parity = $leftParity[$first];
 
-    $encoded = $start;
-
-    // Left 6 digits
+    $encoded = [];
+    foreach(str_split($start) as $b) $encoded[] = ['b' => $b, 'g' => true];
     for ($i = 1; $i <= 6; $i++) {
-        $pattern = $parity[$i-1] === 'A' ? $leftPattern : $rightPattern;
-        $encoded .= $pattern[$digits[$i]];
+        $p = $parity[$i-1] === 'A' ? $patternA : $patternB;
+        foreach(str_split($p[$digits[$i]]) as $b) $encoded[] = ['b' => $b, 'g' => false];
     }
-
-    $encoded .= $middle;
-
-    // Right 6 digits
+    foreach(str_split($middle) as $b) $encoded[] = ['b' => $b, 'g' => true];
     for ($i = 7; $i <= 12; $i++) {
-        $encoded .= $rightPattern[$digits[$i]];
+        foreach(str_split($patternC[$digits[$i]]) as $b) $encoded[] = ['b' => $b, 'g' => false];
     }
+    foreach(str_split($end) as $b) $encoded[] = ['b' => $b, 'g' => true];
 
-    $encoded .= $end;
+    // Standard EAN-13 Dimensions in mm
+    $moduleWidth = 0.33 * $magnification;
+    $quietZone = 3.63 * $magnification; // approx 11 modules
+    $barHeight = 22.85 * $magnification;
+    $guardHeight = $barHeight + (1.65 * $magnification);
+    $totalWidth = (count($encoded) * $moduleWidth) + (2 * $quietZone);
+    $totalHeight = $guardHeight + (3 * $magnification); // Extra for text space
 
-    $width = strlen($encoded) * $scale;
-    $height = 100 * $scale;
-
-    $svg = '<svg width="' . $width . '" height="' . ($height + 50) . '" xmlns="http://www.w3.org/2000/svg">';
+    $svg = '<svg width="' . $totalWidth . 'mm" height="' . $totalHeight . 'mm" viewBox="0 0 ' . $totalWidth . ' ' . $totalHeight . '" xmlns="http://www.w3.org/2000/svg">';
     $svg .= '<rect width="100%" height="100%" fill="white"/>';
 
-    // Bars
-    $x = 0;
-    foreach (str_split($encoded) as $bar) {
-        if ($bar == '1') {
-            $svg .= '<rect x="' . $x . '" y="0" width="' . $scale . '" height="' . $height . '" fill="black"/>';
+    $x = $quietZone;
+    foreach ($encoded as $item) {
+        if ($item['b'] == '1') {
+            $h = $item['g'] ? $guardHeight : $barHeight;
+            $svg .= '<rect x="' . $x . '" y="0" width="' . $moduleWidth . '" height="' . $h . '" fill="black"/>';
         }
-        $x += $scale;
+        $x += $moduleWidth;
     }
 
-    // Text
-    $svg .= '<text x="50%" y="' . ($height + 30) . '" font-family="Arial" font-size="' . (20 * $scale) . '" text-anchor="middle">' . $barcode . '</text>';
+    $fontSize = 3 * $magnification;
+    $textY = $guardHeight + $fontSize;
+    
+    $svg .= '<text x="' . ($quietZone / 2) . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . $digits[0] . '</text>';
+    
+    $leftGroupX = $quietZone + (3 + 10.5) * $moduleWidth;
+    $svg .= '<text x="' . $leftGroupX . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . substr($barcode, 1, 6) . '</text>';
+    
+    $rightGroupX = $quietZone + (3 + 42 + 5 + 10.5) * $moduleWidth;
+    $svg .= '<text x="' . $rightGroupX . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . substr($barcode, 7, 6) . '</text>';
 
     $svg .= '</svg>';
 

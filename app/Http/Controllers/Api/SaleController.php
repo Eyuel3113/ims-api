@@ -390,7 +390,12 @@ class SaleController extends Controller
     public function invoice($id)
     {
         $sale = Sale::with(['items.product', 'items.warehouse'])->findOrFail($id);
-        $pdf = \PDF::loadView('pdf.sale_invoice', compact('sale'));
-        return $pdf->download('Sale_' . $sale->invoice_number . '.pdf');
+        
+        // POS-82 paper size: Width = 82mm (~232pt) for better margins, Height = Continuous (~600pt)
+        $customPaper = [0, 0, 232.44, 600]; 
+        $pdf = \PDF::loadView('pdf.sale_invoice', compact('sale'))
+                  ->setPaper($customPaper);
+
+        return $pdf->stream('Receipt_' . $sale->invoice_number . '.pdf');
     }
 }

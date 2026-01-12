@@ -117,27 +117,36 @@ class SaleController extends Controller
 
         try {
             return DB::transaction(function () use ($request) {
-                // First pass: collect products and calculate total
                 $itemsWithPrices = [];
                 $total = 0;
+                $taxTotal = 0;
 
                 foreach ($request->items as $itemData) {
                     $product = \App\Models\Product::findOrFail($itemData['product_id']);
                     $unitPrice = $product->selling_price;
                     $itemTotal = $itemData['quantity'] * $unitPrice;
 
+                    $tax = 0;
+                    if ($product->is_vatable) {
+                        $tax = $itemTotal * 0.15;
+                    }
+
                     $itemsWithPrices[] = array_merge($itemData, [
                         'unit_price' => $unitPrice,
-                        'total_price' => $itemTotal
+                        'total_price' => $itemTotal,
+                        'tax_amount' => $tax
                     ]);
 
                     $total += $itemTotal;
+                    $taxTotal += $tax;
                 }
 
                 $sale = Sale::create([
                     'invoice_number' => $request->invoice_number,
                     'sale_date' => $request->sale_date,
                     'total_amount' => $total,
+                    'tax_amount' => $taxTotal,
+                    'grand_total' => $total + $taxTotal,
                     'notes' => $request->notes,
                     'payment_method' => $request->payment_method,
                 ]);
@@ -277,19 +286,29 @@ class SaleController extends Controller
                     // 3. Fetch prices and calculate new total
                     $itemsWithPrices = [];
                     $total = 0;
+                    $taxTotal = 0;
                     foreach ($request->items as $itemData) {
                         $product = \App\Models\Product::findOrFail($itemData['product_id']);
                         $unitPrice = $product->selling_price;
                         $itemTotal = $itemData['quantity'] * $unitPrice;
 
+                        $tax = 0;
+                        if ($product->is_vatable) {
+                            $tax = $itemTotal * 0.15;
+                        }
+
                         $itemsWithPrices[] = array_merge($itemData, [
                             'unit_price' => $unitPrice,
-                            'total_price' => $itemTotal
+                            'total_price' => $itemTotal,
+                            'tax_amount' => $tax
                         ]);
 
                         $total += $itemTotal;
+                        $taxTotal += $tax;
                     }
                     $updateData['total_amount'] = $total;
+                    $updateData['tax_amount'] = $taxTotal;
+                    $updateData['grand_total'] = $total + $taxTotal;
                     $sale->update($updateData);
 
                     // 4. Create new items and reduce stock

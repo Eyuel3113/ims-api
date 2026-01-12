@@ -17,7 +17,7 @@ class Product extends Model
 
     protected $fillable = [
         'name', 'code', 'category_id', 'unit', 'barcode',
-        'photo', 'purchase_price', 'selling_price', 'min_stock', 'has_expiry', 'is_active'
+        'photo', 'purchase_price', 'selling_price', 'min_stock', 'has_expiry', 'is_active', 'is_vatable'
     ];
 
     protected $appends = ['photo_url'];
@@ -25,6 +25,7 @@ class Product extends Model
     protected $casts = [
         'has_expiry' => 'boolean',
         'is_active' => 'boolean',
+        'is_vatable' => 'boolean',
         'min_stock' => 'integer',
         'purchase_price' => 'decimal:2',
         'selling_price' => 'decimal:2',

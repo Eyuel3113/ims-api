@@ -289,6 +289,7 @@ private function generateBarcodeSvg(string $barcode, float $magnification = 1.0)
             'has_expiry' => 'nullable|boolean',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
+            'is_vatable' => 'nullable|boolean',
         ]);
 
         if (empty($validated['barcode'])) {
@@ -359,6 +360,7 @@ private function generateBarcodeSvg(string $barcode, float $magnification = 1.0)
             'min_stock' => 'nullable|integer|min:0',
             'has_expiry' => 'nullable|boolean',
             'is_active' => 'sometimes|boolean',
+            'is_vatable' => 'sometimes|boolean',
         ]);
 
         if ($request->hasFile('photo')) {

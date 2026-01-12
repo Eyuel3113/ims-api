@@ -302,6 +302,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      is_vatable:
+        custom: []
+        name: is_vatable
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
       is_active:
         custom: []
         name: is_active
@@ -323,6 +334,7 @@ endpoints:
       has_expiry: false
       purchase_price: 4326.41688
       selling_price: 4326.41688
+      is_vatable: true
       is_active: false
     fileParameters:
       photo: null
@@ -582,6 +594,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      is_vatable:
+        custom: []
+        name: is_vatable
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       purchase_price:
         custom: []
         name: purchase_price
@@ -613,6 +636,7 @@ endpoints:
       min_stock: 16
       has_expiry: false
       is_active: false
+      is_vatable: true
       purchase_price: 4326.41688
       selling_price: 4326.41688
     fileParameters:

@@ -59,9 +59,17 @@
     </table>
 
     <div class="total-section">
-        <div class="total-row" style="width: 100%;">
-            <span>GRAND TOTAL:</span>
+        <div class="total-row" style="width: 100%; font-weight: normal; font-size: 10pt;">
+            <span>Subtotal:</span>
             <span style="float: right;">{{ number_format($sale->total_amount, 2) }} ETB</span>
+        </div>
+        <div class="total-row" style="width: 100%; font-weight: normal; font-size: 10pt;">
+            <span>VAT (15%):</span>
+            <span style="float: right;">{{ number_format($sale->tax_amount, 2) }} ETB</span>
+        </div>
+        <div class="total-row" style="width: 100%; margin-top: 2mm;">
+            <span>GRAND TOTAL:</span>
+            <span style="float: right;">{{ number_format($sale->grand_total, 2) }} ETB</span>
         </div>
         <div style="clear: both;"></div>
     </div>

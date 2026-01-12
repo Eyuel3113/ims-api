@@ -29,7 +29,7 @@
 <body>
     <div class="header">
         <h1>RECEIPT</h1>
-        <p><strong>{{ config('app.name', 'IMS') }}</strong></p>
+        <p><strong>Astedader IMS</strong></p>
     </div>
 
     <div class="info">
@@ -42,9 +42,10 @@
     <table>
         <thead>
             <tr>
-                <th width="50%">Item</th>
+                <th width="40%">Item</th>
                 <th width="15%">Qty</th>
-                <th width="35%" align="right">Total</th>
+                <th width="20%">Price</th>
+                <th width="25%" align="right">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -52,6 +53,7 @@
             <tr class="item-row">
                 <td>{{ substr($item->product->name, 0, 20) }}</td>
                 <td>{{ $item->quantity }}</td>
+                <td>{{ number_format($item->unit_price, 2) }}</td>
                 <td align="right">{{ number_format($item->total_price, 2) }}</td>
             </tr>
             @endforeach
@@ -77,6 +79,7 @@
     <div class="footer">
         <p>Thank you for your business!</p>
         <p>Please keep this receipt for your records.</p>
+        <p><strong>Powered by phoenixopia solution</strong></p>
     </div>
 </body>
 </html>

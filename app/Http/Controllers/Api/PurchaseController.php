@@ -60,7 +60,7 @@ class PurchaseController extends Controller
             });
         }
 
-        $purchases = $query->orderBy('purchase_date', 'desc')
+        $purchases = $query->orderBy('created_at', 'desc')
             ->paginate($limit);
 
         return response()->json([
@@ -108,7 +108,7 @@ class PurchaseController extends Controller
             });
         }
 
-        $purchases = $query->orderBy('purchase_date', 'desc')->get();
+        $purchases = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active purchases fetched successfully',

@@ -45,7 +45,7 @@ class SupplierController extends Controller
             $query->where('is_active', false);
         }
 
-        $suppliers = $query->orderBy('name')->paginate($limit);
+        $suppliers = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Suppliers fetched successfully',
@@ -183,7 +183,7 @@ class SupplierController extends Controller
             });
         }
 
-        $suppliers = $query->orderBy('name')->get();
+        $suppliers = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active suppliers fetched successfully',

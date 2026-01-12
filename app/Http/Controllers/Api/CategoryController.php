@@ -43,7 +43,7 @@ class CategoryController extends Controller
             $query->where('is_active', false);
         }
 
-        $categories = $query->orderBy('name')->paginate($limit);
+        $categories = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Categories fetched successfully',
@@ -176,7 +176,7 @@ class CategoryController extends Controller
             });
         }
 
-        $categories = $query->orderBy('name', 'asc')->get();
+        $categories = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active categories fetched successfully',

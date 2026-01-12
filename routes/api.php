@@ -113,6 +113,7 @@ Route::prefix('v1')->group(function () {
 
     // Stock History
     Route::get('/stock-movements', [StockMovementController::class, 'index']);
+    Route::post('/stock-movements', [StockMovementController::class, 'store']);
 
     // Activity Logs
     Route::prefix('activity-logs')->group(function () {

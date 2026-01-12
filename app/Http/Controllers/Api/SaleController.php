@@ -73,7 +73,7 @@ class SaleController extends Controller
             });
         }
 
-        $sales = $query->orderBy('sale_date', 'desc')->paginate($limit);
+        $sales = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Sales fetched successfully',

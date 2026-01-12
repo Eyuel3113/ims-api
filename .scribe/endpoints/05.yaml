@@ -307,7 +307,7 @@ endpoints:
         name: is_vatable
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -334,7 +334,7 @@ endpoints:
       has_expiry: false
       purchase_price: 4326.41688
       selling_price: 4326.41688
-      is_vatable: true
+      is_vatable: false
       is_active: false
     fileParameters:
       photo: null
@@ -599,7 +599,7 @@ endpoints:
         name: is_vatable
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -636,7 +636,7 @@ endpoints:
       min_stock: 16
       has_expiry: false
       is_active: false
-      is_vatable: true
+      is_vatable: false
       purchase_price: 4326.41688
       selling_price: 4326.41688
     fileParameters:

@@ -44,7 +44,7 @@ class WarehouseController extends Controller
             $query->where('is_active', false);
         }
 
-        $warehouses = $query->orderBy('name')->paginate($limit);
+        $warehouses = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Warehouses fetched successfully',
@@ -165,7 +165,7 @@ class WarehouseController extends Controller
             });
         }
 
-        $Warehouse = $query->orderBy('name', 'asc')->get();
+        $Warehouse = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active categories fetched successfully',

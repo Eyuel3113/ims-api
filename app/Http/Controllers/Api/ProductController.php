@@ -70,7 +70,7 @@ class ProductController extends Controller
             $query->whereRaw('min_stock > (SELECT COALESCE(SUM(quantity), 0) FROM stocks WHERE stocks.product_id = products.id)');
         }
 
-        $products = $query->orderBy('name')->paginate($limit);
+        $products = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Products fetched successfully',
@@ -429,7 +429,7 @@ private function generateBarcodeSvg(string $barcode, float $magnification = 1.0)
         if($barcode){
             $query->where('barcode',$barcode);
         }
-        $products = $query->orderBy('name')->get();
+        $products = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active products fetched successfully',

@@ -322,6 +322,9 @@
                                                     <li class="tocify-item level-2" data-unique="stock-history-GETapi-v1-stock-movements">
                                 <a href="#stock-history-GETapi-v1-stock-movements">List Stock Movements</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="stock-history-POSTapi-v1-stock-movements">
+                                <a href="#stock-history-POSTapi-v1-stock-movements">Create Manual Stock Movement</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-suppliers" class="tocify-header">
@@ -4591,9 +4594,9 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "has_expiry="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php38BF.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php5032.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4616,7 +4619,7 @@ body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
@@ -4772,7 +4775,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php38BF.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php5032.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -4852,7 +4855,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
@@ -5208,10 +5211,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php38D1.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php5044.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5233,7 +5236,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -5403,7 +5406,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php38D1.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php5044.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5481,7 +5484,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -5648,7 +5651,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php38E1.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php5054.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5769,7 +5772,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php38E1.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php5054.tmp</code></p>
         </div>
         </form>
 
@@ -6675,10 +6678,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-12T07:48:06"
+               value="2026-01-12T08:45:00"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-12T07:48:06</code></p>
+<p>Must be a valid date. Example: <code>2026-01-12T08:45:00</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7127,10 +7130,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-12T07:48:06"
+               value="2026-01-12T08:45:00"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-12T07:48:06</code></p>
+<p>Must be a valid date. Example: <code>2026-01-12T08:45:00</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -9932,6 +9935,194 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                 </form>
 
+                    <h2 id="stock-history-POSTapi-v1-stock-movements">Create Manual Stock Movement</h2>
+
+<p>
+</p>
+
+<p>Manually adjust stock for reasons like damage, loss, or found items.</p>
+
+<span id="example-requests-POSTapi-v1-stock-movements">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/stock-movements" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"product_id\": \"architecto\",
+    \"warehouse_id\": \"architecto\",
+    \"quantity\": 4326.41688,
+    \"type\": \"architecto\",
+    \"notes\": \"architecto\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/stock-movements"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "product_id": "architecto",
+    "warehouse_id": "architecto",
+    "quantity": 4326.41688,
+    "type": "architecto",
+    "notes": "architecto"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-stock-movements">
+</span>
+<span id="execution-results-POSTapi-v1-stock-movements" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-stock-movements"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-stock-movements"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-stock-movements" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-stock-movements">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-stock-movements" data-method="POST"
+      data-path="api/v1/stock-movements"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-stock-movements', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-stock-movements"
+                    onclick="tryItOut('POSTapi-v1-stock-movements');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-stock-movements"
+                    onclick="cancelTryOut('POSTapi-v1-stock-movements');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-stock-movements"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/stock-movements</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-stock-movements"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-stock-movements"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>product_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="product_id"                data-endpoint="POSTapi-v1-stock-movements"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>Example: <code>architecto</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>warehouse_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="warehouse_id"                data-endpoint="POSTapi-v1-stock-movements"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>Example: <code>architecto</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>quantity</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="quantity"                data-endpoint="POSTapi-v1-stock-movements"
+               value="4326.41688"
+               data-component="body">
+    <br>
+<p>Positive value. Example: <code>4326.41688</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="type"                data-endpoint="POSTapi-v1-stock-movements"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>damage, lost, found, adjustment Example: <code>architecto</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notes"                data-endpoint="POSTapi-v1-stock-movements"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>optional Example: <code>architecto</code></p>
+        </div>
+        </form>
+
                 <h1 id="suppliers">Suppliers</h1>
 
     <p>APIs for managing suppliers</p>
@@ -10601,7 +10792,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"phone\": \"architecto\",
     \"email\": \"zbailey@example.net\",
     \"address\": \"architecto\",
-    \"is_active\": true
+    \"is_active\": false
 }"
 </code></pre></div>
 
@@ -10622,7 +10813,7 @@ let body = {
     "phone": "architecto",
     "email": "zbailey@example.net",
     "address": "architecto",
-    "is_active": true
+    "is_active": false
 };
 
 fetch(url, {
@@ -10800,7 +10991,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 
@@ -12083,7 +12274,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"code\": \"n\",
     \"address\": \"architecto\",
     \"phone\": \"ngzmiyvdljnikhwa\",
-    \"is_active\": false
+    \"is_active\": true
 }"
 </code></pre></div>
 
@@ -12103,7 +12294,7 @@ let body = {
     "code": "n",
     "address": "architecto",
     "phone": "ngzmiyvdljnikhwa",
-    "is_active": false
+    "is_active": true
 };
 
 fetch(url, {
@@ -12269,7 +12460,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 

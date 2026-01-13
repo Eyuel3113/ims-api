@@ -121,6 +121,10 @@ class AnalyticsController extends Controller
 
     /**
      * Inventory by Category
+     * 
+     * Get product distribution across categories.
+     * 
+     * @group Analytics
      */
     public function inventoryByCategory()
     {
@@ -170,6 +174,10 @@ class AnalyticsController extends Controller
 
     /**
      * Stock Value by Warehouse
+     * 
+     * Total monetary value of stock in each warehouse.
+     * 
+     * @group Analytics
      */
     public function stockByWarehouse()
     {
@@ -194,6 +202,10 @@ class AnalyticsController extends Controller
 
     /**
      * Monthly Sales vs Purchase
+     * 
+     * Monthly trend of sales vs purchases over the last 8 months.
+     * 
+     * @group Analytics
      */
     public function monthlyTrend()
     {
@@ -225,6 +237,13 @@ class AnalyticsController extends Controller
             'data' => $data
         ]);
     }
+    /**
+     * Purchase KPIs
+     * 
+     * Key metrics for purchase status and total value.
+     * 
+     * @group Analytics
+     */
     public function purchaseKpis()
     {   $totalPurchases = Purchase::count();
         $pendingCount = \App\Models\Purchase::where("status", "pending")->count();

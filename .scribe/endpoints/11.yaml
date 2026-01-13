@@ -1,19 +1,19 @@
-name: Endpoints
-description: ''
+name: Reports
+description: 'API Endpoints for generating business reports and analytics.'
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/analytics/stock-by-warehouse
+    uri: api/v1/reports/overview
     metadata:
       custom: []
-      groupName: Endpoints
-      groupDescription: ''
+      groupName: Reports
+      groupDescription: 'API Endpoints for generating business reports and analytics.'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Stock Value by Warehouse'
-      description: ''
+      title: 'Overview Report'
+      description: 'Get high-level business metrics including revenue, profit, and sales volume.'
       authenticated: false
       deprecated: false
     headers:
@@ -45,15 +45,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/analytics/monthly-trend
+    uri: api/v1/reports/sales
     metadata:
       custom: []
-      groupName: Endpoints
-      groupDescription: ''
+      groupName: Reports
+      groupDescription: 'API Endpoints for generating business reports and analytics.'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Monthly Sales vs Purchase'
-      description: ''
+      title: 'Sales Report'
+      description: 'Get top selling products and breakdown by payment methods.'
       authenticated: false
       deprecated: false
     headers:
@@ -85,15 +85,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/analytics/inventory-by-category
+    uri: api/v1/reports/inventory
     metadata:
       custom: []
-      groupName: Endpoints
-      groupDescription: ''
+      groupName: Reports
+      groupDescription: 'API Endpoints for generating business reports and analytics.'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Inventory by Category'
-      description: ''
+      title: 'Inventory Report'
+      description: 'Get current stock value and list of low stock items.'
       authenticated: false
       deprecated: false
     headers:
@@ -125,15 +125,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/analytics/purchase-kpis
+    uri: api/v1/reports/profit-loss
     metadata:
       custom: []
-      groupName: Endpoints
-      groupDescription: ''
+      groupName: Reports
+      groupDescription: 'API Endpoints for generating business reports and analytics.'
       subgroup: ''
       subgroupDescription: ''
-      title: ''
-      description: ''
+      title: 'Profit & Loss Report'
+      description: 'Get monthly breakdown of revenue, COGS, and gross profit for the last 12 months.'
       authenticated: false
       deprecated: false
     headers:

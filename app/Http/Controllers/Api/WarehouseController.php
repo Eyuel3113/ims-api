@@ -44,7 +44,7 @@ class WarehouseController extends Controller
             $query->where('is_active', false);
         }
 
-        $warehouses = $query->orderBy('created_at', 'desc')->paginate($limit);
+        $warehouses = $query->withCount('stocks')->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
             'message' => 'Warehouses fetched successfully',
@@ -85,7 +85,7 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        $warehouse = Warehouse::findOrFail($id);
+        $warehouse = Warehouse::with(['stocks.product'])->findOrFail($id);
 
         return response()->json([
             'message' => 'Warehouse retrieved successfully',
@@ -165,7 +165,7 @@ class WarehouseController extends Controller
             });
         }
 
-        $Warehouse = $query->orderBy('created_at', 'desc')->get();
+        $Warehouse = $query->withCount('stocks')->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'message' => 'Active categories fetched successfully',

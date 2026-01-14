@@ -8,6 +8,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Purchase;
 use App\Models\Stock;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -55,7 +56,12 @@ class ReportsController extends Controller
     public function sales()
     {
         $topSellingProducts = SaleItem::join('products', 'sale_items.product_id', '=', 'products.id')
-            ->select('products.name', 'products.code', DB::raw('SUM(sale_items.quantity) as total_sold'))
+            ->select(
+                'products.name',
+                'products.code',
+                DB::raw('SUM(sale_items.quantity) as total_sold'),
+                DB::raw('SUM(sale_items.total_price) as total_value')
+            )
             ->groupBy('products.id', 'products.name', 'products.code')
             ->orderByDesc('total_sold')
             ->limit(5)
@@ -64,6 +70,13 @@ class ReportsController extends Controller
         $paymentMethods = Sale::select('payment_method', DB::raw('SUM(total_amount) as total_amount'))
             ->groupBy('payment_method')
             ->get();
+
+        $totalSales = $paymentMethods->sum('total_amount');
+
+        $paymentMethods->transform(function ($item) use ($totalSales) {
+            $item->percentage = $totalSales > 0 ? round(($item->total_amount / $totalSales) * 100, 2) : 0;
+            return $item;
+        });
 
         return response()->json([
             'message' => 'Sales report fetched successfully',
@@ -109,39 +122,42 @@ class ReportsController extends Controller
      */
     public function profitLoss()
     {
-        $months = [];
-        for ($i = 11; $i >= 0; $i--) {
-            $months[] = now()->subMonthsNoOverflow($i)->format('Y-m');
-        }
+        $date = now();
+        $month = $date->format('Y-m');
 
-        $data = collect($months)->map(function ($month) {
-            $date = Carbon::parse($month . '-01');
-            
-            $revenue = Sale::whereMonth('sale_date', $date->month)
-                ->whereYear('sale_date', $date->year)
-                ->sum('total_amount');
+        $revenue = Sale::whereMonth('sale_date', $date->month)
+            ->whereYear('sale_date', $date->year)
+            ->sum('total_amount');
 
-            $cogs = DB::table('sale_items')
-                ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
-                ->join('products', 'sale_items.product_id', '=', 'products.id')
-                ->whereMonth('sales.sale_date', $date->month)
-                ->whereYear('sales.sale_date', $date->year)
-                ->selectRaw('SUM(sale_items.quantity * products.purchase_price) as cogs')
-                ->value('cogs') ?? 0;
+        $cogs = DB::table('sale_items')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->join('products', 'sale_items.product_id', '=', 'products.id')
+            ->whereMonth('sales.sale_date', $date->month)
+            ->whereYear('sales.sale_date', $date->year)
+            ->selectRaw('SUM(sale_items.quantity * products.purchase_price) as cogs')
+            ->value('cogs') ?? 0;
 
-            $profit = $revenue - $cogs;
+        $grossProfit = $revenue - $cogs;
 
-            return [
-                'month' => $month,
-                'revenue' => round((float) $revenue, 2),
-                'cogs' => round((float) $cogs, 2),
-                'gross_profit' => round((float) $profit, 2),
-            ];
-        });
+        $expenses = Expense::whereMonth('created_at', $date->month)
+            ->whereYear('created_at', $date->year)
+            ->get();
+
+        $totalExpenses = $expenses->sum('amount');
+
+        $netProfit = $grossProfit - $totalExpenses;
 
         return response()->json([
             'message' => 'Profit & Loss report fetched successfully',
-            'data' => $data
+            'data' => [
+                'month' => $month,
+                'revenue' => round((float) $revenue, 2),
+                'cogs' => round((float) $cogs, 2),
+                'gross_profit' => round((float) $grossProfit, 2),
+                'total_expenses' => round((float) $totalExpenses, 2),
+                'expenses' => $expenses,
+                'net_profit' => round((float) $netProfit, 2),
+            ]
         ]);
     }
 }

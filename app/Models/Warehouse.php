@@ -41,4 +41,9 @@ class Warehouse extends Model
     {
         return $this->hasMany(Stock::class);
     }
+
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, Stock::class, 'warehouse_id', 'id', 'id', 'product_id');
+    }
 }

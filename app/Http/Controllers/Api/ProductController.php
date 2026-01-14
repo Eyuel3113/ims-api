@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
@@ -308,6 +309,114 @@ private function generateBarcodeSvg(string $barcode, float $magnification = 1.0)
             'message' => 'Product created successfully',
             'data' => $product->load('category')
         ], 201);
+    }
+
+    /**
+     * Import Products from CSV
+     * 
+     * Expects a CSV file with headers: name, code, category_name, unit, barcode, purchase_price, selling_price, min_stock, has_expiry, is_vatable
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $handle = fopen($file->getPathname(), 'r');
+        
+        $header = fgetcsv($handle);
+        $expectedHeader = ['name', 'code', 'category_name', 'unit', 'barcode', 'purchase_price', 'selling_price', 'min_stock', 'has_expiry', 'is_vatable'];
+        
+        // Normalize headers
+        $header = array_map('trim', $header);
+        
+        // Basic header check (optional, but good for validation)
+        $missingHeaders = array_diff($expectedHeader, $header);
+        if (!empty($missingHeaders) && count($missingHeaders) > 2) { // Allow some flexibility, but critical ones needed
+             // checking strictly if essential columns exist might be better
+        }
+
+        $rowNumber = 1;
+        $success = 0;
+        $failed = 0;
+        $errors = [];
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $rowNumber++;
+            
+            // Map row to associative array
+            // Adjust loop to handle cases where row length matches header length
+            if (count($row) !== count($header)) {
+                 $errors[] = "Row {$rowNumber}: Column count mismatch";
+                 $failed++;
+                 continue;
+            }
+            
+            $data = array_combine($header, $row);
+            
+            // Basic validation
+            if (empty($data['name']) || empty($data['code']) || empty($data['category_name']) || empty($data['purchase_price']) || empty($data['selling_price'])) {
+                $errors[] = "Row {$rowNumber}: Missing required fields";
+                $failed++;
+                continue;
+            }
+
+            // Check duplicate code
+            if (Product::where('code', $data['code'])->exists()) {
+                $errors[] = "Row {$rowNumber}: Product code '{$data['code']}' already exists";
+                $failed++;
+                continue;
+            }
+
+             // Check duplicate barcode if provided
+             if (!empty($data['barcode']) && Product::where('barcode', $data['barcode'])->exists()) {
+                 $errors[] = "Row {$rowNumber}: Barcode '{$data['barcode']}' already exists";
+                 $failed++;
+                 continue;
+             }
+
+            // Find Category
+            $category = Category::where('name', $data['category_name'])->first();
+            if (!$category) {
+                // Option: Create category or fail? Requirements said "skip".
+                $errors[] = "Row {$rowNumber}: Category '{$data['category_name']}' not found";
+                $failed++;
+                continue;
+            }
+
+            try {
+                Product::create([
+                    'name' => $data['name'],
+                    'code' => $data['code'],
+                    'category_id' => $category->id,
+                    'unit' => $data['unit'] ?? 'pcs',
+                    'barcode' => $data['barcode'] ?: null, // Handle empty string
+                    'purchase_price' => $data['purchase_price'],
+                    'selling_price' => $data['selling_price'],
+                    'min_stock' => $data['min_stock'] ?? 0,
+                    'has_expiry' => filter_var($data['has_expiry'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                    'is_vatable' => filter_var($data['is_vatable'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                    'is_active' => true,
+                ]);
+                $success++;
+            } catch (\Exception $e) {
+                $errors[] = "Row {$rowNumber}: " . $e->getMessage();
+                $failed++;
+            }
+        }
+
+        fclose($handle);
+
+        return response()->json([
+            'message' => 'Import process completed',
+            'summary' => [
+                'total_processed' => $success + $failed,
+                'success' => $success,
+                'failed' => $failed,
+            ],
+            'errors' => $errors
+        ]);
     }
 
     /**

@@ -38,7 +38,7 @@ class SaleController extends Controller
     {
         $status = $request->query('status');
         $paymentMethod = $request->query('payment_method');
-        $limit = $request->query('limit', 10);+
+        $limit = $request->query('limit', 10);
 
         $query = Sale::with(['items.product']);
 

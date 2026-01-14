@@ -190,6 +190,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products">
                                 <a href="#products-POSTapi-v1-products">Create Product</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products-import">
+                                <a href="#products-POSTapi-v1-products-import">Import Products from CSV</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-barcode-search">
                                 <a href="#products-GETapi-v1-products-barcode-search">Search Product by Barcode</a>
                             </li>
@@ -401,7 +404,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 12, 2026</li>
+        <li>Last updated: January 14, 2026</li>
     </ul>
 </div>
 
@@ -4585,7 +4588,7 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "selling_price=4326.41688"\
     --form "is_vatable=1"\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php5309.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2AE.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4764,7 +4767,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php5309.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\phpA2AE.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -4867,6 +4870,134 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </label>
     <br>
 <p>optional Default true Example: <code>false</code></p>
+        </div>
+        </form>
+
+                    <h2 id="products-POSTapi-v1-products-import">Import Products from CSV</h2>
+
+<p>
+</p>
+
+<p>Expects a CSV file with headers: name, code, category_name, unit, barcode, purchase_price, selling_price, min_stock, has_expiry, is_vatable</p>
+
+<span id="example-requests-POSTapi-v1-products-import">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/products/import" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "file=@C:\Users\user\AppData\Local\Temp\phpA2AF.tmp" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/import"
+);
+
+const headers = {
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('file', document.querySelector('input[name="file"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-products-import">
+</span>
+<span id="execution-results-POSTapi-v1-products-import" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-products-import"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-products-import"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-products-import" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-products-import">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-products-import" data-method="POST"
+      data-path="api/v1/products/import"
+      data-authed="0"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-products-import', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-products-import"
+                    onclick="tryItOut('POSTapi-v1-products-import');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-products-import"
+                    onclick="cancelTryOut('POSTapi-v1-products-import');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-products-import"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/products/import</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-products-import"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-products-import"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="file"                data-endpoint="POSTapi-v1-products-import"
+               value=""
+               data-component="body">
+    <br>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpA2AF.tmp</code></p>
         </div>
         </form>
 
@@ -5203,7 +5334,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "is_vatable="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php5482.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2C1.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5395,7 +5526,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php5482.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\phpA2C1.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5640,7 +5771,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php5492.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2D1.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5761,7 +5892,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php5492.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpA2D1.tmp</code></p>
         </div>
         </form>
 
@@ -6667,10 +6798,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-12T11:57:21"
+               value="2026-01-14T08:23:54"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-12T11:57:21</code></p>
+<p>Must be a valid date. Example: <code>2026-01-14T08:23:54</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7119,10 +7250,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-12T11:57:21"
+               value="2026-01-14T08:23:54"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-12T11:57:21</code></p>
+<p>Must be a valid date. Example: <code>2026-01-14T08:23:54</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -10781,7 +10912,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"phone\": \"architecto\",
     \"email\": \"zbailey@example.net\",
     \"address\": \"architecto\",
-    \"is_active\": false
+    \"is_active\": true
 }"
 </code></pre></div>
 
@@ -10802,7 +10933,7 @@ let body = {
     "phone": "architecto",
     "email": "zbailey@example.net",
     "address": "architecto",
-    "is_active": false
+    "is_active": true
 };
 
 fetch(url, {
@@ -10980,7 +11111,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 

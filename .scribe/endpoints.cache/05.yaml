@@ -349,6 +349,49 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - POST
+    uri: api/v1/products/import
+    metadata:
+      custom: []
+      groupName: Products
+      groupDescription: 'APIs for managing products with barcode, expiry, photo, min stock'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Import Products from CSV'
+      description: 'Expects a CSV file with headers: name, code, category_name, unit, barcode, purchase_price, selling_price, min_stock, has_expiry, is_vatable'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: multipart/form-data
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      file:
+        custom: []
+        name: file
+        description: 'Must be a file. Must not be greater than 2048 kilobytes.'
+        required: true
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters: []
+    fileParameters:
+      file: null
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - GET
     uri: api/v1/products/barcode-search
     metadata:

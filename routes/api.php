@@ -75,6 +75,7 @@ Route::prefix('v1')->group(function () {
 
       // Products
       Route::prefix('products')->group(function () {
+        Route::get('/active-list', [ProductController::class, 'activeProductsList']);
         Route::get('/active', [ProductController::class, 'activeProducts']);
         Route::get('/', [ProductController::class, 'index']);
         Route::post('/', [ProductController::class, 'store']);

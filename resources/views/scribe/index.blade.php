@@ -181,8 +181,11 @@
                     <a href="#products">Products</a>
                 </li>
                                     <ul id="tocify-subheader-products" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-active">
-                                <a href="#products-GETapi-v1-products-active">List Active Products</a>
+                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-active-list">
+                                <a href="#products-GETapi-v1-products-active-list">List Active Products (Paginated)</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-active">
+                                <a href="#products-GETapi-v1-products-active">List Active Products (All)</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-GETapi-v1-products">
                                 <a href="#products-GETapi-v1-products">List Products</a>
@@ -404,7 +407,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 14, 2026</li>
+        <li>Last updated: January 15, 2026</li>
     </ul>
 </div>
 
@@ -4184,7 +4187,178 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>APIs for managing products with barcode, expiry, photo, min stock</p>
 
-                                <h2 id="products-GETapi-v1-products-active">List Active Products</h2>
+                                <h2 id="products-GETapi-v1-products-active-list">List Active Products (Paginated)</h2>
+
+<p>
+</p>
+
+<p>Get paginated list of active products.</p>
+
+<span id="example-requests-GETapi-v1-products-active-list">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/products/active-list?search=architecto&amp;barcode=architecto&amp;limit=16" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/active-list"
+);
+
+const params = {
+    "search": "architecto",
+    "barcode": "architecto",
+    "limit": "16",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products-active-list">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products-active-list" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products-active-list"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products-active-list"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products-active-list" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products-active-list">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products-active-list" data-method="GET"
+      data-path="api/v1/products/active-list"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products-active-list', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products-active-list"
+                    onclick="tryItOut('GETapi-v1-products-active-list');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products-active-list"
+                    onclick="cancelTryOut('GETapi-v1-products-active-list');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products-active-list"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/active-list</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products-active-list"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products-active-list"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-products-active-list"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Search by name, code, barcode. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>barcode</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="barcode"                data-endpoint="GETapi-v1-products-active-list"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional filter by barcode. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-products-active-list"
+               value="16"
+               data-component="query">
+    <br>
+<p>optional Default 10. Example: <code>16</code></p>
+            </div>
+                </form>
+
+                    <h2 id="products-GETapi-v1-products-active">List Active Products (All)</h2>
 
 <p>
 </p>
@@ -4197,7 +4371,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/v1/products/active?search=architecto" \
+    --get "http://localhost/api/v1/products/active?search=architecto&amp;barcode=architecto" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4209,6 +4383,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "search": "architecto",
+    "barcode": "architecto",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -4325,8 +4500,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="query">
     <br>
-<p>optional Search by name, code, barcode.
-queryParam barcode string optional filter by barcode. Example: <code>architecto</code></p>
+<p>optional Search by name, code, barcode. Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>barcode</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="barcode"                data-endpoint="GETapi-v1-products-active"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional filter by barcode. Example: <code>architecto</code></p>
             </div>
                 </form>
 
@@ -4586,9 +4772,9 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "has_expiry="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2AE.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php741A.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4611,7 +4797,7 @@ body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
@@ -4767,7 +4953,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\phpA2AE.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php741A.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -4847,7 +5033,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
@@ -4889,7 +5075,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/import" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\user\AppData\Local\Temp\phpA2AF.tmp" </code></pre></div>
+    --form "file=@C:\Users\user\AppData\Local\Temp\php742A.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4997,7 +5183,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpA2AF.tmp</code></p>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php742A.tmp</code></p>
         </div>
         </form>
 
@@ -5331,10 +5517,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable="\
+    --form "is_vatable=1"\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2C1.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php744D.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5356,7 +5542,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '');
+body.append('is_vatable', '1');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -5526,7 +5712,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\phpA2C1.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php744D.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5604,7 +5790,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -5771,7 +5957,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpA2D1.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php744E.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5892,7 +6078,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpA2D1.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php744E.tmp</code></p>
         </div>
         </form>
 
@@ -6798,10 +6984,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-14T08:23:54"
+               value="2026-01-15T12:25:49"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-14T08:23:54</code></p>
+<p>Must be a valid date. Example: <code>2026-01-15T12:25:49</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7250,10 +7436,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-14T08:23:54"
+               value="2026-01-15T12:25:49"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-14T08:23:54</code></p>
+<p>Must be a valid date. Example: <code>2026-01-15T12:25:49</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -12394,7 +12580,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"code\": \"n\",
     \"address\": \"architecto\",
     \"phone\": \"ngzmiyvdljnikhwa\",
-    \"is_active\": false
+    \"is_active\": true
 }"
 </code></pre></div>
 
@@ -12414,7 +12600,7 @@ let body = {
     "code": "n",
     "address": "architecto",
     "phone": "ngzmiyvdljnikhwa",
-    "is_active": false
+    "is_active": true
 };
 
 fetch(url, {
@@ -12580,7 +12766,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 

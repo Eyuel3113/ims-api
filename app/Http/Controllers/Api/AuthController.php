@@ -304,5 +304,4 @@ public function changeEmail(Request $request)
         'new_email' => $user->email
     ]);
 }
-
 }

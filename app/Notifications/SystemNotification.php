@@ -63,7 +63,7 @@ class SystemNotification extends Notification
             ->greeting('Hello!')
             ->line($this->message)
             ->line('Thank you for using our application!')
-            ->salutation('Regards, HRMS Team');
+            ->salutation('Regards, IMS Team');
     }
 
     /**

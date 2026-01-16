@@ -229,36 +229,55 @@ private function generateBarcodeSvg(string $barcode, float $magnification = 1.0)
     }
     foreach(str_split($end) as $b) $encoded[] = ['b' => $b, 'g' => true];
 
-    // Standard EAN-13 Dimensions in mm
-    $moduleWidth = 0.33 * $magnification;
-    $quietZone = 3.63 * $magnification; // approx 11 modules
-    $barHeight = 22.85 * $magnification;
-    $guardHeight = $barHeight + (1.65 * $magnification);
+    // Convert mm to pixels for better print quality
+    // Using 96 DPI as base (standard screen DPI), which converts well to 300 DPI for print
+    $mmToPixel = 3.7795275591; // 1mm = 3.78 pixels at 96 DPI
+    
+    // Standard EAN-13 Dimensions in mm, then convert to pixels
+    $moduleWidthMm = 0.33 * $magnification;
+    $quietZoneMm = 3.63 * $magnification; // approx 11 modules
+    $barHeightMm = 22.85 * $magnification;
+    $guardHeightMm = $barHeightMm + (1.65 * $magnification);
+    
+    // Convert to pixels
+    $moduleWidth = $moduleWidthMm * $mmToPixel;
+    $quietZone = $quietZoneMm * $mmToPixel;
+    $barHeight = $barHeightMm * $mmToPixel;
+    $guardHeight = $guardHeightMm * $mmToPixel;
+    
     $totalWidth = (count($encoded) * $moduleWidth) + (2 * $quietZone);
-    $totalHeight = $guardHeight + (3 * $magnification); // Extra for text space
+    $totalHeight = $guardHeight + (12 * $magnification); // Extra for text space
+    
+    // Round values for cleaner SVG
+    $totalWidth = round($totalWidth, 2);
+    $totalHeight = round($totalHeight, 2);
 
-    $svg = '<svg width="' . $totalWidth . 'mm" height="' . $totalHeight . 'mm" viewBox="0 0 ' . $totalWidth . ' ' . $totalHeight . '" xmlns="http://www.w3.org/2000/svg">';
+    // Use pixels with proper viewBox for crisp rendering and printing
+    $svg = '<svg width="' . $totalWidth . '" height="' . $totalHeight . '" viewBox="0 0 ' . $totalWidth . ' ' . $totalHeight . '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">';
     $svg .= '<rect width="100%" height="100%" fill="white"/>';
 
     $x = $quietZone;
     foreach ($encoded as $item) {
         if ($item['b'] == '1') {
             $h = $item['g'] ? $guardHeight : $barHeight;
-            $svg .= '<rect x="' . $x . '" y="0" width="' . $moduleWidth . '" height="' . $h . '" fill="black"/>';
+            $svg .= '<rect x="' . round($x, 2) . '" y="0" width="' . round($moduleWidth, 2) . '" height="' . round($h, 2) . '" fill="black"/>';
         }
         $x += $moduleWidth;
     }
 
-    $fontSize = 3 * $magnification;
+    $fontSize = 11 * $magnification;
     $textY = $guardHeight + $fontSize;
     
-    $svg .= '<text x="' . ($quietZone / 2) . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . $digits[0] . '</text>';
+    // First digit (left of barcode)
+    $svg .= '<text x="' . round($quietZone / 2, 2) . '" y="' . round($textY, 2) . '" font-family="monospace" font-size="' . round($fontSize, 2) . '" text-anchor="middle" fill="black">' . $digits[0] . '</text>';
     
-    $leftGroupX = $quietZone + (3 + 10.5) * $moduleWidth;
-    $svg .= '<text x="' . $leftGroupX . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . substr($barcode, 1, 6) . '</text>';
+    // Left group digits
+    $leftGroupX = $quietZone + (3 + 21) * $moduleWidth;
+    $svg .= '<text x="' . round($leftGroupX, 2) . '" y="' . round($textY, 2) . '" font-family="monospace" font-size="' . round($fontSize, 2) . '" text-anchor="middle" fill="black">' . substr($barcode, 1, 6) . '</text>';
     
-    $rightGroupX = $quietZone + (3 + 42 + 5 + 10.5) * $moduleWidth;
-    $svg .= '<text x="' . $rightGroupX . '" y="' . $textY . '" font-family="Arial, sans-serif" font-size="' . $fontSize . '" text-anchor="middle">' . substr($barcode, 7, 6) . '</text>';
+    // Right group digits
+    $rightGroupX = $quietZone + (3 + 42 + 5 + 21) * $moduleWidth;
+    $svg .= '<text x="' . round($rightGroupX, 2) . '" y="' . round($textY, 2) . '" font-family="monospace" font-size="' . round($fontSize, 2) . '" text-anchor="middle" fill="black">' . substr($barcode, 7, 6) . '</text>';
 
     $svg .= '</svg>';
 

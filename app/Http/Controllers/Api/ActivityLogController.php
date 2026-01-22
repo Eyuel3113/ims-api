@@ -65,7 +65,12 @@ class ActivityLogController extends Controller
         }
 
         if ($search) {
-            $query->where('description', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('description', 'like', "%{$search}%")
+                  ->orWhereHasMorph('causer', [\App\Models\User::class], function ($query) use ($search) {
+                      $query->where('name', 'like', "%{$search}%");
+                  });
+            });
         }
 
         $logs = $query->paginate($limit);

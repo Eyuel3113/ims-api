@@ -407,7 +407,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 15, 2026</li>
+        <li>Last updated: January 17, 2026</li>
     </ul>
 </div>
 
@@ -4774,7 +4774,7 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "selling_price=4326.41688"\
     --form "is_vatable="\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php741A.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php3822.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4953,7 +4953,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php741A.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php3822.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5075,7 +5075,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/import" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\user\AppData\Local\Temp\php742A.tmp" </code></pre></div>
+    --form "file=@C:\Users\user\AppData\Local\Temp\php3833.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5183,7 +5183,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php742A.tmp</code></p>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3833.tmp</code></p>
         </div>
         </form>
 
@@ -5517,10 +5517,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php744D.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php3846.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5542,7 +5542,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -5712,7 +5712,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php744D.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php3846.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5790,7 +5790,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -5957,7 +5957,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php744E.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php3856.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -6078,7 +6078,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php744E.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3856.tmp</code></p>
         </div>
         </form>
 
@@ -6984,10 +6984,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-15T12:25:49"
+               value="2026-01-17T09:00:35"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-15T12:25:49</code></p>
+<p>Must be a valid date. Example: <code>2026-01-17T09:00:35</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7436,10 +7436,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-15T12:25:49"
+               value="2026-01-17T09:00:35"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-15T12:25:49</code></p>
+<p>Must be a valid date. Example: <code>2026-01-17T09:00:35</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>

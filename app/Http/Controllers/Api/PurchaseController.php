@@ -158,6 +158,7 @@ class PurchaseController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
             'items.*.expiry_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
@@ -169,7 +170,7 @@ class PurchaseController extends Controller
 
             foreach ($request->items as $itemData) {
                 $product = \App\Models\Product::findOrFail($itemData['product_id']);
-                $unitPrice = $product->purchase_price;
+                $unitPrice = $itemData['unit_price'] ?? $product->purchase_price;
                 $itemTotal = $itemData['quantity'] * $unitPrice;
                 
                 $itemsWithPrices[] = array_merge($itemData, [
@@ -309,6 +310,7 @@ class PurchaseController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
             'items.*.expiry_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
@@ -327,7 +329,7 @@ class PurchaseController extends Controller
                 $total = 0;
                 foreach ($request->items as $itemData) {
                     $product = \App\Models\Product::findOrFail($itemData['product_id']);
-                    $unitPrice = $product->purchase_price;
+                    $unitPrice = $itemData['unit_price'] ?? $product->purchase_price;
                     $itemTotal = $itemData['quantity'] * $unitPrice;
 
                     $itemsWithPrices[] = array_merge($itemData, [

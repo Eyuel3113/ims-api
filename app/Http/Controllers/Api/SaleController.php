@@ -111,6 +111,7 @@ class SaleController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
             'payment_method' => 'required|string|in:cash,card,mobile',
         ]);
@@ -123,7 +124,7 @@ class SaleController extends Controller
 
                 foreach ($request->items as $itemData) {
                     $product = \App\Models\Product::findOrFail($itemData['product_id']);
-                    $unitPrice = $product->selling_price;
+                    $unitPrice = $itemData['unit_price'] ?? $product->selling_price;
                     $itemTotal = $itemData['quantity'] * $unitPrice;
 
                     $tax = 0;
@@ -248,6 +249,7 @@ class SaleController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
             'payment_method' => 'sometimes|required|string|in:cash,card,mobile',
         ]);
@@ -289,7 +291,7 @@ class SaleController extends Controller
                     $taxTotal = 0;
                     foreach ($request->items as $itemData) {
                         $product = \App\Models\Product::findOrFail($itemData['product_id']);
-                        $unitPrice = $product->selling_price;
+                        $unitPrice = $itemData['unit_price'] ?? $product->selling_price;
                         $itemTotal = $itemData['quantity'] * $unitPrice;
 
                         $tax = 0;

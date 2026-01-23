@@ -83,13 +83,28 @@ class WarehouseController extends Controller
     /**
      * Get Warehouse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $warehouse = Warehouse::with(['stocks.product'])->findOrFail($id);
+        $limit = $request->query('limit', 10);
+        $warehouse = Warehouse::findOrFail($id);
+        
+        $stocks = $warehouse->stocks()
+            ->with(['product'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         return response()->json([
             'message' => 'Warehouse retrieved successfully',
-            'data' => $warehouse
+            'data' => [
+                'warehouse' => $warehouse->makeHidden('stocks'),
+                'stocks' => $stocks->items(),
+                'pagination' => [
+                    'total' => $stocks->total(),
+                    'per_page' => $stocks->perPage(),
+                    'current_page' => $stocks->currentPage(),
+                    'last_page' => $stocks->lastPage(),
+                ]
+            ]
         ]);
     }
 

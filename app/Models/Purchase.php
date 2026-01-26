@@ -15,7 +15,7 @@ class Purchase extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['invoice_number', 'supplier_id', 'purchase_date', 'status', 'total_amount', 'notes', 'is_active'];
+    protected $fillable = ['invoice_number', 'supplier_id', 'supplier_name', 'purchase_date', 'status', 'total_amount', 'notes', 'is_active'];
 
     protected static function boot()
     {

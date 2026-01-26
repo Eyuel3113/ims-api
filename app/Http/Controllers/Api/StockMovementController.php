@@ -17,7 +17,7 @@ class StockMovementController extends Controller
      * 
      * @queryParam product_id string optional
      * @queryParam warehouse_id string optional
-     * @queryParam type string optional purchase, sale, adjustment
+     * @queryParam type string optional purchase, sale, adjustment, damage, lost, found, opening_stock
      * @queryParam limit integer optional Default 20
      */
     public function index(Request $request)
@@ -59,7 +59,7 @@ class StockMovementController extends Controller
      * @bodyParam product_id string required
      * @bodyParam warehouse_id string required
      * @bodyParam quantity number required Positive value.
-     * @bodyParam type string required damage, lost, found, adjustment
+     * @bodyParam type string required damage, lost, found, adjustment, opening_stock
      * @bodyParam notes string optional
      */
     public function store(Request $request)
@@ -68,7 +68,7 @@ class StockMovementController extends Controller
             'product_id' => 'required|exists:products,id',
             'warehouse_id' => 'required|exists:warehouses,id',
             'quantity' => 'required|numeric|min:0.01',
-            'type' => 'required|in:damage,lost,found,adjustment',
+            'type' => 'required|in:damage,lost,found,adjustment,opening_stock',
             'notes' => 'nullable|string|max:500',
         ]);
 
@@ -82,7 +82,7 @@ class StockMovementController extends Controller
                     ->where('warehouse_id', $request->warehouse_id)
                     ->first();
 
-                if (!$stock && in_array($request->type, ['found', 'adjustment'])) {
+                if (!$stock && in_array($request->type, ['found', 'adjustment', 'opening_stock'])) {
                      $stock = new \App\Models\Stock([
                         'product_id' => $request->product_id,
                         'warehouse_id' => $request->warehouse_id,
@@ -137,5 +137,87 @@ class StockMovementController extends Controller
                 'message' => $e->getMessage(),
             ], 422);
         }
+    }
+
+    /**
+     * Product Movement History
+     * 
+     * Get paginated stock movements for a specific product with accurate running balance.
+     * 
+     * @urlParam id string required Product UUID
+     * @queryParam warehouse_id string optional Filter by warehouse
+     * @queryParam type string optional Filter by movement type
+     * @queryParam limit integer optional Items per page. Default 15.
+     */
+    public function productMovementHistory(Request $request, $id)
+    {
+        $product = \App\Models\Product::findOrFail($id);
+        $warehouseId = $request->warehouse_id;
+        $type = $request->type;
+        $limit = $request->limit ?? 10;
+
+        // Base query for matching movements
+        $query = StockMovement::with(['warehouse'])
+            ->where('product_id', $id)
+            ->orderBy('created_at', 'desc');
+
+        if ($warehouseId) {
+            $query->where('warehouse_id', $warehouseId);
+        }
+
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        $movements = $query->paginate($limit);
+
+        // To calculate balance accurately for each row in a paginated/filtered list:
+        // We need the sum of all movements up to that specific movement's point in time.
+        $history = collect($movements->items())->map(function ($m) use ($id, $warehouseId) {
+            $in = $m->quantity > 0 ? $m->quantity : 0;
+            $out = $m->quantity < 0 ? abs($m->quantity) : 0;
+            
+            // Calculate balance at this point in time
+            // We use <= created_at to include this movement.
+            // Note: If multiple movements have the exact same timestamp, 
+            // the order might be non-deterministic unless we also account for ID or sequence.
+            $balanceQuery = StockMovement::where('product_id', $id)
+                ->where('created_at', '<=', $m->getRawOriginal('created_at') ?? $m->created_at);
+            
+            if ($warehouseId) {
+                $balanceQuery->where('warehouse_id', $warehouseId);
+            }
+            
+            $currentBalance = $balanceQuery->sum('quantity');
+
+            return [
+                'id' => $m->id,
+                'date' => $m->created_at->toDateTimeString(),
+                'type' => $m->type,
+                'warehouse' => $m->warehouse->name ?? 'N/A',
+                'reference_type' => $m->reference_type,
+                'reference_id' => $m->reference_id,
+                'in' => number_format((float)$in, 2, '.', ''),
+                'out' => number_format((float)$out, 2, '.', ''),
+                'balance' => number_format((float)$currentBalance, 2, '.', ''),
+                'notes' => $m->notes,
+            ];
+        });
+
+        return response()->json([
+            'message' => 'Product stock movement history fetched successfully',
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'code' => $product->code,
+            ],
+            'data' => $history,
+            'pagination' => [
+                'total' => $movements->total(),
+                'per_page' => $movements->perPage(),
+                'current_page' => $movements->currentPage(),
+                'last_page' => $movements->lastPage(),
+            ]
+        ]);
     }
 }

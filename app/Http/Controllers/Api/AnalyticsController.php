@@ -28,6 +28,12 @@ class AnalyticsController extends Controller
             ->whereRaw('min_stock > (SELECT COALESCE(SUM(quantity), 0) FROM stocks WHERE stocks.product_id = products.id)')
             ->count();
         
+        $oneMonthFromNow = now()->addMonth();
+        $expiringStockCount = Stock::where('expiry_date', '>=', now())
+            ->where('expiry_date', '<=', $oneMonthFromNow)
+            ->where('quantity', '>', 0)
+            ->count();
+        
         // Low Stock Products List
         $lowStockProductsList = Product::where('is_active', true)
             ->whereRaw('min_stock > (SELECT COALESCE(SUM(quantity), 0) FROM stocks WHERE stocks.product_id = products.id)')
@@ -115,6 +121,7 @@ class AnalyticsController extends Controller
                 ],
                 'low_stock_products' => $lowStockProductsList,
                 'top_products' => $topProducts,
+                'expiring_stock_count' => $expiringStockCount,
             ]
         ]);
     }
@@ -258,6 +265,30 @@ class AnalyticsController extends Controller
                 "received_count" => $receivedCount,
                 "total_purchase_value" => round((float) $totalValue, 2)
             ]
+        ]);
+    }
+
+    /**
+     * Expiring Stock Alert
+     * 
+     * Get list of stocks expiring within one month.
+     * 
+     * @group Analytics
+     */
+    public function expiringStock()
+    {
+        $oneMonthFromNow = now()->addMonth();
+        
+        $expiringStocks = Stock::with(['product', 'warehouse'])
+            ->where('expiry_date', '>=', now())
+            ->where('expiry_date', '<=', $oneMonthFromNow)
+            ->where('quantity', '>', 0)
+            ->orderBy('expiry_date', 'asc')
+            ->get();
+
+        return response()->json([
+            'message' => 'Expiring stock fetched successfully',
+            'data' => $expiringStocks
         ]);
     }
 }

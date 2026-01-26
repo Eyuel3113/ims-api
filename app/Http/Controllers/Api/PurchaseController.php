@@ -152,7 +152,8 @@ class PurchaseController extends Controller
     {
         $request->validate([
             'invoice_number' => 'required|string|unique:purchases,invoice_number',
-            'supplier_id' => 'required|exists:suppliers,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'supplier_name' => 'nullable|string|max:255',
             'purchase_date' => 'required|date',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
@@ -184,8 +185,9 @@ class PurchaseController extends Controller
             $purchase = Purchase::create([
                 'invoice_number' => $request->invoice_number,
                 'supplier_id' => $request->supplier_id,
+                'supplier_name' => $request->supplier_name,
                 'purchase_date' => $request->purchase_date,
-                'status' => 'pending', // Explicit default
+                'status' => $request->supplier_id ? 'pending' : 'received',
                 'total_amount' => $total,
                 'notes' => $request->notes,
             ]);
@@ -202,8 +204,12 @@ class PurchaseController extends Controller
                 ]);
             }
 
+            if ($purchase->status === 'received') {
+                $this->updateStockLevels($purchase);
+            }
+
             return response()->json([
-                'message' => 'Purchase recorded as pending',
+                'message' => $purchase->status === 'received' ? 'Purchase recorded and stock updated' : 'Purchase recorded as pending',
                 'data' => $purchase->load('items.product', 'supplier')
             ], 201);
         });
@@ -228,36 +234,38 @@ class PurchaseController extends Controller
 
         return DB::transaction(function () use ($purchase) {
             $purchase->update(['status' => 'received']);
-
-            foreach ($purchase->items as $item) {
-                // Add to stock
-                $stock = Stock::firstOrNew([
-                    'product_id' => $item->product_id,
-                    'warehouse_id' => $item->warehouse_id,
-                    'expiry_date' => $item->expiry_date,
-                ]);
-
-                $stock->quantity = ($stock->quantity ?? 0) + $item->quantity;
-                $stock->save();
-
-                // Record Movement
-                StockMovement::create([
-                    'product_id' => $item->product_id,
-                    'warehouse_id' => $item->warehouse_id,
-                    'quantity' => $item->quantity,
-                    'type' => 'purchase',
-                    'reference_type' => 'Purchase',
-                    'reference_id' => $purchase->id,
-                    'expiry_date' => $item->expiry_date,
-                    'notes' => 'Stock received via invoice: ' . $purchase->invoice_number,
-                ]);
-            }
+            $this->updateStockLevels($purchase);
 
             return response()->json([
                 'message' => 'Purchase marked as received and stock updated',
                 'data' => $purchase->load('items.product', 'supplier')
             ]);
         });
+    }
+
+    /**
+     * Cancel Purchase
+     * 
+     * Marks a pending purchase as cancelled.
+     * 
+     * @urlParam id string required Purchase UUID
+     */
+    public function cancelStatus($id)
+    {
+        $purchase = Purchase::findOrFail($id);
+
+        if ($purchase->status !== 'pending') {
+            return response()->json([
+                'message' => 'Only pending purchases can be cancelled'
+            ], 422);
+        }
+
+        $purchase->update(['status' => 'cancelled']);
+
+        return response()->json([
+            'message' => 'Purchase cancelled successfully',
+            'data' => $purchase->load('items.product', 'supplier')
+        ]);
     }
 
     /**
@@ -304,7 +312,8 @@ class PurchaseController extends Controller
 
         $request->validate([
             'invoice_number' => 'sometimes|required|string|unique:purchases,invoice_number,' . $id,
-            'supplier_id' => 'sometimes|required|exists:suppliers,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'supplier_name' => 'nullable|string|max:255',
             'purchase_date' => 'sometimes|required|date',
             'items' => 'sometimes|required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
@@ -316,7 +325,7 @@ class PurchaseController extends Controller
         ]);
 
         return DB::transaction(function () use ($request, $purchase) {
-            $updateData = $request->only(['invoice_number', 'supplier_id', 'purchase_date', 'notes']);
+            $updateData = $request->only(['invoice_number', 'supplier_id', 'supplier_name', 'purchase_date', 'notes']);
 
             if ($request->has('items')) {
                 // Since it's pending, no stock was ever added. No need to revert.
@@ -422,5 +431,35 @@ class PurchaseController extends Controller
         $pdf = PDF::loadView('pdf.purchase_invoice', compact('purchase'));
 
         return $pdf->download('Purchase_' . $purchase->invoice_number . '.pdf');
+    }
+
+    /**
+     * Update Stock Levels
+     */
+    private function updateStockLevels($purchase)
+    {
+        foreach ($purchase->items as $item) {
+            // Add to stock
+            $stock = Stock::firstOrNew([
+                'product_id' => $item->product_id,
+                'warehouse_id' => $item->warehouse_id,
+                'expiry_date' => $item->expiry_date,
+            ]);
+
+            $stock->quantity = ($stock->quantity ?? 0) + $item->quantity;
+            $stock->save();
+
+            // Record Movement
+            StockMovement::create([
+                'product_id' => $item->product_id,
+                'warehouse_id' => $item->warehouse_id,
+                'quantity' => $item->quantity,
+                'type' => 'purchase',
+                'reference_type' => 'Purchase',
+                'reference_id' => $purchase->id,
+                'expiry_date' => $item->expiry_date,
+                'notes' => 'Stock received via invoice: ' . $purchase->invoice_number,
+            ]);
+        }
     }
 }

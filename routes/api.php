@@ -88,6 +88,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{id}/photo', [ProductController::class, 'deletePhoto']);
         Route::delete('/{id}', [ProductController::class, 'destroy']);
         Route::get('/{id}/barcode', [ProductController::class, 'barcodeImage']);
+        Route::get('/{id}/stock-movements', [StockMovementController::class, 'productMovementHistory']);
 
       });
 
@@ -101,6 +102,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{id}', [PurchaseController::class, 'destroy']);
         Route::get('/{id}/invoice', [PurchaseController::class, 'invoice']);
         Route::post('/{id}/receive', [PurchaseController::class, 'receiveStatus']);
+        Route::post('/{id}/cancel', [PurchaseController::class, 'cancelStatus']);
     });
 
       // Sales
@@ -129,6 +131,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/monthly-trend', [AnalyticsController::class, 'monthlyTrend']);
         Route::get('/inventory-by-category', [AnalyticsController::class, 'inventoryByCategory']);
         Route::get('/purchase-kpis', [AnalyticsController::class, 'purchaseKpis']);
+        Route::get('/expiring-stock', [AnalyticsController::class, 'expiringStock']);
     });
 
     // Reports

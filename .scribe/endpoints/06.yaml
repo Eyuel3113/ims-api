@@ -1,28 +1,76 @@
-name: Purchases
-description: 'APIs for purchasing stock from suppliers'
+name: 'Stock History'
+description: 'Full audit trail of stock movements'
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/purchases/active
+    uri: 'api/v1/products/{id}/stock-movements'
     metadata:
       custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
+      groupName: 'Stock History'
+      groupDescription: 'Full audit trail of stock movements'
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Active Purchases'
-      description: 'Returns all active purchases without pagination.'
+      title: 'Product Movement History'
+      description: 'Get paginated stock movements for a specific product with accurate running balance.'
       authenticated: false
       deprecated: false
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Product UUID'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters:
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'optional Filter by warehouse'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: 'optional Filter by movement type'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'optional Items per page. Default 15.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      warehouse_id: architecto
+      type: architecto
+      limit: 16
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -45,14 +93,14 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/purchases
+    uri: api/v1/stock-movements
     metadata:
       custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
+      groupName: 'Stock History'
+      groupDescription: 'Full audit trail of stock movements'
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Purchases'
+      title: 'List Stock Movements'
       description: ''
       authenticated: false
       deprecated: false
@@ -61,8 +109,56 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: optional
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: optional
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: 'optional purchase, sale, adjustment, damage, lost, found, opening_stock'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'optional Default 20'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      product_id: architecto
+      warehouse_id: architecto
+      type: architecto
+      limit: 16
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -85,15 +181,15 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/purchases
+    uri: api/v1/stock-movements
     metadata:
       custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
+      groupName: 'Stock History'
+      groupDescription: 'Full audit trail of stock movements'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create Purchase'
-      description: 'Add stock from supplier.'
+      title: 'Create Manual Stock Movement'
+      description: 'Manually adjust stock for reasons like damage, loss, or found items.'
       authenticated: false
       deprecated: false
     headers:
@@ -104,9 +200,9 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      invoice_number:
+      product_id:
         custom: []
-        name: invoice_number
+        name: product_id
         description: ''
         required: true
         example: architecto
@@ -115,9 +211,9 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      supplier_id:
+      warehouse_id:
         custom: []
-        name: supplier_id
+        name: warehouse_id
         description: ''
         required: true
         example: architecto
@@ -126,110 +222,10 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      purchase_date:
+      quantity:
         custom: []
-        name: purchase_date
-        description: ''
-        required: true
-        example: architecto
-        type: date
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      items:
-        custom: []
-        name: items
-        description: ''
-        required: true
-        example:
-          - architecto
-        type: 'string[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      notes:
-        custom: []
-        name: notes
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].product_id':
-        custom: []
-        name: 'items[].product_id'
-        description: 'The <code>id</code> of an existing record in the products table.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].warehouse_id':
-        custom: []
-        name: 'items[].warehouse_id'
-        description: 'The <code>id</code> of an existing record in the warehouses table.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].quantity':
-        custom: []
-        name: 'items[].quantity'
-        description: 'Must be at least 0.01.'
-        required: true
-        example: 39
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].expiry_date':
-        custom: []
-        name: 'items[].expiry_date'
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-01-17T09:00:35'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items.*.product_id':
-        custom: []
-        name: 'items.*.product_id'
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.warehouse_id':
-        custom: []
-        name: 'items.*.warehouse_id'
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.quantity':
-        custom: []
-        name: 'items.*.quantity'
-        description: ''
+        name: quantity
+        description: 'Positive value.'
         required: true
         example: 4326.41688
         type: number
@@ -237,159 +233,13 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      'items.*.expiry_date':
+      type:
         custom: []
-        name: 'items.*.expiry_date'
-        description: optional
-        required: false
-        example: architecto
-        type: date
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      invoice_number: architecto
-      supplier_id: architecto
-      purchase_date: architecto
-      items:
-        - architecto
-      notes: architecto
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/purchases/{id}'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get Purchase'
-      description: 'Show single purchase with items.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Purchase UUID'
+        name: type
+        description: 'damage, lost, found, adjustment, opening_stock'
         required: true
         example: architecto
         type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PATCH
-    uri: 'api/v1/purchases/{id}'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update Purchase'
-      description: 'Update purchase details and adjust stock.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Purchase UUID'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      invoice_number:
-        custom: []
-        name: invoice_number
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      supplier_id:
-        custom: []
-        name: supplier_id
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      purchase_date:
-        custom: []
-        name: purchase_date
-        description: ''
-        required: true
-        example: architecto
-        type: date
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      items:
-        custom: []
-        name: items
-        description: ''
-        required: true
-        example:
-          - architecto
-        type: 'string[]'
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -397,290 +247,20 @@ endpoints:
       notes:
         custom: []
         name: notes
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].product_id':
-        custom: []
-        name: 'items[].product_id'
-        description: 'The <code>id</code> of an existing record in the products table.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].warehouse_id':
-        custom: []
-        name: 'items[].warehouse_id'
-        description: 'The <code>id</code> of an existing record in the warehouses table.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].quantity':
-        custom: []
-        name: 'items[].quantity'
-        description: 'Must be at least 0.01.'
-        required: true
-        example: 39
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].expiry_date':
-        custom: []
-        name: 'items[].expiry_date'
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-01-17T09:00:35'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items.*.product_id':
-        custom: []
-        name: 'items.*.product_id'
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.warehouse_id':
-        custom: []
-        name: 'items.*.warehouse_id'
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.quantity':
-        custom: []
-        name: 'items.*.quantity'
-        description: ''
-        required: true
-        example: 4326.41688
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items.*.expiry_date':
-        custom: []
-        name: 'items.*.expiry_date'
         description: optional
         required: false
         example: architecto
-        type: date
+        type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
+        nullable: true
         deprecated: false
     cleanBodyParameters:
-      invoice_number: architecto
-      supplier_id: architecto
-      purchase_date: architecto
-      items:
-        - architecto
+      product_id: architecto
+      warehouse_id: architecto
+      quantity: 4326.41688
+      type: architecto
       notes: architecto
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PATCH
-    uri: 'api/v1/purchases/{id}/status'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Toggle Purchase Status'
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the purchase.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/purchases/{id}'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Delete Purchase'
-      description: 'Delete purchase and revert stock changes if it was received.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Purchase UUID'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/purchases/{id}/invoice'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the purchase.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/purchases/{id}/receive'
-    metadata:
-      custom: []
-      groupName: Purchases
-      groupDescription: 'APIs for purchasing stock from suppliers'
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Mark Purchase as Received'
-      description: 'Approves the purchase and updates stock levels.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Purchase UUID'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
     fileParameters: []
     responses: []
     responseFields: []

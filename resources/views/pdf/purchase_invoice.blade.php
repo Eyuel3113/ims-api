@@ -16,7 +16,7 @@
         <h1>Purchase Invoice</h1>
         <p>Invoice: {{ $purchase->invoice_number }}</p>
         <p>Date: {{ $purchase->purchase_date }}</p>
-        <p>Supplier: {{ $purchase->supplier->name }}</p>
+        <p>Supplier: {{ $purchase->supplier->name ?? $purchase->supplier_name ?? 'Walking Supplier' }}</p>
     </div>
 
     <table>

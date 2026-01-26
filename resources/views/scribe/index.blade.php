@@ -96,6 +96,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="analytics-GETapi-v1-analytics-purchase-kpis">
                                 <a href="#analytics-GETapi-v1-analytics-purchase-kpis">Purchase KPIs</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="analytics-GETapi-v1-analytics-expiring-stock">
+                                <a href="#analytics-GETapi-v1-analytics-expiring-stock">Expiring Stock Alert</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-authentication" class="tocify-header">
@@ -254,6 +257,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="purchases-POSTapi-v1-purchases--id--receive">
                                 <a href="#purchases-POSTapi-v1-purchases--id--receive">Mark Purchase as Received</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="purchases-POSTapi-v1-purchases--id--cancel">
+                                <a href="#purchases-POSTapi-v1-purchases--id--cancel">Cancel Purchase</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-reports" class="tocify-header">
@@ -318,7 +324,10 @@
                     <a href="#stock-history">Stock History</a>
                 </li>
                                     <ul id="tocify-subheader-stock-history" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="stock-history-GETapi-v1-stock-movements">
+                                                    <li class="tocify-item level-2" data-unique="stock-history-GETapi-v1-products--id--stock-movements">
+                                <a href="#stock-history-GETapi-v1-products--id--stock-movements">Product Movement History</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="stock-history-GETapi-v1-stock-movements">
                                 <a href="#stock-history-GETapi-v1-stock-movements">List Stock Movements</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="stock-history-POSTapi-v1-stock-movements">
@@ -407,7 +416,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 17, 2026</li>
+        <li>Last updated: January 26, 2026</li>
     </ul>
 </div>
 
@@ -1293,6 +1302,132 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Accept"                data-endpoint="GETapi-v1-analytics-purchase-kpis"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="analytics-GETapi-v1-analytics-expiring-stock">Expiring Stock Alert</h2>
+
+<p>
+</p>
+
+<p>Get list of stocks expiring within one month.</p>
+
+<span id="example-requests-GETapi-v1-analytics-expiring-stock">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/analytics/expiring-stock" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/analytics/expiring-stock"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-analytics-expiring-stock">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-analytics-expiring-stock" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-analytics-expiring-stock"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-analytics-expiring-stock"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-analytics-expiring-stock" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-analytics-expiring-stock">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-analytics-expiring-stock" data-method="GET"
+      data-path="api/v1/analytics/expiring-stock"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-analytics-expiring-stock', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-analytics-expiring-stock"
+                    onclick="tryItOut('GETapi-v1-analytics-expiring-stock');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-analytics-expiring-stock"
+                    onclick="cancelTryOut('GETapi-v1-analytics-expiring-stock');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-analytics-expiring-stock"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/analytics/expiring-stock</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-analytics-expiring-stock"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-analytics-expiring-stock"
                value="application/json"
                data-component="header">
     <br>
@@ -4772,9 +4907,9 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "has_expiry="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "is_vatable="\
+    --form "is_vatable=1"\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php3822.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC4F0.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4797,7 +4932,7 @@ body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
-body.append('is_vatable', '');
+body.append('is_vatable', '1');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
@@ -4953,7 +5088,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php3822.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\phpC4F0.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5033,7 +5168,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
@@ -5075,7 +5210,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/import" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\user\AppData\Local\Temp\php3833.tmp" </code></pre></div>
+    --form "file=@C:\Users\user\AppData\Local\Temp\phpC500.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5183,7 +5318,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3833.tmp</code></p>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC500.tmp</code></p>
         </div>
         </form>
 
@@ -5517,10 +5652,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable="\
+    --form "is_vatable=1"\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php3846.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC513.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5542,7 +5677,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '');
+body.append('is_vatable', '1');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -5712,7 +5847,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php3846.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\phpC513.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5790,7 +5925,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -5957,7 +6092,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php3856.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC524.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -6078,7 +6213,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3856.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC524.tmp</code></p>
         </div>
         </form>
 
@@ -6784,6 +6919,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"invoice_number\": \"architecto\",
     \"supplier_id\": \"architecto\",
+    \"supplier_name\": \"n\",
     \"purchase_date\": \"architecto\",
     \"items\": [
         \"architecto\"
@@ -6806,6 +6942,7 @@ const headers = {
 let body = {
     "invoice_number": "architecto",
     "supplier_id": "architecto",
+    "supplier_name": "n",
     "purchase_date": "architecto",
     "items": [
         "architecto"
@@ -6920,6 +7057,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>architecto</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>supplier_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="supplier_name"                data-endpoint="POSTapi-v1-purchases"
+               value="n"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>n</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_date</code></b>&nbsp;&nbsp;
 <small>date</small>&nbsp;
  &nbsp;
@@ -6978,16 +7127,28 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Must be at least 0.01. Example: <code>39</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="POSTapi-v1-purchases"
+               value="84"
+               data-component="body">
+    <br>
+<p>Must be at least 0. Example: <code>84</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>expiry_date</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-17T09:00:35"
+               value="2026-01-26T08:05:08"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-17T09:00:35</code></p>
+<p>Must be a valid date. Example: <code>2026-01-26T08:05:08</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7223,6 +7384,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"invoice_number\": \"architecto\",
     \"supplier_id\": \"architecto\",
+    \"supplier_name\": \"b\",
     \"purchase_date\": \"architecto\",
     \"items\": [
         \"architecto\"
@@ -7245,6 +7407,7 @@ const headers = {
 let body = {
     "invoice_number": "architecto",
     "supplier_id": "architecto",
+    "supplier_name": "b",
     "purchase_date": "architecto",
     "items": [
         "architecto"
@@ -7372,6 +7535,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>architecto</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>supplier_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="supplier_name"                data-endpoint="PATCHapi-v1-purchases--id-"
+               value="b"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>b</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_date</code></b>&nbsp;&nbsp;
 <small>date</small>&nbsp;
  &nbsp;
@@ -7430,16 +7605,28 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Must be at least 0.01. Example: <code>39</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="PATCHapi-v1-purchases--id-"
+               value="84"
+               data-component="body">
+    <br>
+<p>Must be at least 0. Example: <code>84</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>expiry_date</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-17T09:00:35"
+               value="2026-01-26T08:05:08"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-17T09:00:35</code></p>
+<p>Must be a valid date. Example: <code>2026-01-26T08:05:08</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -8018,6 +8205,129 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="POSTapi-v1-purchases--id--receive"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>Purchase UUID Example: <code>architecto</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="purchases-POSTapi-v1-purchases--id--cancel">Cancel Purchase</h2>
+
+<p>
+</p>
+
+<p>Marks a pending purchase as cancelled.</p>
+
+<span id="example-requests-POSTapi-v1-purchases--id--cancel">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/purchases/architecto/cancel" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/purchases/architecto/cancel"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-purchases--id--cancel">
+</span>
+<span id="execution-results-POSTapi-v1-purchases--id--cancel" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-purchases--id--cancel"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-purchases--id--cancel"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-purchases--id--cancel" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-purchases--id--cancel">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-purchases--id--cancel" data-method="POST"
+      data-path="api/v1/purchases/{id}/cancel"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-purchases--id--cancel', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-purchases--id--cancel"
+                    onclick="tryItOut('POSTapi-v1-purchases--id--cancel');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-purchases--id--cancel"
+                    onclick="cancelTryOut('POSTapi-v1-purchases--id--cancel');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-purchases--id--cancel"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/purchases/{id}/cancel</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-purchases--id--cancel"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-purchases--id--cancel"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="POSTapi-v1-purchases--id--cancel"
                value="architecto"
                data-component="url">
     <br>
@@ -8960,6 +9270,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Must be at least 0.01. Example: <code>39</code></p>
                     </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="POSTapi-v1-sales"
+               value="84"
+               data-component="body">
+    <br>
+<p>Must be at least 0. Example: <code>84</code></p>
+                    </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
             <summary style="padding-bottom: 10px;">
@@ -9387,6 +9709,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>Must be at least 0.01. Example: <code>39</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>unit_price</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="items.0.unit_price"                data-endpoint="PATCHapi-v1-sales--id-"
+               value="84"
+               data-component="body">
+    <br>
+<p>Must be at least 0. Example: <code>84</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -10057,7 +10391,191 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>Full audit trail of stock movements</p>
 
-                                <h2 id="stock-history-GETapi-v1-stock-movements">List Stock Movements</h2>
+                                <h2 id="stock-history-GETapi-v1-products--id--stock-movements">Product Movement History</h2>
+
+<p>
+</p>
+
+<p>Get paginated stock movements for a specific product with accurate running balance.</p>
+
+<span id="example-requests-GETapi-v1-products--id--stock-movements">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/products/architecto/stock-movements?warehouse_id=architecto&amp;type=architecto&amp;limit=16" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/products/architecto/stock-movements"
+);
+
+const params = {
+    "warehouse_id": "architecto",
+    "type": "architecto",
+    "limit": "16",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products--id--stock-movements">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products--id--stock-movements" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products--id--stock-movements"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products--id--stock-movements"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products--id--stock-movements" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products--id--stock-movements">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products--id--stock-movements" data-method="GET"
+      data-path="api/v1/products/{id}/stock-movements"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products--id--stock-movements', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products--id--stock-movements"
+                    onclick="tryItOut('GETapi-v1-products--id--stock-movements');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products--id--stock-movements"
+                    onclick="cancelTryOut('GETapi-v1-products--id--stock-movements');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products--id--stock-movements"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/{id}/stock-movements</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>Product UUID Example: <code>architecto</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>warehouse_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="warehouse_id"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Filter by warehouse Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="type"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>optional Filter by movement type Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-products--id--stock-movements"
+               value="16"
+               data-component="query">
+    <br>
+<p>optional Items per page. Default 15. Example: <code>16</code></p>
+            </div>
+                </form>
+
+                    <h2 id="stock-history-GETapi-v1-stock-movements">List Stock Movements</h2>
 
 <p>
 </p>
@@ -10225,7 +10743,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="query">
     <br>
-<p>optional purchase, sale, adjustment Example: <code>architecto</code></p>
+<p>optional purchase, sale, adjustment, damage, lost, found, opening_stock Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
@@ -10413,7 +10931,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="body">
     <br>
-<p>damage, lost, found, adjustment Example: <code>architecto</code></p>
+<p>damage, lost, found, adjustment, opening_stock Example: <code>architecto</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>notes</code></b>&nbsp;&nbsp;

@@ -195,11 +195,11 @@ class ReportsController extends Controller
                     'from' => $startDate,
                     'to' => $endDate
                 ],
-                'input_vat' => [
+                'purchases_vat' => [
                     'amount' => round((float) $inputVat, 2),
                     'total_purchases_excl_tax' => round((float) $totalPurchasesExclTax, 2),
                 ],
-                'output_vat' => [
+                'sales_vat' => [
                     'amount' => round((float) $outputVat, 2),
                     'total_sales_excl_tax' => round((float) $totalSalesExclTax, 2),
                 ],

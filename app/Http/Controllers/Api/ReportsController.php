@@ -160,4 +160,52 @@ class ReportsController extends Controller
             ]
         ]);
     }
+    /**
+     * Tax Report
+     * 
+     * Get Input VAT (Purchases), Output VAT (Sales), and Net VAT.
+     */
+    public function taxReport(Request $request)
+    {
+        $startDate = $request->query('from_date');
+        $endDate = $request->query('to_date');
+
+        // Input VAT (Paid on Purchases)
+        $purchaseQuery = Purchase::where('is_active', true);
+        if ($startDate) $purchaseQuery->whereDate('purchase_date', '>=', $startDate);
+        if ($endDate) $purchaseQuery->whereDate('purchase_date', '<=', $endDate);
+        
+        $inputVat = $purchaseQuery->sum('tax_amount');
+        $totalPurchasesExclTax = $purchaseQuery->sum('total_amount');
+
+        // Output VAT (Collected on Sales)
+        $saleQuery = Sale::where('is_active', true);
+        if ($startDate) $saleQuery->whereDate('sale_date', '>=', $startDate);
+        if ($endDate) $saleQuery->whereDate('sale_date', '<=', $endDate);
+
+        $outputVat = $saleQuery->sum('tax_amount');
+        $totalSalesExclTax = $saleQuery->sum('total_amount');
+
+        $netVat = $outputVat - $inputVat;
+
+        return response()->json([
+            'message' => 'Tax report fetched successfully',
+            'data' => [
+                'period' => [
+                    'from' => $startDate,
+                    'to' => $endDate
+                ],
+                'input_vat' => [
+                    'amount' => round((float) $inputVat, 2),
+                    'total_purchases_excl_tax' => round((float) $totalPurchasesExclTax, 2),
+                ],
+                'output_vat' => [
+                    'amount' => round((float) $outputVat, 2),
+                    'total_sales_excl_tax' => round((float) $totalSalesExclTax, 2),
+                ],
+                'net_vat_payable' => round((float) $netVat, 2),
+                'status' => $netVat >= 0 ? 'Payable' : 'Refundable'
+            ]
+        ]);
+    }
 }

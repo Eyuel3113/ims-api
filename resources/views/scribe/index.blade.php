@@ -279,6 +279,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-profit-loss">
                                 <a href="#reports-GETapi-v1-reports-profit-loss">Profit & Loss Report</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-tax">
+                                <a href="#reports-GETapi-v1-reports-tax">Tax Report</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-sales" class="tocify-header">
@@ -416,7 +419,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: January 26, 2026</li>
+        <li>Last updated: January 29, 2026</li>
     </ul>
 </div>
 
@@ -4907,9 +4910,9 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "has_expiry="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC4F0.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC964.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4932,7 +4935,7 @@ body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
@@ -5088,7 +5091,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\phpC4F0.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\phpC964.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5168,7 +5171,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
@@ -5210,7 +5213,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/import" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\user\AppData\Local\Temp\phpC500.tmp" </code></pre></div>
+    --form "file=@C:\Users\user\AppData\Local\Temp\phpC974.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5318,7 +5321,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC500.tmp</code></p>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC974.tmp</code></p>
         </div>
         </form>
 
@@ -5652,10 +5655,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC513.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC987.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -5677,7 +5680,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -5847,7 +5850,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\phpC513.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\phpC987.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -5925,7 +5928,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -6092,7 +6095,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC524.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\phpC988.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -6213,7 +6216,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC524.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\phpC988.tmp</code></p>
         </div>
         </form>
 
@@ -7145,10 +7148,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-01-26T08:05:08"
+               value="2026-01-29T12:06:07"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-26T08:05:08</code></p>
+<p>Must be a valid date. Example: <code>2026-01-29T12:06:07</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -7623,10 +7626,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-01-26T08:05:08"
+               value="2026-01-29T12:06:07"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-01-26T08:05:08</code></p>
+<p>Must be a valid date. Example: <code>2026-01-29T12:06:07</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -8836,6 +8839,132 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Accept"                data-endpoint="GETapi-v1-reports-profit-loss"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="reports-GETapi-v1-reports-tax">Tax Report</h2>
+
+<p>
+</p>
+
+<p>Get Input VAT (Purchases), Output VAT (Sales), and Net VAT.</p>
+
+<span id="example-requests-GETapi-v1-reports-tax">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/reports/tax" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/reports/tax"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-reports-tax">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-reports-tax" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-reports-tax"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-reports-tax"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-reports-tax" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-reports-tax">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-reports-tax" data-method="GET"
+      data-path="api/v1/reports/tax"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-reports-tax', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-reports-tax"
+                    onclick="tryItOut('GETapi-v1-reports-tax');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-reports-tax"
+                    onclick="cancelTryOut('GETapi-v1-reports-tax');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-reports-tax"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/reports/tax</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-reports-tax"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-reports-tax"
                value="application/json"
                data-component="header">
     <br>

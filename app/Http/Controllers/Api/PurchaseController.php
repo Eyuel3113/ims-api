@@ -168,18 +168,26 @@ class PurchaseController extends Controller
             // First pass: collect products and calculate total
             $itemsWithPrices = [];
             $total = 0;
+            $taxTotal = 0;
 
             foreach ($request->items as $itemData) {
                 $product = \App\Models\Product::findOrFail($itemData['product_id']);
                 $unitPrice = $itemData['unit_price'] ?? $product->purchase_price;
                 $itemTotal = $itemData['quantity'] * $unitPrice;
                 
+                $tax = 0;
+                if ($product->is_vatable) {
+                    $tax = $itemTotal * 0.15;
+                }
+
                 $itemsWithPrices[] = array_merge($itemData, [
                     'unit_price' => $unitPrice,
-                    'total_price' => $itemTotal
+                    'total_price' => $itemTotal,
+                    'tax_amount' => $tax
                 ]);
 
                 $total += $itemTotal;
+                $taxTotal += $tax;
             }
 
             $purchase = Purchase::create([
@@ -189,6 +197,8 @@ class PurchaseController extends Controller
                 'purchase_date' => $request->purchase_date,
                 'status' => $request->supplier_id ? 'pending' : 'received',
                 'total_amount' => $total,
+                'tax_amount' => $taxTotal,
+                'grand_total' => $total + $taxTotal,
                 'notes' => $request->notes,
             ]);
 
@@ -336,19 +346,29 @@ class PurchaseController extends Controller
                 // 2. Fetch prices and calculate new total
                 $itemsWithPrices = [];
                 $total = 0;
+                $taxTotal = 0;
                 foreach ($request->items as $itemData) {
                     $product = \App\Models\Product::findOrFail($itemData['product_id']);
                     $unitPrice = $itemData['unit_price'] ?? $product->purchase_price;
                     $itemTotal = $itemData['quantity'] * $unitPrice;
 
+                    $tax = 0;
+                    if ($product->is_vatable) {
+                        $tax = $itemTotal * 0.15;
+                    }
+
                     $itemsWithPrices[] = array_merge($itemData, [
                         'unit_price' => $unitPrice,
-                        'total_price' => $itemTotal
+                        'total_price' => $itemTotal,
+                        'tax_amount' => $tax
                     ]);
 
                     $total += $itemTotal;
+                    $taxTotal += $tax;
                 }
                 $updateData['total_amount'] = $total;
+                $updateData['tax_amount'] = $taxTotal;
+                $updateData['grand_total'] = $total + $taxTotal;
 
                 // 3. Update purchase top-level data
                 $purchase->update($updateData);

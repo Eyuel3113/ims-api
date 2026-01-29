@@ -163,3 +163,43 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/reports/tax
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: 'API Endpoints for generating business reports and analytics.'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Tax Report'
+      description: 'Get Input VAT (Purchases), Output VAT (Sales), and Net VAT.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

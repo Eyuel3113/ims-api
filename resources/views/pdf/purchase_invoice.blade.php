@@ -42,8 +42,16 @@
         </tbody>
         <tfoot>
             <tr class="total">
-                <td colspan="4">Grand Total</td>
-                <td>{{ number_format($purchase->total_amount, 2) }} ETB</td>
+                <td colspan="4" style="text-align: right;">Subtotal</td>
+                <td>{{ number_format($purchase->total_amount, 2) }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">Tax (15%)</td>
+                <td>{{ number_format($purchase->tax_amount, 2) }}</td>
+            </tr>
+            <tr class="total">
+                <td colspan="4" style="text-align: right;">Grand Total</td>
+                <td>{{ number_format($purchase->grand_total, 2) }} ETB</td>
             </tr>
         </tfoot>
     </table>

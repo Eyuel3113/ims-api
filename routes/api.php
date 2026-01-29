@@ -140,6 +140,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/sales', [ReportsController::class, 'sales']);
         Route::get('/inventory', [ReportsController::class, 'inventory']);
         Route::get('/profit-loss', [ReportsController::class, 'profitLoss']);
+        Route::get('/tax', [ReportsController::class, 'taxReport']);
     });
 
     // Expenses

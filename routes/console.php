@@ -32,3 +32,6 @@ Artisan::command('stock:check-expiry', function () {
 
     $this->info("Notifications sent for {$expiringStocks->count()} batches.");
 })->purpose('Check for stock expiring within one month and notify users')->daily();
+
+\Illuminate\Support\Facades\Schedule::command('stock:process-expired')->daily();
+

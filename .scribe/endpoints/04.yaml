@@ -232,7 +232,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Get Customer'
-      description: 'Show single customer.'
+      description: 'Show single customer with paginated sales history.'
       authenticated: false
       deprecated: false
     headers:
@@ -252,8 +252,32 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      limit:
+        custom: []
+        name: limit
+        description: 'optional Items per page. Default 10.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'optional Page number. Default 1.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      limit: 16
+      page: 16
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []

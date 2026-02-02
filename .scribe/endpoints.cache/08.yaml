@@ -173,6 +173,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
+      paid_amount:
+        custom: []
+        name: paid_amount
+        description: 'Must be at least 0.'
+        required: false
+        example: 39
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
       'items[].product_id':
         custom: []
         name: 'items[].product_id'
@@ -222,7 +233,7 @@ endpoints:
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-02-02T07:29:51'
+        example: '2026-02-02T13:17:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -280,6 +291,7 @@ endpoints:
       items:
         - architecto
       notes: architecto
+      paid_amount: 39
     fileParameters: []
     responses: []
     responseFields: []
@@ -490,7 +502,7 @@ endpoints:
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-02-02T07:29:51'
+        example: '2026-02-02T13:17:32'
         type: string
         enumValues: []
         exampleWasSpecified: false

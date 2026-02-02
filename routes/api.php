@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\PaymentController;
 
 
 
@@ -156,6 +157,12 @@ Route::prefix('v1')->group(function () {
     // Expenses
     Route::get('expenses/all', [ExpenseController::class, 'listByCategory']);
     Route::apiResource('expenses', ExpenseController::class);
+
+    // Payments
+    Route::get('payments/payables', [PaymentController::class, 'payables']);
+    Route::apiResource('payments', PaymentController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::get('sales/{id}/payments', [PaymentController::class, 'payableHistory'])->defaults('type', 'sale');
+    Route::get('purchases/{id}/payments', [PaymentController::class, 'payableHistory'])->defaults('type', 'purchase');
 
     // Notifications
     Route::prefix('notifications')->group(function () {

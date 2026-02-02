@@ -234,7 +234,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Get Supplier'
-      description: 'Show single supplier.'
+      description: 'Show single supplier with paginated purchase history.'
       authenticated: false
       deprecated: false
     headers:
@@ -254,8 +254,32 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      limit:
+        custom: []
+        name: limit
+        description: 'optional Items per page. Default 10.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'optional Page number. Default 1.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      limit: 16
+      page: 16
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -369,7 +393,7 @@ endpoints:
         name: is_active
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -381,7 +405,7 @@ endpoints:
       phone: architecto
       email: zbailey@example.net
       address: architecto
-      is_active: false
+      is_active: true
     fileParameters: []
     responses: []
     responseFields: []

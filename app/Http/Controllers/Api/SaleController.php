@@ -120,6 +120,7 @@ class SaleController extends Controller
             'notes' => 'nullable|string',
             'payment_method' => 'required|string|in:cash,card,mobile',
             'customer_id' => 'nullable|exists:customers,id',
+            'paid_amount' => 'nullable|numeric|min:0',
         ]);
 
         try {
@@ -155,6 +156,17 @@ class SaleController extends Controller
                     $taxTotal += $tax;
                 }
 
+                $grandTotal = $total + $taxTotal;
+                $paidAmount = $request->input('paid_amount', 0);
+                $dueAmount = $grandTotal - $paidAmount;
+                
+                $paymentStatus = 'unpaid';
+                if ($paidAmount >= $grandTotal) {
+                    $paymentStatus = 'paid';
+                } elseif ($paidAmount > 0) {
+                    $paymentStatus = 'partial';
+                }
+
                 $sale = Sale::create([
                     'invoice_number' => $request->invoice_number,
                     'customer_id' => $request->customer_id,
@@ -162,7 +174,10 @@ class SaleController extends Controller
                     'sale_date' => $request->sale_date,
                     'total_amount' => $total,
                     'tax_amount' => $taxTotal,
-                    'grand_total' => $total + $taxTotal,
+                    'grand_total' => $grandTotal,
+                    'paid_amount' => $paidAmount,
+                    'due_amount' => $dueAmount,
+                    'payment_status' => $paymentStatus,
                     'notes' => $request->notes,
                     'payment_method' => $request->payment_method,
                 ]);

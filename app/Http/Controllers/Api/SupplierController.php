@@ -91,17 +91,33 @@ class SupplierController extends Controller
     /**
      * Get Supplier
      * 
-     * Show single supplier.
+     * Show single supplier with paginated purchase history.
      * 
      * @urlParam id string required Supplier UUID.
+     * @queryParam limit integer optional Items per page. Default 10.
+     * @queryParam page integer optional Page number. Default 1.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $supplier = Supplier::with('purchases')->findOrFail($id);
+        $limit = $request->query('limit', 10);
+        $supplier = Supplier::findOrFail($id);
+
+        $purchases = $supplier->purchases()
+            ->orderBy('purchase_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         return response()->json([
             'message' => 'Supplier retrieved successfully',
-            'data' => $supplier
+            'data' => array_merge($supplier->toArray(), [
+                'purchases' => $purchases->items(),
+                'purchases_pagination' => [
+                    'total' => $purchases->total(),
+                    'per_page' => $purchases->perPage(),
+                    'current_page' => $purchases->currentPage(),
+                    'last_page' => $purchases->lastPage(),
+                ]
+            ])
         ]);
     }
 

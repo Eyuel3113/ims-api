@@ -15,7 +15,17 @@ class Purchase extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['invoice_number', 'supplier_id', 'supplier_name', 'purchase_date', 'status', 'total_amount', 'tax_amount', 'grand_total', 'notes', 'is_active'];
+    protected $fillable = ['invoice_number', 'supplier_id', 'supplier_name', 'purchase_date', 'status', 'total_amount', 'tax_amount', 'grand_total', 'paid_amount', 'due_amount', 'payment_status', 'notes', 'is_active'];
+
+    protected $casts = [
+        'purchase_date' => 'date',
+        'total_amount' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'grand_total' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
+        'due_amount' => 'decimal:2',
+        'is_active' => 'boolean',
+    ];
 
     protected static function boot()
     {
@@ -36,5 +46,10 @@ class Purchase extends Model
     public function items()
     {
         return $this->hasMany(PurchaseItem::class);
+    }
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
     }
 }

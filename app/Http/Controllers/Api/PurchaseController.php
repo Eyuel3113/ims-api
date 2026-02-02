@@ -162,6 +162,7 @@ class PurchaseController extends Controller
             'items.*.unit_price' => 'nullable|numeric|min:0',
             'items.*.expiry_date' => 'nullable|date',
             'notes' => 'nullable|string',
+            'paid_amount' => 'nullable|numeric|min:0',
         ]);
 
         return DB::transaction(function () use ($request) {
@@ -190,6 +191,17 @@ class PurchaseController extends Controller
                 $taxTotal += $tax;
             }
 
+            $grandTotal = $total + $taxTotal;
+            $paidAmount = $request->input('paid_amount', 0);
+            $dueAmount = $grandTotal - $paidAmount;
+            
+            $paymentStatus = 'unpaid';
+            if ($paidAmount >= $grandTotal) {
+                $paymentStatus = 'paid';
+            } elseif ($paidAmount > 0) {
+                $paymentStatus = 'partial';
+            }
+
             $purchase = Purchase::create([
                 'invoice_number' => $request->invoice_number,
                 'supplier_id' => $request->supplier_id,
@@ -198,7 +210,10 @@ class PurchaseController extends Controller
                 'status' => $request->supplier_id ? 'pending' : 'received',
                 'total_amount' => $total,
                 'tax_amount' => $taxTotal,
-                'grand_total' => $total + $taxTotal,
+                'grand_total' => $grandTotal,
+                'paid_amount' => $paidAmount,
+                'due_amount' => $dueAmount,
+                'payment_status' => $paymentStatus,
                 'notes' => $request->notes,
             ]);
 

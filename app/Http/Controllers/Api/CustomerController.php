@@ -91,17 +91,33 @@ class CustomerController extends Controller
     /**
      * Get Customer
      * 
-     * Show single customer.
+     * Show single customer with paginated sales history.
      * 
      * @urlParam id string required Customer UUID.
+     * @queryParam limit integer optional Items per page. Default 10.
+     * @queryParam page integer optional Page number. Default 1.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $customer = Customer::with('sales')->findOrFail($id);
+        $limit = $request->query('limit', 10);
+        $customer = Customer::findOrFail($id);
+        
+        $sales = $customer->sales()
+            ->orderBy('sale_date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         return response()->json([
             'message' => 'Customer retrieved successfully',
-            'data' => $customer
+            'data' => array_merge($customer->toArray(), [
+                'sales' => $sales->items(),
+                'sales_pagination' => [
+                    'total' => $sales->total(),
+                    'per_page' => $sales->perPage(),
+                    'current_page' => $sales->currentPage(),
+                    'last_page' => $sales->lastPage(),
+                ]
+            ])
         ]);
     }
 

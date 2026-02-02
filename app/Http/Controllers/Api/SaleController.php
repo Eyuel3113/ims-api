@@ -40,7 +40,7 @@ class SaleController extends Controller
         $paymentMethod = $request->query('payment_method');
         $limit = $request->query('limit', 10);
 
-        $query = Sale::with(['items.product']);
+        $query = Sale::with(['items.product', 'customer']);
 
         if ($status === 'active') {
             $query->where('is_active', true);
@@ -67,10 +67,15 @@ class SaleController extends Controller
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('invoice_number', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('customer_name', 'like', '%' . $searchTerm . '%')
                   ->orWhereHas('items.product', function ($pq) use ($searchTerm) {
                       $pq->where('name', 'like', '%' . $searchTerm . '%');
                   });
             });
+        }
+
+        if ($request->filled('customer_id')) {
+            $query->where('customer_id', $request->customer_id);
         }
 
         $sales = $query->orderBy('created_at', 'desc')->paginate($limit);
@@ -114,10 +119,18 @@ class SaleController extends Controller
             'items.*.unit_price' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
             'payment_method' => 'required|string|in:cash,card,mobile',
+            'customer_id' => 'nullable|exists:customers,id',
         ]);
 
         try {
             return DB::transaction(function () use ($request) {
+                // Fetch customer name if attached
+                $customerName = null;
+                if ($request->customer_id) {
+                    $customer = \App\Models\Customer::find($request->customer_id);
+                    $customerName = $customer ? $customer->name : null;
+                }
+
                 $itemsWithPrices = [];
                 $total = 0;
                 $taxTotal = 0;
@@ -144,6 +157,8 @@ class SaleController extends Controller
 
                 $sale = Sale::create([
                     'invoice_number' => $request->invoice_number,
+                    'customer_id' => $request->customer_id,
+                    'customer_name' => $customerName,
                     'sale_date' => $request->sale_date,
                     'total_amount' => $total,
                     'tax_amount' => $taxTotal,
@@ -217,7 +232,7 @@ class SaleController extends Controller
      */
     public function show($id)
     {
-        $sale = Sale::with(['items.product', 'items.warehouse'])->findOrFail($id);
+        $sale = Sale::with(['items.product', 'items.warehouse', 'customer'])->findOrFail($id);
 
         return response()->json([
             'message' => 'Sale retrieved successfully',

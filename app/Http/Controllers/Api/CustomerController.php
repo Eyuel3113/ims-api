@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Supplier;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 /**
- * @group Suppliers
- * APIs for managing suppliers
+ * @group Customers
+ * APIs for managing customers
  */
-class SupplierController extends Controller
+class CustomerController extends Controller
 {
     /**
-     * List Suppliers
+     * List Customers
      * 
-     * Get paginated list of suppliers.
+     * Get paginated list of customers.
      * 
      * @queryParam search string optional Search by name, code, phone, email.
      * @queryParam status string optional filter by active/inactive.
@@ -28,7 +28,7 @@ class SupplierController extends Controller
         $status = $request->query('status');
         $limit = $request->query('limit', 10);
 
-        $query = Supplier::query();
+        $query = Customer::query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -45,24 +45,24 @@ class SupplierController extends Controller
             $query->where('is_active', false);
         }
 
-        $suppliers = $query->orderBy('created_at', 'desc')->paginate($limit);
+        $customers = $query->orderBy('created_at', 'desc')->paginate($limit);
 
         return response()->json([
-            'message' => 'Suppliers fetched successfully',
-            'data' => $suppliers->items(),
+            'message' => 'Customers fetched successfully',
+            'data' => $customers->items(),
             'pagination' => [
-                'total' => $suppliers->total(),
-                'per_page' => $suppliers->perPage(),
-                'current_page' => $suppliers->currentPage(),
-                'last_page' => $suppliers->lastPage(),
+                'total' => $customers->total(),
+                'per_page' => $customers->perPage(),
+                'current_page' => $customers->currentPage(),
+                'last_page' => $customers->lastPage(),
             ]
         ]);
     }
 
     /**
-     * Create Supplier
+     * Create Customer
      * 
-     * Add new supplier.
+     * Add new customer.
      * 
      * @bodyParam name string required
      * @bodyParam code string required Unique
@@ -74,105 +74,105 @@ class SupplierController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|unique:suppliers,code|max:50',
-            'phone' => 'nullable|string|unique:suppliers,phone|max:20',
-            'email' => 'nullable|email|unique:suppliers,email',
+            'code' => 'required|string|unique:customers,code|max:50',
+            'phone' => 'nullable|string|unique:customers,phone|max:20',
+            'email' => 'nullable|email|unique:customers,email',
             'address' => 'nullable|string',
         ]);
 
-        $supplier = Supplier::create($validated + ['is_active' => true]);
+        $customer = Customer::create($validated + ['is_active' => true]);
 
         return response()->json([
-            'message' => 'Supplier created successfully',
-            'data' => $supplier
+            'message' => 'Customer created successfully',
+            'data' => $customer
         ], 201);
     }
 
     /**
-     * Get Supplier
+     * Get Customer
      * 
-     * Show single supplier.
+     * Show single customer.
      * 
-     * @urlParam id string required Supplier UUID.
+     * @urlParam id string required Customer UUID.
      */
     public function show($id)
     {
-        $supplier = Supplier::with('purchases')->findOrFail($id);
+        $customer = Customer::with('sales')->findOrFail($id);
 
         return response()->json([
-            'message' => 'Supplier retrieved successfully',
-            'data' => $supplier
+            'message' => 'Customer retrieved successfully',
+            'data' => $customer
         ]);
     }
 
     /**
-     * Update Supplier
+     * Update Customer
      * 
-     * Update supplier details.
+     * Update customer details.
      * 
-     * @urlParam id string required Supplier UUID.
+     * @urlParam id string required Customer UUID.
      */
     public function update(Request $request, $id)
     {
-        $supplier = Supplier::findOrFail($id);
+        $customer = Customer::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'code' => ['sometimes', 'string', 'max:50', Rule::unique('suppliers', 'code')->ignore($id)],
-            'phone' => ['nullable', 'string', Rule::unique('suppliers', 'phone')->ignore($id)],
-            'email' => ['nullable', 'email', Rule::unique('suppliers', 'email')->ignore($id)],
+            'code' => ['sometimes', 'string', 'max:50', Rule::unique('customers', 'code')->ignore($id)],
+            'phone' => ['nullable', 'string', Rule::unique('customers', 'phone')->ignore($id)],
+            'email' => ['nullable', 'email', Rule::unique('customers', 'email')->ignore($id)],
             'address' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
         ]);
 
-        $supplier->update($validated);
+        $customer->update($validated);
 
         return response()->json([
-            'message' => 'Supplier updated successfully',
-            'data' => $supplier
+            'message' => 'Customer updated successfully',
+            'data' => $customer
         ]);
     }
 
     /**
-     * Delete Supplier
+     * Delete Customer
      * 
-     * Soft delete supplier.
+     * Soft delete customer.
      * 
-     * @urlParam id string required Supplier UUID.
+     * @urlParam id string required Customer UUID.
      */
     public function destroy($id)
     {
-        $supplier = Supplier::findOrFail($id);
-        $supplier->delete();
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
 
-        return response()->json(['message' => 'Supplier deleted successfully']);
+        return response()->json(['message' => 'Customer deleted successfully']);
     }
 
     /**
-     * Toggle Supplier Status
+     * Toggle Customer Status
      */
     public function toggleStatus($id)
     {
-        $supplier = Supplier::findOrFail($id);
-        $supplier->is_active = !$supplier->is_active;
-        $supplier->save();
+        $customer = Customer::findOrFail($id);
+        $customer->is_active = !$customer->is_active;
+        $customer->save();
 
         return response()->json([
-            'message' => 'Supplier visibility updated successfully',
-            'is_active' => $supplier->is_active,
-            'data' => $supplier
+            'message' => 'Customer visibility updated successfully',
+            'is_active' => $customer->is_active,
+            'data' => $customer
         ]);
     }
 
     /**
-     * List Active Suppliers
+     * List Active Customers
      * @queryParam search string optional Search by name, code, phone, email.
      */
-    public function activeSuppliers(Request $request)
+    public function activeCustomers(Request $request)
     {
         $search = $request->query('search');
 
-        $query = Supplier::active();
+        $query = Customer::active();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -183,11 +183,11 @@ class SupplierController extends Controller
             });
         }
 
-        $suppliers = $query->orderBy('created_at', 'desc')->get();
+        $customers = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json([
-            'message' => 'Active suppliers fetched successfully',
-            'data' => $suppliers
+            'message' => 'Active customers fetched successfully',
+            'data' => $customers
         ]);
     }
 }

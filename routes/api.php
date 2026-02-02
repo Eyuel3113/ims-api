@@ -62,6 +62,16 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{id}', [SupplierController::class, 'destroy']);
       });
 
+      Route::prefix('customers')->group(function () {
+        Route::get('/active', [\App\Http\Controllers\Api\CustomerController::class, 'activeCustomers']);
+        Route::get('/', [\App\Http\Controllers\Api\CustomerController::class, 'index']);
+        Route::post('/', [\App\Http\Controllers\Api\CustomerController::class, 'store']);
+        Route::get('/{id}', [\App\Http\Controllers\Api\CustomerController::class, 'show']);
+        Route::patch('/{id}', [\App\Http\Controllers\Api\CustomerController::class, 'update']);
+        Route::patch('/{id}/status', [\App\Http\Controllers\Api\CustomerController::class, 'toggleStatus']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\CustomerController::class, 'destroy']);
+      });
+
       // Warehouses
       Route::prefix('warehouses')->group(function () {
         Route::get('/active', [WarehouseController::class, 'activeWarehouses']);

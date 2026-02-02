@@ -1,19 +1,19 @@
-name: Warehouses
-description: 'APIs for managing warehouses'
+name: Customers
+description: 'APIs for managing customers'
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/warehouses/active
+    uri: api/v1/customers/active
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Active Warehouse'
-      description: 'Display a listing of active Warehouse (for public view) without pagination.'
+      title: 'List Active Customers'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -25,7 +25,7 @@ endpoints:
       search:
         custom: []
         name: search
-        description: 'optional Filter active categories by name or description.'
+        description: 'optional Search by name, code, phone, email.'
         required: false
         example: architecto
         type: string
@@ -57,15 +57,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/warehouses
+    uri: api/v1/customers
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Warehouses'
-      description: 'Get paginated list.'
+      title: 'List Customers'
+      description: 'Get paginated list of customers.'
       authenticated: false
       deprecated: false
     headers:
@@ -77,7 +77,7 @@ endpoints:
       search:
         custom: []
         name: search
-        description: 'optional Search by name or code.'
+        description: 'optional Search by name, code, phone, email.'
         required: false
         example: architecto
         type: string
@@ -133,15 +133,15 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/warehouses
+    uri: api/v1/customers
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create Warehouse'
-      description: 'Add new warehouse.'
+      title: 'Create Customer'
+      description: 'Add new customer.'
       authenticated: false
       deprecated: false
     headers:
@@ -155,9 +155,9 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: ''
         required: true
-        example: b
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -166,18 +166,18 @@ endpoints:
       code:
         custom: []
         name: code
-        description: 'Must not be greater than 50 characters.'
+        description: Unique
         required: true
-        example: 'n'
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      address:
+      phone:
         custom: []
-        name: address
-        description: ''
+        name: phone
+        description: optional
         required: false
         example: architecto
         type: string
@@ -185,22 +185,34 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
-      phone:
+      email:
         custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
+        name: email
+        description: optional
         required: false
-        example: ngzmiyvdljnikhwa
+        example: gbailey@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: optional
+        required: false
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      name: b
-      code: 'n'
+      name: architecto
+      code: architecto
+      phone: architecto
+      email: gbailey@example.net
       address: architecto
-      phone: ngzmiyvdljnikhwa
     fileParameters: []
     responses: []
     responseFields: []
@@ -212,15 +224,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/warehouses/{id}'
+    uri: 'api/v1/customers/{id}'
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get Warehouse'
-      description: ''
+      title: 'Get Customer'
+      description: 'Show single customer.'
       authenticated: false
       deprecated: false
     headers:
@@ -230,7 +242,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the warehouse.'
+        description: 'Customer UUID.'
         required: true
         example: architecto
         type: string
@@ -264,15 +276,15 @@ endpoints:
     custom: []
     httpMethods:
       - PATCH
-    uri: 'api/v1/warehouses/{id}'
+    uri: 'api/v1/customers/{id}'
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update Warehouse'
-      description: ''
+      title: 'Update Customer'
+      description: 'Update customer details.'
       authenticated: false
       deprecated: false
     headers:
@@ -282,7 +294,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the warehouse.'
+        description: 'Customer UUID.'
         required: true
         example: architecto
         type: string
@@ -317,6 +329,28 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Must be a valid email address.'
+        required: false
+        example: zbailey@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
       address:
         custom: []
         name: address
@@ -328,23 +362,12 @@ endpoints:
         exampleWasSpecified: false
         nullable: true
         deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: ngzmiyvdljnikhwa
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
       is_active:
         custom: []
         name: is_active
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -353,9 +376,10 @@ endpoints:
     cleanBodyParameters:
       name: b
       code: 'n'
+      phone: architecto
+      email: zbailey@example.net
       address: architecto
-      phone: ngzmiyvdljnikhwa
-      is_active: true
+      is_active: false
     fileParameters: []
     responses: []
     responseFields: []
@@ -367,15 +391,15 @@ endpoints:
     custom: []
     httpMethods:
       - PATCH
-    uri: 'api/v1/warehouses/{id}/status'
+    uri: 'api/v1/customers/{id}/status'
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Toggle Warehouse Active/Inactive'
-      description: 'Toggle the active status of a Warehouse.'
+      title: 'Toggle Customer Status'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -385,7 +409,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The UUID of the Warehouse.'
+        description: 'The ID of the customer.'
         required: true
         example: architecto
         type: string
@@ -410,15 +434,15 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/warehouses/{id}'
+    uri: 'api/v1/customers/{id}'
     metadata:
       custom: []
-      groupName: Warehouses
-      groupDescription: 'APIs for managing warehouses'
+      groupName: Customers
+      groupDescription: 'APIs for managing customers'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete Warehouse'
-      description: ''
+      title: 'Delete Customer'
+      description: 'Soft delete customer.'
       authenticated: false
       deprecated: false
     headers:
@@ -428,7 +452,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the warehouse.'
+        description: 'Customer UUID.'
         required: true
         example: architecto
         type: string

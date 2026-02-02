@@ -15,7 +15,7 @@ class Sale extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['invoice_number', 'sale_date', 'total_amount', 'tax_amount', 'grand_total', 'notes', 'is_active', 'payment_method'];
+    protected $fillable = ['invoice_number', 'customer_id', 'customer_name', 'sale_date', 'total_amount', 'tax_amount', 'grand_total', 'notes', 'is_active', 'payment_method'];
 
     protected $casts = [
         'sale_date' => 'date',
@@ -34,6 +34,11 @@ class Sale extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logAll();
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function items()

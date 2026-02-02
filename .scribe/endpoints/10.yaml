@@ -1,19 +1,19 @@
-name: Analytics
-description: ''
+name: 'Activity Logs'
+description: 'APIs for viewing system activity logs'
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/analytics/dashboard
+    uri: api/v1/activity-logs
     metadata:
       custom: []
-      groupName: Analytics
-      groupDescription: ''
+      groupName: 'Activity Logs'
+      groupDescription: 'APIs for viewing system activity logs'
       subgroup: ''
       subgroupDescription: ''
-      title: 'Dashboard Analytics'
-      description: 'Key metrics for inventory dashboard.'
+      title: 'List Activity Logs'
+      description: 'Get paginated system activity logs with filters.'
       authenticated: false
       deprecated: false
     headers:
@@ -21,208 +21,104 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+    queryParameters:
+      log_name:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/analytics/stock-by-warehouse
-    metadata:
-      custom: []
-      groupName: Analytics
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Stock Value by Warehouse'
-      description: 'Total monetary value of stock in each warehouse.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+        name: log_name
+        description: "filter by log name (e.g. 'default')"
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      event:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/analytics/monthly-trend
-    metadata:
-      custom: []
-      groupName: Analytics
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Monthly Sales vs Purchase'
-      description: 'Monthly trend of sales vs purchases over the last 8 months.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+        name: event
+        description: 'filter by event (created, updated, deleted, etc.)'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      subject_type:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/analytics/inventory-by-category
-    metadata:
-      custom: []
-      groupName: Analytics
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Inventory by Category'
-      description: 'Get product distribution across categories.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+        name: subject_type
+        description: 'filter by model class'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      causer_id:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/analytics/purchase-kpis
-    metadata:
-      custom: []
-      groupName: Analytics
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Purchase KPIs'
-      description: 'Key metrics for purchase status and total value.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+        name: causer_id
+        description: 'filter by user ID'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      date_from:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/analytics/expiring-stock
-    metadata:
-      custom: []
-      groupName: Analytics
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Expiring Stock Alert'
-      description: 'Get list of stocks expiring within one month.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+        name: date_from
+        description: 'date filter logs from date'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      date_to:
+        custom: []
+        name: date_to
+        description: 'date filter logs to date'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'search in description'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'pagination limit, default 15'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      log_name: architecto
+      event: architecto
+      subject_type: architecto
+      causer_id: architecto
+      date_from: architecto
+      date_to: architecto
+      search: architecto
+      limit: 16
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []

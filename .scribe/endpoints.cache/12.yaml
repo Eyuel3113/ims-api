@@ -203,3 +203,331 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/reports/product-sales
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Product Sales Report'
+      description: 'Get total sales aggregated by product.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      from_date:
+        custom: []
+        name: from_date
+        description: 'date Start date for filtering (YYYY-MM-DD).'
+        required: false
+        example: '2024-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      to_date:
+        custom: []
+        name: to_date
+        description: 'date End date for filtering (YYYY-MM-DD).'
+        required: false
+        example: '2024-12-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      filter:
+        custom: []
+        name: filter
+        description: 'Preset date filter (daily, monthly, yearly).'
+        required: false
+        example: monthly
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Results per page for pagination.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      from_date: '2024-01-01'
+      to_date: '2024-12-31'
+      filter: monthly
+      limit: 10
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/reports/product-sales-all
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Product Sales Report (All)'
+      description: 'Get total sales aggregated by product without pagination.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      from_date:
+        custom: []
+        name: from_date
+        description: 'date Start date for filtering (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      to_date:
+        custom: []
+        name: to_date
+        description: 'date End date for filtering (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      filter:
+        custom: []
+        name: filter
+        description: 'Preset date filter (daily, monthly, yearly).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      from_date: architecto
+      to_date: architecto
+      filter: architecto
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/reports/product-purchases
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Product Purchase Report'
+      description: 'Get total purchases aggregated by product.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      from_date:
+        custom: []
+        name: from_date
+        description: 'date Start date for filtering (YYYY-MM-DD).'
+        required: false
+        example: '2024-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      to_date:
+        custom: []
+        name: to_date
+        description: 'date End date for filtering (YYYY-MM-DD).'
+        required: false
+        example: '2024-12-31'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      filter:
+        custom: []
+        name: filter
+        description: 'Preset date filter (daily, monthly, yearly).'
+        required: false
+        example: monthly
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      limit:
+        custom: []
+        name: limit
+        description: 'Results per page for pagination.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      from_date: '2024-01-01'
+      to_date: '2024-12-31'
+      filter: monthly
+      limit: 10
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/reports/product-purchases-all
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Product Purchase Report (All)'
+      description: 'Get total purchases aggregated by product without pagination.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      from_date:
+        custom: []
+        name: from_date
+        description: 'date Start date for filtering (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      to_date:
+        custom: []
+        name: to_date
+        description: 'date End date for filtering (YYYY-MM-DD).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      filter:
+        custom: []
+        name: filter
+        description: 'Preset date filter (daily, monthly, yearly).'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      from_date: architecto
+      to_date: architecto
+      filter: architecto
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

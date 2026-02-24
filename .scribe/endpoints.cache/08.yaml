@@ -233,7 +233,7 @@ endpoints:
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-02-02T13:17:32'
+        example: '2026-02-24T11:58:07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -502,7 +502,7 @@ endpoints:
         name: 'items[].expiry_date'
         description: 'Must be a valid date.'
         required: false
-        example: '2026-02-02T13:17:32'
+        example: '2026-02-24T11:58:07'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -760,7 +760,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Cancel Purchase'
-      description: 'Marks a pending purchase as cancelled.'
+      description: 'Marks a pending purchase as cancelled and removes associated payments.'
       authenticated: false
       deprecated: false
     headers:

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Purchase;
+use App\Models\PurchaseItem;
 use App\Models\Stock;
 use App\Models\Expense;
 use Illuminate\Http\Request;
@@ -203,9 +204,224 @@ class ReportsController extends Controller
                     'amount' => round((float) $outputVat, 2),
                     'total_sales_excl_tax' => round((float) $totalSalesExclTax, 2),
                 ],
-                'net_vat_payable' => round((float) $netVat, 2),
-                'status' => $netVat >= 0 ? 'Payable' : 'Refundable'
+                'net_vat_payable' => round((float) $netVat, 2), 
+                'status' => $netVat == 0 ? 'Nil' : ($netVat > 0 ? 'Payable' : 'Refundable'),
+                // 'status' => $netVat > 0 ? 'Payable' : 'Refundable'   
             ]
         ]);
+    }
+
+    /**
+     * Product Sales Report
+     * 
+     * Get total sales aggregated by product.
+     * 
+     * @group Reports
+     * @queryParam from_date date Start date for filtering (YYYY-MM-DD). Example: 2024-01-01
+     * @queryParam to_date date End date for filtering (YYYY-MM-DD). Example: 2024-12-31
+     * @queryParam filter string Preset date filter (daily, monthly, yearly). Example: monthly
+     * @queryParam limit integer Results per page for pagination. Example: 10
+     */
+    public function productSalesReport(Request $request)
+    {
+        $query = SaleItem::join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->join('products', 'sale_items.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->where('sales.is_active', true)
+            ->whereNull('sales.deleted_at')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.code',
+                'products.unit',
+                'products.barcode',
+                'products.photo',
+                'products.purchase_price',
+                'products.selling_price',
+                'categories.name as category_name',
+                DB::raw('SUM(sale_items.quantity) as total_quantity'),
+                DB::raw('SUM(sale_items.total_price) as total_amount')
+            )
+            ->groupBy('products.id', 'products.name', 'products.code', 'products.unit', 'products.barcode', 'products.photo', 'products.purchase_price', 'products.selling_price', 'categories.name');
+
+        $this->applyDateFilters($query, $request, 'sales.sale_date');
+
+        $paginator = $query->paginate($request->query('limit', 10));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product sales report fetched successfully',
+            'data' => $paginator->items(),
+            'pagination' => [
+                'total' => $paginator->total(),
+                'per_page' => $paginator->perPage(),
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+            ]
+        ]);
+    }
+
+    /**
+     * Product Sales Report (All)
+     * 
+     * Get total sales aggregated by product without pagination.
+     * 
+     * @group Reports
+     * @queryParam from_date date Start date for filtering (YYYY-MM-DD).
+     * @queryParam to_date date End date for filtering (YYYY-MM-DD).
+     * @queryParam filter string Preset date filter (daily, monthly, yearly).
+     */
+    public function productSalesReportAll(Request $request)
+    {
+        $query = SaleItem::join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->join('products', 'sale_items.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->where('sales.is_active', true)
+            ->whereNull('sales.deleted_at')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.code',
+                'products.unit',
+                'products.barcode',
+                'products.photo',
+                'products.purchase_price',
+                'products.selling_price',
+                'categories.name as category_name',
+                DB::raw('SUM(sale_items.quantity) as total_quantity'),
+                DB::raw('SUM(sale_items.total_price) as total_amount')
+            )
+            ->groupBy('products.id', 'products.name', 'products.code', 'products.unit', 'products.barcode', 'products.photo', 'products.purchase_price', 'products.selling_price', 'categories.name');
+
+        $this->applyDateFilters($query, $request, 'sales.sale_date');
+
+        $data = $query->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All product sales records fetched successfully',
+            'data' => $data
+        ]);
+    }
+
+    /**
+     * Product Purchase Report
+     * 
+     * Get total purchases aggregated by product.
+     * 
+     * @group Reports
+     * @queryParam from_date date Start date for filtering (YYYY-MM-DD). Example: 2024-01-01
+     * @queryParam to_date date End date for filtering (YYYY-MM-DD). Example: 2024-12-31
+     * @queryParam filter string Preset date filter (daily, monthly, yearly). Example: monthly
+     * @queryParam limit integer Results per page for pagination. Example: 10
+     */
+    public function productPurchaseReport(Request $request)
+    {
+        $query = PurchaseItem::join('purchases', 'purchase_items.purchase_id', '=', 'purchases.id')
+            ->join('products', 'purchase_items.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->where('purchases.is_active', true)
+            ->whereNull('purchases.deleted_at')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.code',
+                'products.unit',
+                'products.barcode',
+                'products.photo',
+                'products.purchase_price',
+                'products.selling_price',
+                'categories.name as category_name',
+                DB::raw('SUM(purchase_items.quantity) as total_quantity'),
+                DB::raw('SUM(purchase_items.total_price) as total_amount')
+            )
+            ->groupBy('products.id', 'products.name', 'products.code', 'products.unit', 'products.barcode', 'products.photo', 'products.purchase_price', 'products.selling_price', 'categories.name');
+
+        $this->applyDateFilters($query, $request, 'purchases.purchase_date');
+
+        $paginator = $query->paginate($request->query('limit', 10));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product purchase report fetched successfully',
+            'data' => $paginator->items(),
+            'pagination' => [
+                'total' => $paginator->total(),
+                'per_page' => $paginator->perPage(),
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+            ]
+        ]);
+    }
+
+    /**
+     * Product Purchase Report (All)
+     * 
+     * Get total purchases aggregated by product without pagination.
+     * 
+     * @group Reports
+     * @queryParam from_date date Start date for filtering (YYYY-MM-DD).
+     * @queryParam to_date date End date for filtering (YYYY-MM-DD).
+     * @queryParam filter string Preset date filter (daily, monthly, yearly).
+     */
+    public function productPurchaseReportAll(Request $request)
+    {
+        $query = PurchaseItem::join('purchases', 'purchase_items.purchase_id', '=', 'purchases.id')
+            ->join('products', 'purchase_items.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->where('purchases.is_active', true)
+            ->whereNull('purchases.deleted_at')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.code',
+                'products.unit',
+                'products.barcode',
+                'products.photo',
+                'products.purchase_price',
+                'products.selling_price',
+                'categories.name as category_name',
+                DB::raw('SUM(purchase_items.quantity) as total_quantity'),
+                DB::raw('SUM(purchase_items.total_price) as total_amount')
+            )
+            ->groupBy('products.id', 'products.name', 'products.code', 'products.unit', 'products.barcode', 'products.photo', 'products.purchase_price', 'products.selling_price', 'categories.name');
+
+        $this->applyDateFilters($query, $request, 'purchases.purchase_date');
+
+        $data = $query->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All product purchase records fetched successfully',
+            'data' => $data
+        ]);
+    }
+
+    /**
+     * Helper to apply date filters
+     */
+    private function applyDateFilters($query, Request $request, $dateColumn)
+    {
+        $startDate = $request->query('from_date');
+        $endDate = $request->query('to_date');
+        $filter = $request->query('filter'); // daily, monthly, yearly
+
+        if ($filter) {
+            switch ($filter) {
+                case 'daily':
+                    $query->whereDate($dateColumn, Carbon::today());
+                    break;
+                case 'monthly':
+                    $query->whereMonth($dateColumn, Carbon::now()->month)
+                          ->whereYear($dateColumn, Carbon::now()->year);
+                    break;
+                case 'yearly':
+                    $query->whereYear($dateColumn, Carbon::now()->year);
+                    break;
+            }
+        } elseif ($startDate || $endDate) {
+            if ($startDate) $query->whereDate($dateColumn, '>=', $startDate);
+            if ($endDate) $query->whereDate($dateColumn, '<=', $endDate);
+        }
     }
 }

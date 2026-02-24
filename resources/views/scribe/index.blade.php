@@ -335,6 +335,18 @@
                                                                                 <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-tax">
                                 <a href="#reports-GETapi-v1-reports-tax">Tax Report</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-product-sales">
+                                <a href="#reports-GETapi-v1-reports-product-sales">Product Sales Report</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-product-sales-all">
+                                <a href="#reports-GETapi-v1-reports-product-sales-all">Product Sales Report (All)</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-product-purchases">
+                                <a href="#reports-GETapi-v1-reports-product-purchases">Product Purchase Report</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="reports-GETapi-v1-reports-product-purchases-all">
+                                <a href="#reports-GETapi-v1-reports-product-purchases-all">Product Purchase Report (All)</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-sales" class="tocify-header">
@@ -472,7 +484,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 2, 2026</li>
+        <li>Last updated: February 24, 2026</li>
     </ul>
 </div>
 
@@ -5965,10 +5977,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"payable_type\": \"purchase\",
+    \"payable_type\": \"sale\",
     \"payable_id\": \"architecto\",
     \"amount\": 39,
-    \"payment_date\": \"2026-02-02T13:17:32\",
+    \"payment_date\": \"2026-02-24T11:58:08\",
     \"payment_method\": \"architecto\",
     \"notes\": \"architecto\"
 }"
@@ -5986,10 +5998,10 @@ const headers = {
 };
 
 let body = {
-    "payable_type": "purchase",
+    "payable_type": "sale",
     "payable_id": "architecto",
     "amount": 39,
-    "payment_date": "2026-02-02T13:17:32",
+    "payment_date": "2026-02-24T11:58:08",
     "payment_method": "architecto",
     "notes": "architecto"
 };
@@ -6083,10 +6095,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="payable_type"                data-endpoint="POSTapi-v1-payments"
-               value="purchase"
+               value="sale"
                data-component="body">
     <br>
-<p>Example: <code>purchase</code></p>
+<p>Example: <code>sale</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>sale</code></li> <li><code>purchase</code></li></ul>
         </div>
@@ -6121,10 +6133,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_date"                data-endpoint="POSTapi-v1-payments"
-               value="2026-02-02T13:17:32"
+               value="2026-02-24T11:58:08"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-02-02T13:17:32</code></p>
+<p>Must be a valid date. Example: <code>2026-02-24T11:58:08</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>payment_method</code></b>&nbsp;&nbsp;
@@ -7258,9 +7270,9 @@ queryParam barcode string optional filter by barcode. Example: <code>architecto<
     --form "has_expiry="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "is_vatable="\
+    --form "is_vatable=1"\
     --form "is_active="\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php982E.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php3161.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7283,7 +7295,7 @@ body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
-body.append('is_vatable', '');
+body.append('is_vatable', '1');
 body.append('is_active', '');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
 
@@ -7439,7 +7451,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php982E.tmp</code></p>
+<p>optional Image file Example: <code>C:\Users\user\AppData\Local\Temp\php3161.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -7519,7 +7531,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_active</code></b>&nbsp;&nbsp;
@@ -7561,7 +7573,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/import" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\user\AppData\Local\Temp\php982F.tmp" </code></pre></div>
+    --form "file=@C:\Users\user\AppData\Local\Temp\php3171.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -7669,7 +7681,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php982F.tmp</code></p>
+<p>Must be a file. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php3171.tmp</code></p>
         </div>
         </form>
 
@@ -8003,10 +8015,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "min_stock=16"\
     --form "has_expiry="\
     --form "is_active="\
-    --form "is_vatable=1"\
+    --form "is_vatable="\
     --form "purchase_price=4326.41688"\
     --form "selling_price=4326.41688"\
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php9852.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php3194.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8028,7 +8040,7 @@ body.append('barcode', 'architecto');
 body.append('min_stock', '16');
 body.append('has_expiry', '');
 body.append('is_active', '');
-body.append('is_vatable', '1');
+body.append('is_vatable', '');
 body.append('purchase_price', '4326.41688');
 body.append('selling_price', '4326.41688');
 body.append('photo', document.querySelector('input[name="photo"]').files[0]);
@@ -8198,7 +8210,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php9852.tmp</code></p>
+<p>optional Example: <code>C:\Users\user\AppData\Local\Temp\php3194.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>min_stock</code></b>&nbsp;&nbsp;
@@ -8276,7 +8288,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>purchase_price</code></b>&nbsp;&nbsp;
@@ -8443,7 +8455,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/v1/products/architecto/photo" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "photo=@C:\Users\user\AppData\Local\Temp\php9853.tmp" </code></pre></div>
+    --form "photo=@C:\Users\user\AppData\Local\Temp\php31A4.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -8564,7 +8576,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php9853.tmp</code></p>
+<p>Must be an image. Must not be greater than 2048 kilobytes. Example: <code>C:\Users\user\AppData\Local\Temp\php31A4.tmp</code></p>
         </div>
         </form>
 
@@ -9498,10 +9510,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="POSTapi-v1-purchases"
-               value="2026-02-02T13:17:32"
+               value="2026-02-24T11:58:07"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-02-02T13:17:32</code></p>
+<p>Must be a valid date. Example: <code>2026-02-24T11:58:07</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -9988,10 +10000,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="items.0.expiry_date"                data-endpoint="PATCHapi-v1-purchases--id-"
-               value="2026-02-02T13:17:32"
+               value="2026-02-24T11:58:07"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-02-02T13:17:32</code></p>
+<p>Must be a valid date. Example: <code>2026-02-24T11:58:07</code></p>
                     </div>
                                                                 <div style=" margin-left: 14px; clear: unset;">
         <details>
@@ -10582,7 +10594,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Marks a pending purchase as cancelled.</p>
+<p>Marks a pending purchase as cancelled and removes associated payments.</p>
 
 <span id="example-requests-POSTapi-v1-purchases--id--cancel">
 <blockquote>Example request:</blockquote>
@@ -11333,6 +11345,716 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                    <h2 id="reports-GETapi-v1-reports-product-sales">Product Sales Report</h2>
+
+<p>
+</p>
+
+<p>Get total sales aggregated by product.</p>
+
+<span id="example-requests-GETapi-v1-reports-product-sales">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/reports/product-sales?from_date=2024-01-01&amp;to_date=2024-12-31&amp;filter=monthly&amp;limit=10" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/reports/product-sales"
+);
+
+const params = {
+    "from_date": "2024-01-01",
+    "to_date": "2024-12-31",
+    "filter": "monthly",
+    "limit": "10",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-reports-product-sales">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-reports-product-sales" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-reports-product-sales"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-reports-product-sales"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-reports-product-sales" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-reports-product-sales">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-reports-product-sales" data-method="GET"
+      data-path="api/v1/reports/product-sales"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-reports-product-sales', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-reports-product-sales"
+                    onclick="tryItOut('GETapi-v1-reports-product-sales');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-reports-product-sales"
+                    onclick="cancelTryOut('GETapi-v1-reports-product-sales');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-reports-product-sales"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/reports/product-sales</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>from_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="from_date"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="2024-01-01"
+               data-component="query">
+    <br>
+<p>date Start date for filtering (YYYY-MM-DD). Example: <code>2024-01-01</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>to_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="to_date"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="2024-12-31"
+               data-component="query">
+    <br>
+<p>date End date for filtering (YYYY-MM-DD). Example: <code>2024-12-31</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>filter</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="filter"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="monthly"
+               data-component="query">
+    <br>
+<p>Preset date filter (daily, monthly, yearly). Example: <code>monthly</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-reports-product-sales"
+               value="10"
+               data-component="query">
+    <br>
+<p>Results per page for pagination. Example: <code>10</code></p>
+            </div>
+                </form>
+
+                    <h2 id="reports-GETapi-v1-reports-product-sales-all">Product Sales Report (All)</h2>
+
+<p>
+</p>
+
+<p>Get total sales aggregated by product without pagination.</p>
+
+<span id="example-requests-GETapi-v1-reports-product-sales-all">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/reports/product-sales-all?from_date=architecto&amp;to_date=architecto&amp;filter=architecto" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/reports/product-sales-all"
+);
+
+const params = {
+    "from_date": "architecto",
+    "to_date": "architecto",
+    "filter": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-reports-product-sales-all">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-reports-product-sales-all" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-reports-product-sales-all"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-reports-product-sales-all"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-reports-product-sales-all" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-reports-product-sales-all">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-reports-product-sales-all" data-method="GET"
+      data-path="api/v1/reports/product-sales-all"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-reports-product-sales-all', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-reports-product-sales-all"
+                    onclick="tryItOut('GETapi-v1-reports-product-sales-all');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-reports-product-sales-all"
+                    onclick="cancelTryOut('GETapi-v1-reports-product-sales-all');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-reports-product-sales-all"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/reports/product-sales-all</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-reports-product-sales-all"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-reports-product-sales-all"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>from_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="from_date"                data-endpoint="GETapi-v1-reports-product-sales-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>date Start date for filtering (YYYY-MM-DD). Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>to_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="to_date"                data-endpoint="GETapi-v1-reports-product-sales-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>date End date for filtering (YYYY-MM-DD). Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>filter</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="filter"                data-endpoint="GETapi-v1-reports-product-sales-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>Preset date filter (daily, monthly, yearly). Example: <code>architecto</code></p>
+            </div>
+                </form>
+
+                    <h2 id="reports-GETapi-v1-reports-product-purchases">Product Purchase Report</h2>
+
+<p>
+</p>
+
+<p>Get total purchases aggregated by product.</p>
+
+<span id="example-requests-GETapi-v1-reports-product-purchases">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/reports/product-purchases?from_date=2024-01-01&amp;to_date=2024-12-31&amp;filter=monthly&amp;limit=10" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/reports/product-purchases"
+);
+
+const params = {
+    "from_date": "2024-01-01",
+    "to_date": "2024-12-31",
+    "filter": "monthly",
+    "limit": "10",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-reports-product-purchases">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-reports-product-purchases" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-reports-product-purchases"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-reports-product-purchases"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-reports-product-purchases" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-reports-product-purchases">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-reports-product-purchases" data-method="GET"
+      data-path="api/v1/reports/product-purchases"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-reports-product-purchases', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-reports-product-purchases"
+                    onclick="tryItOut('GETapi-v1-reports-product-purchases');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-reports-product-purchases"
+                    onclick="cancelTryOut('GETapi-v1-reports-product-purchases');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-reports-product-purchases"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/reports/product-purchases</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>from_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="from_date"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="2024-01-01"
+               data-component="query">
+    <br>
+<p>date Start date for filtering (YYYY-MM-DD). Example: <code>2024-01-01</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>to_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="to_date"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="2024-12-31"
+               data-component="query">
+    <br>
+<p>date End date for filtering (YYYY-MM-DD). Example: <code>2024-12-31</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>filter</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="filter"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="monthly"
+               data-component="query">
+    <br>
+<p>Preset date filter (daily, monthly, yearly). Example: <code>monthly</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>limit</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="limit"                data-endpoint="GETapi-v1-reports-product-purchases"
+               value="10"
+               data-component="query">
+    <br>
+<p>Results per page for pagination. Example: <code>10</code></p>
+            </div>
+                </form>
+
+                    <h2 id="reports-GETapi-v1-reports-product-purchases-all">Product Purchase Report (All)</h2>
+
+<p>
+</p>
+
+<p>Get total purchases aggregated by product without pagination.</p>
+
+<span id="example-requests-GETapi-v1-reports-product-purchases-all">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/reports/product-purchases-all?from_date=architecto&amp;to_date=architecto&amp;filter=architecto" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/reports/product-purchases-all"
+);
+
+const params = {
+    "from_date": "architecto",
+    "to_date": "architecto",
+    "filter": "architecto",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-reports-product-purchases-all">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-reports-product-purchases-all" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-reports-product-purchases-all"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-reports-product-purchases-all"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-reports-product-purchases-all" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-reports-product-purchases-all">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-reports-product-purchases-all" data-method="GET"
+      data-path="api/v1/reports/product-purchases-all"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-reports-product-purchases-all', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-reports-product-purchases-all"
+                    onclick="tryItOut('GETapi-v1-reports-product-purchases-all');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-reports-product-purchases-all"
+                    onclick="cancelTryOut('GETapi-v1-reports-product-purchases-all');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-reports-product-purchases-all"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/reports/product-purchases-all</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-reports-product-purchases-all"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-reports-product-purchases-all"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>from_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="from_date"                data-endpoint="GETapi-v1-reports-product-purchases-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>date Start date for filtering (YYYY-MM-DD). Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>to_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="to_date"                data-endpoint="GETapi-v1-reports-product-purchases-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>date End date for filtering (YYYY-MM-DD). Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>filter</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="filter"                data-endpoint="GETapi-v1-reports-product-purchases-all"
+               value="architecto"
+               data-component="query">
+    <br>
+<p>Preset date filter (daily, monthly, yearly). Example: <code>architecto</code></p>
+            </div>
+                </form>
 
                 <h1 id="sales">Sales</h1>
 
@@ -14165,7 +14887,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"phone\": \"architecto\",
     \"email\": \"zbailey@example.net\",
     \"address\": \"architecto\",
-    \"is_active\": true
+    \"is_active\": false
 }"
 </code></pre></div>
 
@@ -14186,7 +14908,7 @@ let body = {
     "phone": "architecto",
     "email": "zbailey@example.net",
     "address": "architecto",
-    "is_active": true
+    "is_active": false
 };
 
 fetch(url, {
@@ -14364,7 +15086,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 

@@ -255,7 +255,7 @@ endpoints:
         name: payable_type
         description: ''
         required: true
-        example: purchase
+        example: sale
         type: string
         enumValues:
           - sale
@@ -290,7 +290,7 @@ endpoints:
         name: payment_date
         description: 'Must be a valid date.'
         required: false
-        example: '2026-02-02T13:17:32'
+        example: '2026-02-24T11:58:08'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -319,10 +319,10 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      payable_type: purchase
+      payable_type: sale
       payable_id: architecto
       amount: 39
-      payment_date: '2026-02-02T13:17:32'
+      payment_date: '2026-02-24T11:58:08'
       payment_method: architecto
       notes: architecto
     fileParameters: []

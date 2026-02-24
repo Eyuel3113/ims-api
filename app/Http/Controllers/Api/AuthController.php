@@ -51,7 +51,7 @@ class AuthController extends Controller
     return response()->json([
         'success' => true,
         'message' => 'Login successful',
-        'user' => $user->only(['id', 'name', 'email']),
+        'user' => $user->only(['id', 'name', 'email', 'role']),
         'token' => $token,  // For Bearer token authentication
         'refresh_token' => $refresh,  // For Bearer token refresh
     ])
@@ -93,7 +93,7 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($request->user()->only(['id', 'name', 'email', 'role', 'created_at', 'updated_at']));
     }
 
     /**

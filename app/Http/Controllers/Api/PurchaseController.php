@@ -275,6 +275,13 @@ class PurchaseController extends Controller
      * 
      * @urlParam id string required Purchase UUID
      */
+    /**
+     * Cancel Purchase
+     * 
+     * Marks a pending purchase as cancelled and removes associated payments.
+     * 
+     * @urlParam id string required Purchase UUID
+     */
     public function cancelStatus($id)
     {
         $purchase = Purchase::findOrFail($id);
@@ -285,10 +292,24 @@ class PurchaseController extends Controller
             ], 422);
         }
 
-        $purchase->update(['status' => 'cancelled']);
+        DB::transaction(function () use ($purchase) {
+            // Remove associated payments
+            $purchase->payments()->delete();
+
+            // Update purchase status and reset amounts
+            $purchase->update([
+                'status' => 'cancelled',
+                'paid_amount' => 0,
+                'due_amount' => 0, // No amount due since it's cancelled
+                'payment_status' => 'unpaid',
+                'total_amount' => 0,
+                'tax_amount' => 0,
+                'grand_total' => 0,
+            ]);
+        });
 
         return response()->json([
-            'message' => 'Purchase cancelled successfully',
+            'message' => 'Purchase cancelled successfully and payments removed',
             'data' => $purchase->load('items.product', 'supplier')
         ]);
     }

@@ -114,6 +114,9 @@ class PaymentController extends Controller
             if ($fromDate) $query->whereDate('purchase_date', '>=', $fromDate);
             if ($toDate) $query->whereDate('purchase_date', '<=', $toDate);
             if ($status) $query->where('payment_status', $status);
+            
+            // Exclude cancelled purchases
+            $query->where('status', '!=', 'cancelled');
 
             $purchases = $query->get()->map(function ($item) {
                 $item->type = 'purchase';

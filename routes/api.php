@@ -152,6 +152,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/inventory', [ReportsController::class, 'inventory']);
         Route::get('/profit-loss', [ReportsController::class, 'profitLoss']);
         Route::get('/tax', [ReportsController::class, 'taxReport']);
+        Route::get('/product-sales', [ReportsController::class, 'productSalesReport']);
+        Route::get('/product-sales-all', [ReportsController::class, 'productSalesReportAll']);
+        Route::get('/product-purchases', [ReportsController::class, 'productPurchaseReport']);
+        Route::get('/product-purchases-all', [ReportsController::class, 'productPurchaseReportAll']);
     });
 
     // Expenses

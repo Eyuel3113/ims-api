@@ -9,21 +9,21 @@ sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g" /etc/apache2/sites-ava
 # Create public storage symlink if not already present
 php artisan storage:link --no-interaction || true
 
-# Clear previous caches
-php artisan config:clear
-php artisan cache:clear
+# Run database migrations FIRST so database tables (cache, sessions, users, etc.) exist
+if [ -n "$DB_HOST" ] || [ -n "$DATABASE_URL" ] || [ "$DB_CONNECTION" = "sqlite" ]; then
+    echo "Running database migrations..."
+    php artisan migrate --force || echo "Warning: Migration failed. Check your database connection parameters."
+fi
+
+# Clear and refresh caches (safe now that database tables exist)
+php artisan config:clear || true
+php artisan cache:clear || true
 
 # In production, cache config & routes for performance
 if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache || true
     php artisan route:cache || true
     php artisan view:cache || true
-fi
-
-# Run database migrations if database connection is configured
-if [ -n "$DB_HOST" ] || [ -n "$DATABASE_URL" ] || [ "$DB_CONNECTION" = "sqlite" ]; then
-    echo "Running database migrations..."
-    php artisan migrate --force || echo "Warning: Migration failed. Check your database connection parameters."
 fi
 
 # Hand over process to Apache in foreground

@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
     git \
     libonig-dev \
     libxml2-dev \
+    libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip opcache
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -35,8 +36,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Update Apache configuration to point to public/
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
-# Expose port
-EXPOSE 80
+# Expose port (Render defaults to 10000 or routes to 80)
+EXPOSE 80 10000
 
 # Use a custom entrypoint script to run migrations and start Apache
 COPY docker-entrypoint.sh /usr/local/bin/
